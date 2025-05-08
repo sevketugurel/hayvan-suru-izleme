@@ -10,6 +10,7 @@ interface PanelProps {
   linkText?: string;
   headerContent?: ReactNode;
   className?: string;
+  colorType?: 'default' | 'alert' | 'blue' | 'green' | 'purple';
 }
 
 const Panel: React.FC<PanelProps> = ({ 
@@ -19,13 +20,32 @@ const Panel: React.FC<PanelProps> = ({
   linkTo, 
   linkText = 'Tümünü Gör',
   headerContent,
-  className = ''
+  className = '',
+  colorType = 'default'
 }) => {
-  const baseHeaderClass = linkTo ? 'alert-panel-header' : 'panel-header';
+  // Renk tipine göre başlık sınıfını belirle
+  let headerClass = 'panel-header';
+  
+  switch (colorType) {
+    case 'alert':
+      headerClass = 'alert-panel-header';
+      break;
+    case 'blue':
+      headerClass = 'blue-panel-header';
+      break;
+    case 'green':
+      headerClass = 'green-panel-header';
+      break;
+    case 'purple':
+      headerClass = 'purple-panel-header';
+      break;
+    default:
+      headerClass = 'default-panel-header';
+  }
   
   return (
     <div className={`panel ${className}`}>
-      <div className={baseHeaderClass}>
+      <div className={headerClass}>
         <div className="panel-header-content">
           {icon && <div className="panel-icon">{icon}</div>}
           <h2 className="panel-title">{title}</h2>

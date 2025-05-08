@@ -1,0 +1,77 @@
+/* MainLayout.css */
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--color-gray-50);
+}
+
+.layout-content {
+  display: flex;
+  flex: 1;
+}
+
+.main-content {
+  flex: 1;
+  transition: all 0.3s ease;
+  padding: 1.5rem;
+}
+
+/* Sabit sidebar için ana içerik alanı */
+.fixed-main {
+  margin-left: 260px; /* Sidebar genişliği */
+  box-shadow: none; /* İçerik alanında gölge olmaması için */
+  background-color: var(--color-gray-50);
+  border-left: none; /* Sidebar ile arasında çizgi olmaması için */
+}
+
+.footer {
+  padding: 1rem 1.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--color-gray-500);
+  border-top: 1px solid var(--color-gray-200);
+  background-color: white;
+  transition: all 0.3s ease;
+}
+
+/* Sabit sidebar için footer */
+.fixed-footer {
+  margin-left: 260px; /* Sidebar genişliği */
+}
+
+/* Artık kullanılmayacak sınıflar, referans olarak bırakıldı */
+.main-content.sidebar-open {
+  margin-left: 260px;
+}
+
+.main-content.sidebar-closed {
+  margin-left: 80px;
+}
+
+.footer.sidebar-open {
+  margin-left: 260px;
+}
+
+.footer.sidebar-closed {
+  margin-left: 80px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .fixed-main,
+  .fixed-footer {
+    margin-left: 0;
+  }
+  
+  /* Mobil cihazlarda sidebar'ı gizle ve toggle menü ile göster */
+  .sidebar {
+    transform: translateX(-100%);
+    z-index: 50;
+  }
+  
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  }
+} 

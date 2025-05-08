@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useAlertStore } from '../../store';
+import './AlertsPage.css';
 
 const AlertsPage: React.FC = () => {
   const { alerts, loading, fetchAlerts, markAsRead } = useAlertStore();
@@ -13,17 +14,24 @@ const AlertsPage: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="loading">Yükleniyor...</div>;
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+      </div>
+    );
   }
 
   return (
     <div className="alerts-page">
-      <h1>Uyarılar</h1>
+      <div className="page-header">
+        <h1>Uyarılar</h1>
+        <p className="page-description">Sistem ve hayvan izleme uyarıları</p>
+      </div>
 
-      <div className="alerts-filters">
-        <div>
-          <label>Filtrele: </label>
-          <select>
+      <div className="filter-container">
+        <div className="filter-group">
+          <label className="filter-label">Filtrele: </label>
+          <select className="filter-select">
             <option value="all">Tümü</option>
             <option value="battery">Pil</option>
             <option value="location">Konum</option>
@@ -31,9 +39,9 @@ const AlertsPage: React.FC = () => {
             <option value="system">Sistem</option>
           </select>
         </div>
-        <div>
-          <label>Sırala: </label>
-          <select>
+        <div className="filter-group">
+          <label className="filter-label">Sırala: </label>
+          <select className="filter-select">
             <option value="newest">En Yeni</option>
             <option value="oldest">En Eski</option>
             <option value="severity">Önem Derecesi</option>
@@ -43,7 +51,16 @@ const AlertsPage: React.FC = () => {
 
       <div className="alerts-list">
         {alerts.length === 0 ? (
-          <p>Uyarı bulunamadı</p>
+          <div className="empty-state">
+            <div className="empty-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+            <p>Uyarı bulunamadı</p>
+          </div>
         ) : (
           alerts.map(alert => (
             <div 
@@ -55,14 +72,18 @@ const AlertsPage: React.FC = () => {
                 <span className="alert-time">{new Date(alert.timestamp).toLocaleString()}</span>
               </div>
               <div className="alert-content">
-                <h3>{alert.animalName}</h3>
-                <p>{alert.message}</p>
+                <h3 className="alert-title">{alert.animalName}</h3>
+                <p className="alert-message">{alert.message}</p>
               </div>
               <div className="alert-actions">
-                <button onClick={() => handleMarkAsRead(alert.id)} disabled={alert.isRead}>
+                <button 
+                  className="btn btn-secondary"
+                  onClick={() => handleMarkAsRead(alert.id)} 
+                  disabled={alert.isRead}
+                >
                   {alert.isRead ? 'Okundu' : 'Okundu İşaretle'}
                 </button>
-                <button>Detaylar</button>
+                <button className="btn btn-primary">Detaylar</button>
               </div>
             </div>
           ))

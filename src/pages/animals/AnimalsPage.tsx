@@ -19,7 +19,7 @@ const AnimalsPage: React.FC = () => {
   }
 
   return (
-    <div className="animals-page">
+    <div className="animals-page max-w-7xl mx-auto">
       <h1>Hayvanlar</h1>
       
       <div className="animals-filters">

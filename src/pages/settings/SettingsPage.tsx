@@ -2,7 +2,7 @@ import React from 'react';
 
 const SettingsPage: React.FC = () => {
   return (
-    <div className="settings-page">
+    <div className="settings-page max-w-7xl mx-auto">
       <h1>Ayarlar</h1>
       
       <div className="settings-container">

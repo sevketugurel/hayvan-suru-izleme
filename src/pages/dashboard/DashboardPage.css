@@ -364,4 +364,44 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* Hata durumu için stiller */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  text-align: center;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  background-color: #fff5f5;
+  border: 1px solid #feb2b2;
+  margin: 1rem;
+}
+
+.error-container h2 {
+  color: #e53e3e;
+  margin-bottom: 0.5rem;
+}
+
+.error-container p {
+  color: #4a5568;
+  margin-bottom: 1.5rem;
+}
+
+.retry-button {
+  background-color: #e53e3e;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.retry-button:hover {
+  background-color: #c53030;
 } 

@@ -1,4 +1,5 @@
 import React from 'react';
+import './styles/AnimalGeneralInfo.css';
 
 interface AnimalGeneralInfoProps {
     id: string;
@@ -26,58 +27,64 @@ const AnimalGeneralInfo: React.FC<AnimalGeneralInfoProps> = ({
     acquisition
 }) => {
     return (
-        <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-semibold mb-4">Genel Bilgiler</h2>
+        <div className="general-info-container">
+           
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                    <p className="text-gray-500 text-sm">Kimlik</p>
-                    <p className="font-medium">{id}</p>
+            <div className="animal-avatar">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                </svg>
+            </div>
+
+            <div className="info-grid">
+                <div className="info-item info-highlight">
+                    <p className="info-label">Kimlik</p>
+                    <p className="info-value info-id">{id}</p>
                 </div>
 
-                <div className="space-y-1">
-                    <p className="text-gray-500 text-sm">Küpe Numarası</p>
-                    <p className="font-medium">{tagNumber}</p>
+                <div className="info-item">
+                    <p className="info-label">Küpe Numarası</p>
+                    <p className="info-value">{tagNumber}</p>
                 </div>
 
-                <div className="space-y-1">
-                    <p className="text-gray-500 text-sm">İsim</p>
-                    <p className="font-medium">{name}</p>
+                <div className="info-item">
+                    <p className="info-label">İsim</p>
+                    <p className="info-value">{name}</p>
                 </div>
 
-                <div className="space-y-1">
-                    <p className="text-gray-500 text-sm">Tür</p>
-                    <p className="font-medium">{species}</p>
+                <div className="info-item">
+                    <p className="info-label">Tür</p>
+                    <p className="info-value">{species}</p>
                 </div>
 
-                <div className="space-y-1">
-                    <p className="text-gray-500 text-sm">Irk</p>
-                    <p className="font-medium">{breed}</p>
+                <div className="info-item">
+                    <p className="info-label">Irk</p>
+                    <p className="info-value">{breed}</p>
                 </div>
 
-                <div className="space-y-1">
-                    <p className="text-gray-500 text-sm">Yaş</p>
-                    <p className="font-medium">{age} yıl</p>
+                <div className="info-item">
+                    <p className="info-label">Yaş</p>
+                    <p className="info-value">{age} yıl</p>
                 </div>
 
-                <div className="space-y-1">
-                    <p className="text-gray-500 text-sm">Cinsiyet</p>
-                    <p className="font-medium">{gender}</p>
+                <div className="info-item">
+                    <p className="info-label">Cinsiyet</p>
+                    <p className="info-value">{gender}</p>
                 </div>
 
-                <div className="space-y-1">
-                    <p className="text-gray-500 text-sm">Ağırlık</p>
-                    <p className="font-medium">{weight} kg</p>
+                <div className="info-item">
+                    <p className="info-label">Ağırlık</p>
+                    <p className="info-value">{weight} kg</p>
                 </div>
 
-                <div className="space-y-1">
-                    <p className="text-gray-500 text-sm">Doğum Tarihi</p>
-                    <p className="font-medium">{birthDate}</p>
+                <div className="info-item">
+                    <p className="info-label">Doğum Tarihi</p>
+                    <p className="info-value">{birthDate}</p>
                 </div>
 
-                <div className="space-y-1">
-                    <p className="text-gray-500 text-sm">Edinim</p>
-                    <p className="font-medium">{acquisition}</p>
+                <div className="info-item">
+                    <p className="info-label">Edinim</p>
+                    <p className="info-value">{acquisition}</p>
                 </div>
             </div>
         </div>

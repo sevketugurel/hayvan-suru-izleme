@@ -1,4 +1,5 @@
 import React from 'react';
+import './styles/AnimalReproduction.css';
 
 interface HeatCycle {
     date: string;
@@ -32,135 +33,165 @@ const AnimalReproduction: React.FC<AnimalReproductionProps> = ({
     maternalBehavior
 }) => {
     return (
-        <div className="space-y-6">
+        <div className="reproduction-container">
             {/* Kızgınlık Dönemi Takibi */}
-            <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-medium mb-4">Kızgınlık Dönemi Takibi</h3>
+            <div className="reproduction-section">
+                <div className="reproduction-header">
+                    <h3 className="reproduction-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                        </svg>
+                        Kızgınlık Dönemi Takibi
+                    </h3>
+                </div>
 
                 {heatCycles.length > 0 ? (
-                    <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
-                                <tr>
-                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tarih</th>
-                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Belirtiler</th>
-                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kesinlik</th>
-                                </tr>
-                            </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
-                                {heatCycles.map((cycle, index) => (
-                                    <tr key={index}>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{cycle.date}</td>
-                                        <td className="px-6 py-4 text-sm text-gray-500">
-                                            <ul className="list-disc pl-5">
-                                                {cycle.symptoms.map((symptom, idx) => (
-                                                    <li key={idx}>{symptom}</li>
-                                                ))}
-                                            </ul>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                            <div className="w-full bg-gray-200 rounded-full h-2.5">
+                    <table className="heat-cycles-table">
+                        <thead>
+                            <tr>
+                                <th>Tarih</th>
+                                <th>Belirtiler</th>
+                                <th>Kesinlik</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {heatCycles.map((cycle, index) => (
+                                <tr key={index}>
+                                    <td>{cycle.date}</td>
+                                    <td>
+                                        <ul className="symptoms-list">
+                                            {cycle.symptoms.map((symptom, idx) => (
+                                                <li key={idx}>{symptom}</li>
+                                            ))}
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <div className="certainty-container">
+                                            <div className="certainty-bar">
                                                 <div
-                                                    className={`h-2.5 rounded-full ${cycle.certainty > 75 ? 'bg-green-600' :
-                                                            cycle.certainty > 50 ? 'bg-yellow-400' :
-                                                                'bg-red-500'
+                                                    className={`certainty-fill ${cycle.certainty > 75 ? 'high-certainty' :
+                                                            cycle.certainty > 50 ? 'medium-certainty' :
+                                                                'low-certainty'
                                                         }`}
                                                     style={{ width: `${cycle.certainty}%` }}
                                                 ></div>
                                             </div>
-                                            <span className="text-xs text-gray-500 mt-1 block">%{cycle.certainty}</span>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                                            <span className="certainty-text">%{cycle.certainty}</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 ) : (
-                    <p className="text-gray-500">Kayıtlı kızgınlık döngüsü bulunmamaktadır.</p>
+                    <p className="empty-message">Kayıtlı kızgınlık döngüsü bulunmamaktadır.</p>
                 )}
             </div>
 
             {/* Doğum Anı Tespiti */}
-            <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-medium mb-4">Doğum Anı Tespiti</h3>
+            <div className="reproduction-section">
+                <div className="reproduction-header">
+                    <h3 className="reproduction-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
+                        </svg>
+                        Doğum Anı Tespiti
+                    </h3>
+                </div>
 
                 {birthData.status !== 'none' ? (
-                    <div className="space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <div className="birth-info-grid">
                             {birthData.expectedDate && (
-                                <div className="border rounded-lg p-4">
-                                    <p className="text-sm text-gray-500">Beklenen Doğum Tarihi</p>
-                                    <p className="text-xl font-bold">{birthData.expectedDate}</p>
+                                <div className="birth-info-card">
+                                    <p className="birth-info-label">Beklenen Doğum Tarihi</p>
+                                    <p className="birth-info-value">{birthData.expectedDate}</p>
                                 </div>
                             )}
 
-                            <div className="border rounded-lg p-4">
-                                <p className="text-sm text-gray-500">Durum</p>
-                                <p className="text-xl font-bold">
+                            <div className="birth-info-card">
+                                <p className="birth-info-label">Durum</p>
+                                <span className={`birth-status ${birthData.status === 'waiting' ? 'status-waiting' :
+                                        birthData.status === 'in_progress' ? 'status-in-progress' :
+                                            'status-completed'
+                                    }`}>
                                     {birthData.status === 'waiting' && 'Bekleniyor'}
                                     {birthData.status === 'in_progress' && 'Doğum Başladı'}
                                     {birthData.status === 'completed' && 'Tamamlandı'}
-                                </p>
+                                </span>
                             </div>
 
                             {birthData.laborStartTime && (
-                                <div className="border rounded-lg p-4">
-                                    <p className="text-sm text-gray-500">Doğum Başlangıç Zamanı</p>
-                                    <p className="text-xl font-bold">{birthData.laborStartTime}</p>
+                                <div className="birth-info-card">
+                                    <p className="birth-info-label">Doğum Başlangıç Zamanı</p>
+                                    <p className="birth-info-value">{birthData.laborStartTime}</p>
                                 </div>
                             )}
 
                             {birthData.laborEndTime && (
-                                <div className="border rounded-lg p-4">
-                                    <p className="text-sm text-gray-500">Doğum Bitiş Zamanı</p>
-                                    <p className="text-xl font-bold">{birthData.laborEndTime}</p>
+                                <div className="birth-info-card">
+                                    <p className="birth-info-label">Doğum Bitiş Zamanı</p>
+                                    <p className="birth-info-value">{birthData.laborEndTime}</p>
                                 </div>
                             )}
                         </div>
 
                         {birthData.symptoms && birthData.symptoms.length > 0 && (
-                            <div className="mt-4">
-                                <p className="text-sm text-gray-500 mb-2">Belirtiler</p>
-                                <ul className="list-disc pl-5">
+                            <div className="symptoms-section">
+                                <p className="symptoms-label">Belirtiler</p>
+                                <ul className="symptoms-list">
                                     {birthData.symptoms.map((symptom, index) => (
-                                        <li key={index} className="text-gray-700">{symptom}</li>
+                                        <li key={index}>{symptom}</li>
                                     ))}
                                 </ul>
                             </div>
                         )}
                     </div>
                 ) : (
-                    <p className="text-gray-500">Doğumla ilgili kayıt bulunmamaktadır.</p>
+                    <p className="empty-message">Doğumla ilgili kayıt bulunmamaktadır.</p>
                 )}
             </div>
 
             {/* Yavruya Olan İlgi */}
             {maternalBehavior && (
-                <div className="bg-white rounded-lg shadow p-6">
-                    <h3 className="text-lg font-medium mb-4">Yavruya Olan İlgi (Annelik Davranışları)</h3>
-
-                    <div className="border rounded-lg p-4 inline-block mb-4">
-                        <p className="text-sm text-gray-500">Etkileşim Süresi</p>
-                        <p className="text-2xl font-bold">{maternalBehavior.interactionDuration} dakika/gün</p>
+                <div className="reproduction-section">
+                    <div className="reproduction-header">
+                        <h3 className="reproduction-title">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+                            </svg>
+                            Yavruya Olan İlgi (Annelik Davranışları)
+                        </h3>
                     </div>
 
-                    {maternalBehavior.behaviourNotes && maternalBehavior.behaviourNotes.length > 0 && (
-                        <div className="mt-4">
-                            <p className="text-sm text-gray-500 mb-2">Davranış Notları</p>
-                            <ul className="list-disc pl-5">
-                                {maternalBehavior.behaviourNotes.map((note, index) => (
-                                    <li key={index} className="text-gray-700">{note}</li>
-                                ))}
-                            </ul>
+                    <div className="maternal-info">
+                        <div className="maternal-metric">
+                            <p className="birth-info-label">Etkileşim Süresi</p>
+                            <p className="birth-info-value">{maternalBehavior.interactionDuration} dakika/gün</p>
                         </div>
-                    )}
+
+                        {maternalBehavior.behaviourNotes && maternalBehavior.behaviourNotes.length > 0 && (
+                            <div className="maternal-notes">
+                                <p className="notes-label">Davranış Notları</p>
+                                <ul className="notes-list">
+                                    {maternalBehavior.behaviourNotes.map((note, index) => (
+                                        <li key={index}>{note}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
 
                     {maternalBehavior.cameraFootageUrl && (
-                        <div className="mt-6">
-                            <p className="text-sm text-gray-500 mb-2">Kamera Görüntüsü</p>
-                            <div className="aspect-video bg-gray-200 rounded flex items-center justify-center">
-                                {/* Burada bir video bileşeni olacak */}
-                                <p className="text-gray-400 text-sm">Kamera görüntüsüne erişmek için tıklayın</p>
+                        <div className="camera-section">
+                            <p className="camera-label">Kamera Görüntüsü</p>
+                            <div className="camera-footage">
+                                <span className="camera-message">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
+                                    </svg>
+                                    Kamera görüntüsüne erişmek için tıklayın
+                                </span>
                             </div>
                         </div>
                     )}

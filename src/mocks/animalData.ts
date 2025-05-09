@@ -55,6 +55,182 @@ export const getMockAnimalData = (id: string) => {
                 ]
             },
 
+            treatments: {
+                pastTreatments: [
+                    {
+                        id: 'PT001',
+                        date: '15.08.2024',
+                        diagnosis: 'Mastitis',
+                        treatment: 'Antibiyotik tedavisi ve meme masajı',
+                        medications: [
+                            { name: 'Spectramast LC', dosage: '10ml', method: 'Intramamary enjeksiyon' },
+                            { name: 'Banamine', dosage: '5ml/100kg', method: 'IM enjeksiyon' }
+                        ],
+                        veterinarian: 'Dr. Mehmet Yılmaz',
+                        result: 'Tamamen İyileşti',
+                        notes: 'Tedavi sonrası süt verimi normale döndü'
+                    },
+                    {
+                        id: 'PT002',
+                        date: '05.06.2024',
+                        diagnosis: 'Topalık',
+                        treatment: 'Tırnak kesim ve bandaj',
+                        medications: [
+                            { name: 'Hoofgel', dosage: '50gr', method: 'Topikal uygulama' }
+                        ],
+                        veterinarian: 'Dr. Ayşe Demir',
+                        result: 'İyileşti, izleniyor',
+                        notes: 'Beyaz çizgi hastalığı şüphesi'
+                    },
+                    {
+                        id: 'PT003',
+                        date: '22.03.2024',
+                        diagnosis: 'Parazit enfestasyonu',
+                        treatment: 'Anti-paraziter uygulama',
+                        medications: [
+                            { name: 'Ivermectin', dosage: '1ml/50kg', method: 'SC enjeksiyon' }
+                        ],
+                        veterinarian: 'Dr. Ali Can',
+                        result: 'Tamamen İyileşti',
+                        notes: 'Rutin parazit kontrolü'
+                    }
+                ],
+                activeTreatments: [
+                    {
+                        id: 'AT001',
+                        startDate: '01.10.2024',
+                        estimatedEndDate: '08.10.2024',
+                        diagnosis: 'Hafif solunum yolu enfeksiyonu',
+                        treatmentPlan: 'Antibiyotik tedavisi ve destek bakım',
+                        medicationSchedule: [
+                            {
+                                medication: 'Draxxin',
+                                dosage: '2.5ml/100kg',
+                                frequency: 'Tek doz',
+                                method: 'SC enjeksiyon',
+                                remainingDays: 0
+                            },
+                            {
+                                medication: 'Meloksikam',
+                                dosage: '5ml',
+                                frequency: 'Günde bir kez',
+                                method: 'SC enjeksiyon',
+                                remainingDays: 2
+                            },
+                            {
+                                medication: 'Vitamin C',
+                                dosage: '10ml',
+                                frequency: 'Günde bir kez',
+                                method: 'Oral',
+                                remainingDays: 5
+                            }
+                        ],
+                        progress: 65,
+                        notes: 'Solunum hızı normale dönüyor, iştah iyi'
+                    }
+                ],
+                vaccinations: [
+                    {
+                        id: 'VAX001',
+                        name: 'Şap (FMD)',
+                        date: '15.01.2024',
+                        status: 'completed',
+                        validUntil: '15.01.2025',
+                        veterinarian: 'Dr. Mehmet Yılmaz'
+                    },
+                    {
+                        id: 'VAX002',
+                        name: 'Brucella',
+                        date: '15.01.2024',
+                        status: 'completed',
+                        validUntil: '15.01.2026',
+                        veterinarian: 'Dr. Mehmet Yılmaz'
+                    },
+                    {
+                        id: 'VAX003',
+                        name: 'Clostridial',
+                        date: '20.10.2024',
+                        status: 'scheduled',
+                        veterinarian: 'Dr. Ayşe Demir'
+                    },
+                    {
+                        id: 'VAX004',
+                        name: 'IBR/BVD',
+                        date: '01.09.2024',
+                        status: 'overdue',
+                        veterinarian: 'Dr. Ali Can'
+                    }
+                ],
+                diseaseHistory: [
+                    {
+                        id: 'DH001',
+                        diseaseName: 'Mastitis',
+                        diagnosisDate: '13.08.2024',
+                        recoveryDate: '20.08.2024',
+                        duration: 7,
+                        severity: 'medium',
+                        treatment: 'Antibiyotik tedavisi ve meme masajı',
+                        recurrenceRisk: 35,
+                        notes: 'Sol ön meme lobunda sorun vardı'
+                    },
+                    {
+                        id: 'DH002',
+                        diseaseName: 'Topalık (Laminitis)',
+                        diagnosisDate: '01.06.2024',
+                        recoveryDate: '20.06.2024',
+                        duration: 19,
+                        severity: 'low',
+                        treatment: 'Tırnak kesim ve bandaj',
+                        recurrenceRisk: 25,
+                        notes: 'Sağ arka ayak'
+                    },
+                    {
+                        id: 'DH003',
+                        diseaseName: 'Parazit enfestasyonu',
+                        diagnosisDate: '20.03.2024',
+                        recoveryDate: '30.03.2024',
+                        duration: 10,
+                        severity: 'low',
+                        treatment: 'Anti-paraziter uygulama',
+                        recurrenceRisk: 15
+                    }
+                ],
+                medicationUsage: [
+                    {
+                        medicationName: 'Antibiyotikler',
+                        totalUsage: 350,
+                        unit: 'ml',
+                        administrationMethods: ['IM enjeksiyon', 'SC enjeksiyon', 'Intramamary'],
+                        lastUsed: '01.10.2024',
+                        effectivenessScore: 85
+                    },
+                    {
+                        medicationName: 'Anti-inflamatuarlar',
+                        totalUsage: 120,
+                        unit: 'ml',
+                        administrationMethods: ['IM enjeksiyon', 'IV enjeksiyon'],
+                        lastUsed: '02.10.2024',
+                        effectivenessScore: 90
+                    },
+                    {
+                        medicationName: 'Vitamin kompleksleri',
+                        totalUsage: 2,
+                        unit: 'kg',
+                        administrationMethods: ['Oral', 'Yem katkısı'],
+                        lastUsed: '25.09.2024',
+                        effectivenessScore: 70
+                    },
+                    {
+                        medicationName: 'Parazit ilaçları',
+                        totalUsage: 75,
+                        unit: 'ml',
+                        administrationMethods: ['SC enjeksiyon', 'Pour-on'],
+                        lastUsed: '22.03.2024',
+                        effectivenessScore: 95
+                    }
+                ]
+            },
+
             behaviors: {
                 sleepQuality: {
                     duration: 8,

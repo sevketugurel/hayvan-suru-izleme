@@ -1,0 +1,198 @@
+/* AnimalBehaviors.css */
+.behaviors-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.behavior-section {
+    background-color: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.behavior-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+}
+
+.behavior-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #111827;
+    display: flex;
+    align-items: center;
+}
+
+.behavior-title svg {
+    margin-right: 0.5rem;
+    color: #4a8c6f;
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.behavior-metrics {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.metric-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1rem;
+    transition: all 0.2s ease;
+    background-color: #f9fafb;
+}
+
+.metric-card:hover {
+    border-color: #4a8c6f;
+    box-shadow: 0 2px 8px rgba(74, 140, 111, 0.1);
+    background-color: white;
+}
+
+.metric-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.25rem;
+}
+
+.metric-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.behavior-chart {
+    height: 250px;
+    background-color: #f9fafb;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+.chart-placeholder {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+    font-size: 0.875rem;
+}
+
+.single-metric {
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.camera-section {
+    margin-top: 1.5rem;
+}
+
+.camera-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+}
+
+.camera-footage {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #111827;
+    aspect-ratio: 16 / 9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.camera-footage::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%);
+}
+
+.camera-message {
+    position: relative;
+    color: white;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    font-size: 0.875rem;
+}
+
+.camera-message svg {
+    margin-right: 0.5rem;
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.behavior-note {
+    margin-top: 1.5rem;
+    color: #6b7280;
+    font-style: italic;
+    font-size: 0.875rem;
+}
+
+/* Sleep quality section specific styles */
+.sleep-metric-good {
+    color: #047857;
+}
+
+.sleep-metric-average {
+    color: #d97706;
+}
+
+.sleep-metric-poor {
+    color: #dc2626;
+}
+
+/* Step count section specific styles */
+.activity-metrics {
+    position: relative;
+    height: 8px;
+    background-color: #e5e7eb;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+}
+
+.activity-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #4a8c6f 0%, #84cc16 100%);
+}
+
+/* Responsive design */
+@media (min-width: 640px) {
+    .behavior-metrics {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .behavior-section {
+        padding: 2rem;
+    }
+
+    .behavior-metrics {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .behavior-chart {
+        height: 300px;
+    }
+}

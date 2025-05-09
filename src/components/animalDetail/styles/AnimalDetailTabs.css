@@ -1,0 +1,89 @@
+/* AnimalDetailTabs.css */
+.animal-detail-container {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.animal-header {
+    padding: 1.5rem 2rem;
+    background: linear-gradient(135deg, #4a8c6f 0%, #315e48 100%);
+    color: white;
+}
+
+.animal-name {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.animal-subtitle {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+.tabs-container {
+    display: flex;
+    overflow-x: auto;
+    background-color: white;
+    border-bottom: 1px solid #e5e7eb;
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.tabs-container::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Edge */
+}
+
+.tab-button {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    color: #6b7280;
+    font-weight: 500;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.tab-button:hover {
+    color: #4a8c6f;
+    background-color: #f9fafb;
+}
+
+.tab-button.active {
+    color: #4a8c6f;
+    border-bottom-color: #4a8c6f;
+}
+
+.tab-icon {
+    margin-right: 0.5rem;
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.tab-content {
+    padding: 1.5rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .animal-header {
+        padding: 1rem 1.5rem;
+    }
+
+    .animal-name {
+        font-size: 1.5rem;
+    }
+
+    .tab-button {
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    .tab-content {
+        padding: 1rem;
+    }
+}

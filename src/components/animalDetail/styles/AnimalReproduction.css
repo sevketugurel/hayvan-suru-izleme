@@ -1,0 +1,287 @@
+/* AnimalReproduction.css */
+.reproduction-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.reproduction-section {
+    background-color: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.reproduction-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+}
+
+.reproduction-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #111827;
+    display: flex;
+    align-items: center;
+}
+
+.reproduction-title svg {
+    margin-right: 0.5rem;
+    color: #e11d48;
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.heat-cycles-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 1rem;
+}
+
+.heat-cycles-table th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    background-color: #fdf2f8;
+    color: #be185d;
+    font-weight: 500;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid #f9a8d4;
+}
+
+.heat-cycles-table th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.heat-cycles-table th:last-child {
+    border-top-right-radius: 8px;
+    text-align: center;
+}
+
+.heat-cycles-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 0.875rem;
+    color: #374151;
+}
+
+.heat-cycles-table tr:last-child td {
+    border-bottom: none;
+}
+
+.heat-cycles-table tr:hover {
+    background-color: #fdf2f8;
+}
+
+.symptoms-list {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    color: #6b7280;
+}
+
+.certainty-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.certainty-bar {
+    width: 100%;
+    height: 8px;
+    background-color: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.25rem;
+}
+
+.certainty-fill {
+    height: 100%;
+    border-radius: 4px;
+}
+
+.high-certainty {
+    background-color: #10b981;
+}
+
+.medium-certainty {
+    background-color: #f59e0b;
+}
+
+.low-certainty {
+    background-color: #ef4444;
+}
+
+.certainty-text {
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+.birth-info-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.birth-info-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1rem;
+    background-color: #f9fafb;
+}
+
+.birth-info-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.25rem;
+}
+
+.birth-info-value {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+.birth-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.status-waiting {
+    background-color: #e0f2fe;
+    color: #0369a1;
+}
+
+.status-in-progress {
+    background-color: #fffbeb;
+    color: #d97706;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.7;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.7;
+    }
+}
+
+.status-completed {
+    background-color: #ecfdf5;
+    color: #047857;
+}
+
+.symptoms-section {
+    margin-top: 1.5rem;
+}
+
+.symptoms-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+}
+
+.maternal-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.maternal-metric {
+    display: inline-block;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.maternal-notes {
+    margin-top: 1rem;
+}
+
+.notes-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+}
+
+.notes-list {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.notes-list li {
+    margin-bottom: 0.5rem;
+    color: #4b5563;
+}
+
+.empty-message {
+    text-align: center;
+    padding: 2rem;
+    color: #6b7280;
+    font-style: italic;
+}
+
+.add-button {
+    display: inline-flex;
+    align-items: center;
+    background-color: #e11d48;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.add-button:hover {
+    background-color: #be123c;
+}
+
+.add-button svg {
+    margin-right: 0.375rem;
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Responsive design */
+@media (min-width: 640px) {
+    .birth-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .reproduction-section {
+        padding: 2rem;
+    }
+
+    .birth-info-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .maternal-info {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .maternal-notes {
+        flex: 1;
+    }
+}

@@ -5,11 +5,32 @@ import AnimalBehaviors from './AnimalBehaviors';
 import AnimalReproduction from './AnimalReproduction';
 import AnimalLocationSocial from './AnimalLocationSocial';
 import AnimalRiskEnvironment from './AnimalRiskEnvironment';
+import AnimalTreatments from './AnimalTreatments';
+import animalDetailMocks from '../../mocks/animalDetailMocks';
+import './styles/AnimalDetailTabs.css';
+import type {
+    AnimalData,
+    Vaccination,
+    DiseaseHistory,
+    HerdDeviationData
+} from '../../types/animalDataTypes';
 
 interface Tab {
     id: string;
     label: string;
     icon: React.ReactNode;
+}
+
+interface HerdInteraction {
+    interaction: string;
+    frequency: number;
+    animalIds: string[];
+}
+
+interface CloseFriend {
+    animalId: string;
+    animalName: string;
+    proximityScore?: number;
 }
 
 interface AnimalDetailTabsProps {
@@ -19,6 +40,9 @@ interface AnimalDetailTabsProps {
 
 const AnimalDetailTabs: React.FC<AnimalDetailTabsProps> = ({ animalId, animalData }) => {
     const [activeTab, setActiveTab] = useState('general');
+
+    // animalDetailMocks ile mevcut animalData nesnelerini birleştir
+    const mockData = animalDetailMocks || {};
 
     const tabs: Tab[] = [
         {
@@ -33,6 +57,13 @@ const AnimalDetailTabs: React.FC<AnimalDetailTabsProps> = ({ animalId, animalDat
             label: 'Sağlık Verileri',
             icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+            </svg>
+        },
+        {
+            id: 'treatments',
+            label: 'Tedaviler',
+            icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M7 2a1 1 0 00-.707 1.707L7 4.414v3.758a1 1 0 01-.293.707l-4 4C.817 14.769 2.156 18 4.828 18h10.343c2.673 0 4.012-3.231 2.122-5.121l-4-4A1 1 0 0113 8.172V4.414l.707-.707A1 1 0 0013 2H7zm2 6.172V4h2v4.172a3 3 0 00.879 2.12l1.168 1.168a4 4 0 00-2.324.971l-.243.212a4 4 0 01-5.113.44l-.53-.344 1.585-1.585A3 3 0 009 8.172z" clipRule="evenodd" />
             </svg>
         },
         {
@@ -67,33 +98,26 @@ const AnimalDetailTabs: React.FC<AnimalDetailTabsProps> = ({ animalId, animalDat
     ];
 
     return (
-        <div className="p-4">
-            <div className="mb-6">
-                <h1 className="text-2xl font-bold">{animalData.name} ({animalData.tagNumber})</h1>
-                <p className="text-gray-500">{animalData.species} • {animalData.breed}</p>
+        <div className="animal-detail-container">
+            <div className="animal-header">
+                <h1 className="animal-name">{animalData.name} ({animalData.tagNumber})</h1>
+                <p className="animal-subtitle">{animalData.species} • {animalData.breed}</p>
             </div>
 
-            <div className="border-b border-gray-200">
-                <nav className="-mb-px flex space-x-8">
-                    {tabs.map(tab => (
-                        <button
-                            key={tab.id}
-                            onClick={() => setActiveTab(tab.id)}
-                            className={`flex items-center pb-4 pt-2 px-1 border-b-2 font-medium text-sm 
-                ${activeTab === tab.id
-                                    ? 'border-blue-500 text-blue-600'
-                                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                                }
-              `}
-                        >
-                            <span className="mr-2">{tab.icon}</span>
-                            {tab.label}
-                        </button>
-                    ))}
-                </nav>
+            <div className="tabs-container">
+                {tabs.map(tab => (
+                    <button
+                        key={tab.id}
+                        onClick={() => setActiveTab(tab.id)}
+                        className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+                    >
+                        <span className="tab-icon">{tab.icon}</span>
+                        {tab.label}
+                    </button>
+                ))}
             </div>
 
-            <div className="py-6">
+            <div className="tab-content">
                 {activeTab === 'general' && (
                     <AnimalGeneralInfo
                         id={animalData.id}
@@ -118,6 +142,16 @@ const AnimalDetailTabs: React.FC<AnimalDetailTabsProps> = ({ animalId, animalDat
                     />
                 )}
 
+                {activeTab === 'treatments' && (
+                    <AnimalTreatments
+                        pastTreatments={mockData.treatments?.pastTreatments || animalData.treatments.pastTreatments}
+                        activeTreatments={mockData.treatments?.activeTreatments || animalData.treatments.activeTreatments}
+                        vaccinations={(mockData.treatments?.vaccinations || animalData.treatments.vaccinations) as Vaccination[]}
+                        diseaseHistory={(mockData.treatments?.diseaseHistory || animalData.treatments.diseaseHistory) as DiseaseHistory[]}
+                        medicationUsage={mockData.treatments?.medicationUsage || animalData.treatments.medicationUsage}
+                    />
+                )}
+
                 {activeTab === 'behaviors' && (
                     <AnimalBehaviors
                         sleepQuality={animalData.behaviors.sleepQuality}
@@ -138,15 +172,107 @@ const AnimalDetailTabs: React.FC<AnimalDetailTabsProps> = ({ animalId, animalDat
 
                 {activeTab === 'location' && (
                     <AnimalLocationSocial
-                        locationData={animalData.locationSocial.locationData}
-                        socialData={animalData.locationSocial.socialData}
+                        gpsTracking={mockData.locationSocial?.gpsTracking || animalData.locationSocial.locationData}
+                        herdDeviation={(mockData.locationSocial?.herdDeviation as HerdDeviationData) || {
+                            isDeviated: false,
+                            deviationHistory: animalData.locationSocial.locationData.abnormalLocationAlerts.map((alert: any) => ({
+                                ...alert,
+                                severity: (alert.severity || "low") as "low" | "medium" | "high"
+                            })),
+                            safeZones: [],
+                            alertSettings: { maxDistance: 400, alertThreshold: 15 }
+                        }}
+                        socialBehavior={mockData.locationSocial?.socialBehavior || {
+                            summary: 'Hayvan sosyal davranış verileri yükleniyor...',
+                            socialScore: 75,
+                            dominanceRank: 5,
+                            interactions: animalData.locationSocial.socialData.herdInteractions.map((item: HerdInteraction) => ({
+                                type: item.interaction,
+                                frequency: item.frequency,
+                                partners: item.animalIds,
+                                duration: 0
+                            })),
+                            abnormalBehaviors: []
+                        }}
+                        closeFriends={mockData.locationSocial?.closeFriends || {
+                            bestFriends: animalData.locationSocial.socialData.closeFriends.map((friend: CloseFriend) => ({
+                                ...friend,
+                                dailyInteractionTime: 120,
+                                relationshipDuration: 6
+                            })),
+                            recentChanges: 'Sosyal ilişki verileri güncelleniyor...'
+                        }}
                     />
                 )}
 
                 {activeTab === 'risk' && (
                     <AnimalRiskEnvironment
-                        riskData={animalData.riskEnvironment.riskData}
-                        environmentData={animalData.riskEnvironment.environmentData}
+                        drowningRisk={{
+                            currentRisk: (mockData.riskEnvironment?.drowningRisk?.currentRisk || 'low') as "low" | "medium" | "high",
+                            riskHistory: animalData.riskEnvironment.riskData.drowningRisks.map((risk: any) => ({
+                                ...risk,
+                                time: '12:00',
+                                duration: 0,
+                                weatherConditions: 'Bilinmiyor',
+                                severity: (risk.severity || 'low') as "low" | "medium" | "high"
+                            })),
+                            dangerZones: mockData.riskEnvironment?.drowningRisk?.dangerZones || [],
+                            preventiveMeasures: mockData.riskEnvironment?.drowningRisk?.preventiveMeasures || []
+                        }}
+                        gasLevels={{
+                            animalSpecific: {
+                                lastReading: {
+                                    timestamp: new Date().toISOString(),
+                                    location: 'Ahır',
+                                    ammonia: animalData.riskEnvironment.environmentData.gasLevels.ammonia,
+                                    methane: animalData.riskEnvironment.environmentData.gasLevels.methane,
+                                    carbonDioxide: 800,
+                                    humidity: 65,
+                                    temperature: 22
+                                },
+                                dailyAverage: {
+                                    date: new Date().toLocaleDateString(),
+                                    ammonia: animalData.riskEnvironment.environmentData.gasLevels.ammonia,
+                                    methane: animalData.riskEnvironment.environmentData.gasLevels.methane,
+                                    carbonDioxide: 800
+                                },
+                                weeklyTrend: {
+                                    startDate: '2024-09-28',
+                                    endDate: '2024-10-04',
+                                    ammoniaTrend: 'stable' as "stable" | "increasing" | "decreasing",
+                                    methaneTrend: 'stable' as "stable" | "increasing" | "decreasing",
+                                    carbonDioxideTrend: 'stable' as "stable" | "increasing" | "decreasing"
+                                }
+                            },
+                            facilityLevels: {
+                                readings: mockData.riskEnvironment?.gasLevels?.facilityLevels?.readings || [],
+                                safetyThresholds: {
+                                    ammonia: { warning: 15, danger: 25 },
+                                    methane: { warning: 500, danger: 1000 },
+                                    carbonDioxide: { warning: 1500, danger: 3000 }
+                                },
+                                ventilationStatus: 'Normal',
+                                airQualityIndex: 85
+                            },
+                            historicalData: animalData.riskEnvironment.environmentData.gasLevels.history.map((item: any) => ({
+                                date: item.date,
+                                ammonia: item.ammonia,
+                                methane: item.methane,
+                                carbonDioxide: 800
+                            }))
+                        }}
+                        otherRisks={{
+                            heatStress: {
+                                currentLevel: 'low' as "low" | "medium" | "high",
+                                temperatureHumidityIndex: 68,
+                                recommendedActions: []
+                            },
+                            predatorRisk: {
+                                level: 'low' as "low" | "medium" | "high",
+                                recentSightings: [],
+                                vulnerabilityScore: 15
+                            }
+                        }}
                     />
                 )}
             </div>

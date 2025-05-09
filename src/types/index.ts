@@ -1,5 +1,6 @@
 // Burada uygulama genelinde kullanılan tip tanımlamaları bulunur
-// Şu anda tipleri doğrudan kullanmaya ihtiyaç olmadığı için bu dosya boş bırakılmıştır.
+// Şu anda dashboard ve rapor tipleri tanımlanmıştır
 // İleride daha geniş tip tanımlamaları buraya eklenebilir.
 
-export {}; 
+export * from './dashboard'; 
+export * from './report'; 

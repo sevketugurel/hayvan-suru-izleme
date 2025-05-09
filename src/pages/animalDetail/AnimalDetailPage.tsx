@@ -19,7 +19,7 @@ const AnimalDetailPage: React.FC = () => {
   }
 
   return (
-    <div className="animal-detail-page">
+    <div className="animal-detail-page max-w-7xl mx-auto">
       <div className="animal-header">
         <h1>{selectedAnimal.name} (#{selectedAnimal.id})</h1>
         <span className={`status-badge ${selectedAnimal.status}`}>

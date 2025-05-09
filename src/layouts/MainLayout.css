@@ -1,0 +1,140 @@
+/* MainLayout.css */
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--color-gray-50);
+  color: #111827;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.layout-content {
+  display: flex;
+  flex: 1;
+  position: relative;
+}
+
+.main-content {
+  flex: 1;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* Sabit sidebar için ana içerik alanı */
+.fixed-main {
+  margin-left: 220px; /* Sidebar genişliği azaltıldı */
+  box-shadow: none; /* İçerik alanında gölge olmaması için */
+  background-color: #f9fafb;
+  border-left: none; /* Sidebar ile arasında çizgi olmaması için */
+  width: calc(100% - 220px); /* Sidebar genişliğini çıkararak tam genişlik */
+  overflow-x: hidden; /* Taşmaları önlemek için */
+  max-width: none; /* Maksimum genişlik sınırını kaldır */
+  min-height: calc(100vh - 50px - 40px); /* Header ve footer yüksekliğini çıkarın */
+}
+
+.footer {
+  padding: 0.75rem 1rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--color-gray-600);
+  border-top: 1px solid #e5e7eb;
+  background-color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.03);
+  position: relative;
+  z-index: 10;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Sabit sidebar için footer */
+.fixed-footer {
+  margin-left: 220px; /* Sidebar genişliği */
+  width: calc(100% - 220px);
+}
+
+/* Ek stiller - header için */
+.header {
+  height: 50px;
+  background-color: white;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+/* Sidebar için geliştirilmiş stiller */
+.sidebar {
+  width: 220px; /* Daha dar sidebar */
+  background-color: white;
+  border-right: 1px solid #f3f4f6;
+  height: calc(100vh - 50px); /* Header yüksekliğini çıkar */
+  position: fixed;
+  top: 50px; /* Header yüksekliği */
+  left: 0;
+  overflow-y: auto;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 10;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+/* Artık kullanılmayacak sınıflar, referans olarak bırakıldı */
+.main-content.sidebar-open {
+  margin-left: 220px;
+}
+
+.main-content.sidebar-closed {
+  margin-left: 60px;
+}
+
+.footer.sidebar-open {
+  margin-left: 220px;
+}
+
+.footer.sidebar-closed {
+  margin-left: 60px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .sidebar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  }
+}
+
+@media (max-width: 768px) {
+  .fixed-main {
+    margin-left: 0;
+    width: 100%;
+  }
+  
+  .fixed-footer {
+    margin-left: 0;
+    width: 100%;
+  }
+  
+  /* Mobil cihazlarda sidebar'ı gizle ve toggle menü ile göster */
+  .sidebar {
+    transform: translateX(-100%);
+    z-index: 50;
+    box-shadow: none;
+  }
+  
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header {
+    padding: 0 0.75rem;
+  }
+} 

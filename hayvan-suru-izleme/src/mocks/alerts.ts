@@ -13,7 +13,7 @@ export const alerts: Alert[] = [
   {
     id: 'AL001',
     animalId: 'A002',
-    animalName: 'Kartal',
+    animalName: 'Benekli',
     type: 'battery',
     message: 'Düşük pil seviyesi - %32',
     timestamp: '2023-08-14T15:30:00',
@@ -23,7 +23,7 @@ export const alerts: Alert[] = [
   {
     id: 'AL002',
     animalId: 'A004',
-    animalName: 'Geyik',
+    animalName: 'Çakır',
     type: 'battery',
     message: 'Kritik pil seviyesi - %12',
     timestamp: '2023-08-13T18:45:00',
@@ -33,7 +33,7 @@ export const alerts: Alert[] = [
   {
     id: 'AL003',
     animalId: 'A001',
-    animalName: 'Kurt',
+    animalName: 'Karabaş',
     type: 'location',
     message: 'İzleme alanı dışına çıktı',
     timestamp: '2023-08-15T09:20:00',
@@ -43,7 +43,7 @@ export const alerts: Alert[] = [
   {
     id: 'AL004',
     animalId: 'A003',
-    animalName: 'Ayı',
+    animalName: 'Sarıkız',
     type: 'health',
     message: 'Anormal hareket tespit edildi',
     timestamp: '2023-08-14T22:10:00',
@@ -53,7 +53,7 @@ export const alerts: Alert[] = [
   {
     id: 'AL005',
     animalId: 'A005',
-    animalName: 'Tilki',
+    animalName: 'Kınalı',
     type: 'system',
     message: 'Cihaz bağlantısı kesildi',
     timestamp: '2023-08-12T14:30:00',

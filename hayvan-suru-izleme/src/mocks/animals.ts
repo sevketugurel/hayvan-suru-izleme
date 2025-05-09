@@ -4,6 +4,9 @@ export interface Animal {
   tagNumber: string;
   species: string;
   age: number;
+  gender?: string;
+  breed?: string;
+  weight?: number;
   location: string;
   lastSeen: string;
   status: 'active' | 'inactive' | 'warning';

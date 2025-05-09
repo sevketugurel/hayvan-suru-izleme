@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { Animal } from '../mocks';
-import { getAnimals, getAnimalById, updateAnimalLocation } from '../services';
+import { getAnimals, getAnimalById, updateAnimalLocation, addAnimal } from '../services';
 
 interface AnimalState {
   animals: Animal[];
@@ -10,6 +10,7 @@ interface AnimalState {
   fetchAnimals: () => Promise<void>;
   fetchAnimalById: (id: string) => Promise<void>;
   updateLocation: (id: string, location: string) => Promise<void>;
+  addAnimal: (animalData: Omit<Animal, 'id'>) => Promise<void>;
 }
 
 export const useAnimalStore = create<AnimalState>((set) => ({
@@ -57,6 +58,19 @@ export const useAnimalStore = create<AnimalState>((set) => ({
       }
     } catch (error) {
       set({ error: 'Konum güncellenirken bir hata oluştu', loading: false });
+    }
+  },
+
+  addAnimal: async (animalData: Omit<Animal, 'id'>) => {
+    set({ loading: true, error: null });
+    try {
+      const newAnimal = await addAnimal(animalData);
+      set((state) => ({
+        animals: [...state.animals, newAnimal],
+        loading: false
+      }));
+    } catch (error) {
+      set({ error: 'Yeni hayvan eklenirken bir hata oluştu', loading: false });
     }
   }
 })); 

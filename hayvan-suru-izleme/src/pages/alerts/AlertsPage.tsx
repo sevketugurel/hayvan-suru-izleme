@@ -1,73 +1,86 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAlertStore } from '../../store';
+import AlertCardGrid from './components/AlertCardGrid';
+import AlertFilters from './components/AlertFilters';
+import './AlertsPage.css';
 
 const AlertsPage: React.FC = () => {
-  const { alerts, loading, fetchAlerts, markAsRead } = useAlertStore();
+  const { alerts, loading, error, fetchAlerts, markAsRead } = useAlertStore();
+  const [filteredAlerts, setFilteredAlerts] = useState(alerts);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterType, setFilterType] = useState<string>('');
+  const [filterSeverity, setFilterSeverity] = useState<string>('');
 
   useEffect(() => {
     fetchAlerts();
   }, [fetchAlerts]);
 
+  useEffect(() => {
+    let result = alerts;
+
+    // Apply search term filter
+    if (searchTerm) {
+      result = result.filter(alert => 
+        alert.animalName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        alert.message.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    // Apply type filter
+    if (filterType) {
+      result = result.filter(alert => alert.type === filterType);
+    }
+
+    // Apply severity filter
+    if (filterSeverity) {
+      result = result.filter(alert => alert.severity === filterSeverity);
+    }
+
+    setFilteredAlerts(result);
+  }, [alerts, searchTerm, filterType, filterSeverity]);
+
+  const handleSearch = (term: string) => {
+    setSearchTerm(term);
+  };
+
+  const handleFilterChange = (key: string, value: string) => {
+    if (key === 'type') {
+      setFilterType(value);
+    } else if (key === 'severity') {
+      setFilterSeverity(value);
+    }
+  };
+
+  const handleResetFilters = () => {
+    setSearchTerm('');
+    setFilterType('');
+    setFilterSeverity('');
+  };
+
   const handleMarkAsRead = (id: string) => {
     markAsRead(id);
   };
 
-  if (loading) {
-    return <div className="loading">Yükleniyor...</div>;
-  }
+  if (loading) return <div className="loading">Yükleniyor...</div>;
+  if (error) return <div className="error">{error}</div>;
 
   return (
     <div className="alerts-page">
-      <h1>Uyarılar</h1>
+      <h1 className="alerts-title">Uyarılar</h1>
 
-      <div className="alerts-filters">
-        <div>
-          <label>Filtrele: </label>
-          <select>
-            <option value="all">Tümü</option>
-            <option value="battery">Pil</option>
-            <option value="location">Konum</option>
-            <option value="health">Sağlık</option>
-            <option value="system">Sistem</option>
-          </select>
-        </div>
-        <div>
-          <label>Sırala: </label>
-          <select>
-            <option value="newest">En Yeni</option>
-            <option value="oldest">En Eski</option>
-            <option value="severity">Önem Derecesi</option>
-          </select>
-        </div>
-      </div>
+      <AlertFilters 
+        searchTerm={searchTerm}
+        filterType={filterType}
+        filterSeverity={filterSeverity}
+        onSearch={handleSearch}
+        onFilterChange={handleFilterChange}
+        onResetFilters={handleResetFilters}
+      />
 
-      <div className="alerts-list">
-        {alerts.length === 0 ? (
-          <p>Uyarı bulunamadı</p>
-        ) : (
-          alerts.map(alert => (
-            <div 
-              key={alert.id} 
-              className={`alert-card ${alert.severity} ${alert.isRead ? 'read' : 'unread'}`}
-            >
-              <div className="alert-header">
-                <span className="alert-type">{alert.type}</span>
-                <span className="alert-time">{new Date(alert.timestamp).toLocaleString()}</span>
-              </div>
-              <div className="alert-content">
-                <h3>{alert.animalName}</h3>
-                <p>{alert.message}</p>
-              </div>
-              <div className="alert-actions">
-                <button onClick={() => handleMarkAsRead(alert.id)} disabled={alert.isRead}>
-                  {alert.isRead ? 'Okundu' : 'Okundu İşaretle'}
-                </button>
-                <button>Detaylar</button>
-              </div>
-            </div>
-          ))
-        )}
-      </div>
+      <AlertCardGrid 
+        alerts={filteredAlerts} 
+        onMarkAsRead={handleMarkAsRead} 
+      />
     </div>
   );
 };

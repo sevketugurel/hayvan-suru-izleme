@@ -236,7 +236,7 @@ const AnimalLocationSocial: React.FC<AnimalLocationSocialProps> = ({
                                 <div className="metric-progress">
                                     <div
                                         className={`metric-progress-fill ${socialBehavior.socialScore > 75 ? 'high-score' :
-                                                socialBehavior.socialScore > 50 ? 'medium-score' : 'low-score'
+                                            socialBehavior.socialScore > 50 ? 'medium-score' : 'low-score'
                                             }`}
                                         style={{ width: `${socialBehavior.socialScore}%` }}>
                                     </div>

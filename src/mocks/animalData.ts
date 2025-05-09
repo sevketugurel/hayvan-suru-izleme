@@ -3,17 +3,13 @@ export const getMockAnimalData = (id: string) => {
     // Eğer belirli bir id için veri isteniyorsa
     if (id) {
         return {
-            id,
-            tagNumber: 'TR123456789',
+            id: 'TR123456789',
             name: 'Sarıkız',
             species: 'İnek',
             breed: 'Holstein',
-            age: 4,
             gender: 'Dişi',
             weight: 550,
             birthDate: '12.05.2020',
-            acquisition: 'Doğumla edinildi',
-
             healthData: {
                 pulseRate: {
                     current: 72,

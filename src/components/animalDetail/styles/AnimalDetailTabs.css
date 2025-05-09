@@ -4,6 +4,7 @@
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    width: 110%;
 }
 
 .animal-header {
@@ -29,6 +30,8 @@
     background-color: white;
     border-bottom: 1px solid #e5e7eb;
     scrollbar-width: none;
+    justify-content: center;
+    align-items: center;
     /* Firefox */
 }
 
@@ -39,13 +42,15 @@
 
 .tab-button {
     display: flex;
+    margin-right: 5px;
     align-items: center;
-    padding: 1rem 1.25rem;
+    padding: 1rem 1rem;
     color: #6b7280;
     font-weight: 500;
     white-space: nowrap;
-    border-bottom: 2px solid transparent;
+    border-bottom: 2px 1px solid;
     transition: all 0.2s ease;
+    border-radius: 12px;
 }
 
 .tab-button:hover {
@@ -55,7 +60,6 @@
 
 .tab-button.active {
     color: #4a8c6f;
-    border-bottom-color: #4a8c6f;
 }
 
 .tab-icon {
@@ -66,6 +70,7 @@
 
 .tab-content {
     padding: 1.5rem;
+    border-radius: 12px;
 }
 
 /* Responsive design */

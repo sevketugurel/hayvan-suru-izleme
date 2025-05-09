@@ -783,4 +783,4 @@ export const animalDetailMocks = {
     }
 };
 
-export default animalDetailMocks; 
+export default animalDetailMocks;

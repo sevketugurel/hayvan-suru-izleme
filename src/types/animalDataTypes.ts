@@ -3,19 +3,12 @@
 // Genel hayvan bilgileri için tipler
 export interface AnimalGeneralInfoData {
     id: string;
-    tagNumber: string;
     name: string;
     species: string;
     breed: string;
-    age: number;
     gender: 'erkek' | 'dişi';
     weight: number;
     birthDate: string;
-    acquisition: {
-        date: string;
-        source: string;
-        price?: number;
-    };
 }
 
 // Sağlık verileri için tipler

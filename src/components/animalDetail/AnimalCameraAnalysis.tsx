@@ -508,4 +508,4 @@ const AnimalCameraAnalysis: React.FC<AnimalCameraAnalysisProps> = ({
     );
 };
 
-export default AnimalCameraAnalysis; 
+export default AnimalCameraAnalysis;

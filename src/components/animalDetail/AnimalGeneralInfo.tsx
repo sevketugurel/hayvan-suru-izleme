@@ -3,32 +3,25 @@ import './styles/AnimalGeneralInfo.css';
 
 interface AnimalGeneralInfoProps {
     id: string;
-    tagNumber: string;
     name: string;
     species: string;
     breed: string;
-    age: number;
     gender: string;
     weight: number;
     birthDate: string;
-    acquisition: string;
 }
 
 const AnimalGeneralInfo: React.FC<AnimalGeneralInfoProps> = ({
     id,
-    tagNumber,
     name,
     species,
     breed,
-    age,
     gender,
     weight,
-    birthDate,
-    acquisition
+    birthDate
 }) => {
     return (
         <div className="general-info-container">
-           
 
             <div className="animal-avatar">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -37,14 +30,9 @@ const AnimalGeneralInfo: React.FC<AnimalGeneralInfoProps> = ({
             </div>
 
             <div className="info-grid">
-                <div className="info-item info-highlight">
-                    <p className="info-label">Kimlik</p>
-                    <p className="info-value info-id">{id}</p>
-                </div>
-
                 <div className="info-item">
                     <p className="info-label">Küpe Numarası</p>
-                    <p className="info-value">{tagNumber}</p>
+                    <p className="info-value">{id}</p>
                 </div>
 
                 <div className="info-item">
@@ -63,11 +51,6 @@ const AnimalGeneralInfo: React.FC<AnimalGeneralInfoProps> = ({
                 </div>
 
                 <div className="info-item">
-                    <p className="info-label">Yaş</p>
-                    <p className="info-value">{age} yıl</p>
-                </div>
-
-                <div className="info-item">
                     <p className="info-label">Cinsiyet</p>
                     <p className="info-value">{gender}</p>
                 </div>
@@ -80,11 +63,6 @@ const AnimalGeneralInfo: React.FC<AnimalGeneralInfoProps> = ({
                 <div className="info-item">
                     <p className="info-label">Doğum Tarihi</p>
                     <p className="info-value">{birthDate}</p>
-                </div>
-
-                <div className="info-item">
-                    <p className="info-label">Edinim</p>
-                    <p className="info-value">{acquisition}</p>
                 </div>
             </div>
         </div>

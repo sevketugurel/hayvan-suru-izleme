@@ -6,6 +6,7 @@ import AnimalReproduction from './AnimalReproduction';
 import AnimalLocationSocial from './AnimalLocationSocial';
 import AnimalRiskEnvironment from './AnimalRiskEnvironment';
 import AnimalTreatments from './AnimalTreatments';
+import AnimalCameraAnalysis from './AnimalCameraAnalysis';
 import animalDetailMocks from '../../mocks/animalDetailMocks';
 import './styles/AnimalDetailTabs.css';
 import type {
@@ -94,14 +95,26 @@ const AnimalDetailTabs: React.FC<AnimalDetailTabsProps> = ({ animalId, animalDat
             icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
             </svg>
+        },
+        {
+            id: 'camera',
+            label: 'Kamera ve İleri Analiz',
+            icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
+            </svg>
         }
     ];
 
     return (
         <div className="animal-detail-container">
             <div className="animal-header">
-                <h1 className="animal-name">{animalData.name} ({animalData.tagNumber})</h1>
-                <p className="animal-subtitle">{animalData.species} • {animalData.breed}</p>
+                <div className="animal-header-left">
+                    <h1 className="animal-name">Sarıkız (TR123456789)</h1>
+                </div>
+                <div className="animal-header-right">
+                    İnek • Holstein<br />
+                    Dişi • {animalData.age} yaş • {animalData.weight} kg
+                </div>
             </div>
 
             <div className="tabs-container">
@@ -121,15 +134,12 @@ const AnimalDetailTabs: React.FC<AnimalDetailTabsProps> = ({ animalId, animalDat
                 {activeTab === 'general' && (
                     <AnimalGeneralInfo
                         id={animalData.id}
-                        tagNumber={animalData.tagNumber}
                         name={animalData.name}
                         species={animalData.species}
                         breed={animalData.breed}
-                        age={animalData.age}
                         gender={animalData.gender}
                         weight={animalData.weight}
                         birthDate={animalData.birthDate}
-                        acquisition={animalData.acquisition}
                     />
                 )}
 
@@ -271,6 +281,72 @@ const AnimalDetailTabs: React.FC<AnimalDetailTabsProps> = ({ animalId, animalDat
                                 level: 'low' as "low" | "medium" | "high",
                                 recentSightings: [],
                                 vulnerabilityScore: 15
+                            }
+                        }}
+                    />
+                )}
+
+                {activeTab === 'camera' && (
+                    <AnimalCameraAnalysis
+                        feedingDuration={{
+                            status: "Veri Bekleniyor",
+                            estimatedDuration: "0 saat/gün",
+                            reliability: 0,
+                            lastUpdated: new Date().toISOString(),
+                            trend: "stable" as "stable" | "increasing" | "decreasing",
+                            history: [],
+                            note: "Veri henüz yüklenmedi."
+                        }}
+                        maternalBehavior={{
+                            status: "Veri Bekleniyor",
+                            careScore: 0,
+                            reliability: 0,
+                            lastUpdated: new Date().toISOString(),
+                            observations: [],
+                            note: "Veri henüz yüklenmedi."
+                        }}
+                        birthDetection={{
+                            status: "Veri Bekleniyor",
+                            pregnancyStatus: "Bilinmiyor",
+                            estimatedBirthDate: new Date().toISOString(),
+                            remainingDays: 0,
+                            warningLevel: "low" as "low" | "medium" | "high",
+                            birthSigns: [],
+                            previousBirthData: {
+                                date: new Date().toISOString(),
+                                duration: 0,
+                                complications: [],
+                                outcome: "Bilinmiyor"
+                            },
+                            preparationStatus: {
+                                nestingBehavior: false,
+                                restlessness: false,
+                                decreasedAppetite: false,
+                                isolationSeeking: false
+                            },
+                            note: "Veri henüz yüklenmedi."
+                        }}
+                        socialAnalysis={mockData.cameraAnalysis?.socialAnalysis || {
+                            status: "Veri Bekleniyor",
+                            reliability: 0,
+                            lastUpdated: new Date().toISOString(),
+                            hierarchyPosition: "Bilinmiyor",
+                            groupBelonging: "Bilinmiyor",
+                            socialInteractions: {
+                                friendly: 0,
+                                neutral: 0,
+                                aggressive: 0
+                            },
+                            detailedAnalysis: [],
+                            behaviouralPatterns: [],
+                            note: "Veri henüz yüklenmedi."
+                        }}
+                        cameraAvailability={mockData.cameraAnalysis?.cameraAvailability || {
+                            feedingArea: {
+                                status: "Offline",
+                                lastCheck: new Date().toISOString(),
+                                resolution: "Bilinmiyor",
+                                coverage: "Bilinmiyor"
                             }
                         }}
                     />

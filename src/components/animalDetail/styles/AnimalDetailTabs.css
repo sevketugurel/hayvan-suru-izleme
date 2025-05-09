@@ -4,7 +4,10 @@
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    width: 115%;
+    width: 110%;
+    margin-left: -40px;
+
+  
 }
 
 .animal-header {
@@ -14,17 +17,20 @@
     border-radius: 16px 16px 0 0;
     box-shadow: 0 4px 16px rgba(33, 150, 243, 0.10);
     margin-bottom: 1rem;
+    
 }
 
 .animal-name {
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 0.25rem;
+    
 }
 
 .animal-subtitle {
     font-size: 1rem;
     opacity: 0.9;
+    
 }
 
 .tabs-container {
@@ -57,6 +63,7 @@
     border-radius: 16px;
     box-shadow: none;
     position: relative;
+    
 }
 
 .tab-button:hover {
@@ -87,6 +94,7 @@
     box-shadow: 0 6px 24px rgba(33, 150, 243, 0.10);
     margin-bottom: 2rem;
     min-height: 300px;
+    
 }
 
 /* Responsive design */

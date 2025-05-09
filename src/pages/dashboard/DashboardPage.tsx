@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import useDashboard from '../../hooks/useDashboard';
+import useDashboardReports from '../../hooks/useDashboardReports';
 import { MetricsGrid } from '../../components/dashboard';
 import { 
   AlertsPanel, 
@@ -7,17 +8,22 @@ import {
   LocationMapPanel,
   WeatherPanel,
   ActivityTimelinePanel,
-  FeedConsumptionPanel
+  FeedConsumptionPanel,
+  ReportsSummaryPanel
 } from '../../components/dashboard/panels';
 import './DashboardPage.css';
 
 // Tab tipleri
-type TabType = 'overview' | 'health' | 'feeding' | 'location';
+type TabType = 'overview' | 'health' | 'feeding' | 'location' | 'reports';
 
 const DashboardPage: React.FC = () => {
-  const { loading, statistics, alerts, error, refreshData } = useDashboard();
+  const { loading: loadingDashboard, statistics, alerts, error: dashboardError, refreshData } = useDashboard();
+  const { loading: loadingReports, recentReports, error: reportsError, refreshReports } = useDashboardReports();
   const [activeTab, setActiveTab] = useState<TabType>('overview');
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
+  
+  const loading = loadingDashboard || loadingReports;
+  const error = dashboardError || reportsError;
   
   if (loading || !statistics) {
     return (
@@ -32,7 +38,10 @@ const DashboardPage: React.FC = () => {
       <div className="error-container">
         <h2>Bir hata oluştu</h2>
         <p>{error.message}</p>
-        <button onClick={refreshData} className="retry-button">
+        <button onClick={() => {
+          refreshData();
+          refreshReports();
+        }} className="retry-button">
           Tekrar Dene
         </button>
       </div>
@@ -42,6 +51,7 @@ const DashboardPage: React.FC = () => {
   // Veri güncelleme işlevi
   const handleRefreshData = () => {
     refreshData();
+    refreshReports();
     setLastUpdate(new Date());
   };
 
@@ -52,6 +62,7 @@ const DashboardPage: React.FC = () => {
     const inHeatCount = statistics.inHeatAnimals;
     const criticalAlertCount = alerts.filter(a => a.type === 'critical').length;
     const totalAlertCount = alerts.length;
+    const newReportsCount = recentReports.filter(r => r.status === 'new').length;
     
     return (
       <>
@@ -65,6 +76,8 @@ const DashboardPage: React.FC = () => {
           totalAlertCount > 0 ? 
           <span> Toplamda {totalAlertCount} uyarı bulunuyor.</span> : 
           <span className="summary-good"> Hiçbir kritik uyarı bulunmuyor.</span>}
+        {newReportsCount > 0 && 
+          <span className="summary-info"> İncelenmemiş <strong>{newReportsCount}</strong> yeni rapor bulunuyor.</span>}
       </>
     );
   };
@@ -117,6 +130,23 @@ const DashboardPage: React.FC = () => {
             </div>
           </>
         );
+      case 'reports':
+        return (
+          <>
+            {/* Raporlar sekmesi için içerik */}
+            <div className="panels-grid">
+              <div className="two-thirds-panel">
+                <ReportsSummaryPanel recentReports={recentReports} />
+              </div>
+              <div>
+                <ActivityTimelinePanel />
+              </div>
+              <div className="full-width-panel">
+                {/* Buraya gelecekte raporlarla ilgili grafikler eklenebilir */}
+              </div>
+            </div>
+          </>
+        );
       default:
         return (
           <>
@@ -130,6 +160,7 @@ const DashboardPage: React.FC = () => {
               <LocationMapPanel />
               <FeedConsumptionPanel />
               <ActivityTimelinePanel />
+              <ReportsSummaryPanel recentReports={recentReports} />
             </div>
           </>
         );
@@ -142,10 +173,6 @@ const DashboardPage: React.FC = () => {
 
   return (
     <div className="dashboard-container">
-      <div className="page-header">
-        <h1>Kontrol Paneli</h1>
-      </div>
-      
       {/* Özet Bölümü - Yukarı taşındı */}
       <div className="dashboard-summary">
         <div className="summary-content">
@@ -198,6 +225,14 @@ const DashboardPage: React.FC = () => {
           Konum Takibi
           {alerts.filter(a => a.type === 'critical').length > 0 && 
             <span className="notification-badge">{alerts.filter(a => a.type === 'critical').length}</span>}
+        </div>
+        <div 
+          className={`dashboard-tab ${activeTab === 'reports' ? 'active' : ''}`}
+          onClick={() => setActiveTab('reports')}
+        >
+          Raporlar
+          {recentReports.filter(r => r.status === 'new').length > 0 && 
+            <span className="notification-badge">{recentReports.filter(r => r.status === 'new').length}</span>}
         </div>
       </div>
       

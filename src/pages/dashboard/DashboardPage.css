@@ -1162,4 +1162,30 @@
 /* Add a subtle border to panels */
 .panel {
   border: 1px solid rgba(229, 231, 235, 0.5);
+}
+
+/* Raporlar ile ilgili stil tanımlamaları */
+.summary-info {
+  color: #2196f3;
+  font-weight: 500;
+}
+
+/* Rapor sekmesi için özel panel stilleri */
+.dashboard-tab:nth-child(5) {
+  border-bottom-color: #2196f3;
+}
+
+.dashboard-tab:nth-child(5).active {
+  color: #2196f3;
+  border-bottom-color: #2196f3;
+}
+
+/* Report card styles for dashboard */
+.report-item {
+  transition: all 0.2s ease;
+}
+
+.report-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 } 

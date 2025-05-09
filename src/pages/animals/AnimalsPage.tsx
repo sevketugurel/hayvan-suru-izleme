@@ -1,85 +1,66 @@
-import React, { useEffect, useState } from 'react';
-import { useAnimalStore } from '../../store';
-import AnimalCardGrid from './components/AnimalCardGrid';
-import AnimalFilters from './components/AnimalFilters';
-import { Link } from 'react-router-dom';
-import './AnimalsPage.css';
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useAnimalStore } from "../../store";
+import { formatDateTime } from "../../utils";
 
 const AnimalsPage: React.FC = () => {
   const { animals, loading, error, fetchAnimals } = useAnimalStore();
-  const [filteredAnimals, setFilteredAnimals] = useState(animals);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterSpecies, setFilterSpecies] = useState<string>('');
-  const [filterStatus, setFilterStatus] = useState<string>('');
 
   useEffect(() => {
     fetchAnimals();
   }, [fetchAnimals]);
 
-  useEffect(() => {
-    let result = animals;
+  if (loading) {
+    return <div className="loading">Hayvanlar yükleniyor...</div>;
+  }
 
-    // Apply search term filter
-    if (searchTerm) {
-      result = result.filter(animal => 
-        animal.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        animal.tagNumber.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    // Apply species filter
-    if (filterSpecies) {
-      result = result.filter(animal => animal.species === filterSpecies);
-    }
-
-    // Apply status filter
-    if (filterStatus) {
-      result = result.filter(animal => animal.status === filterStatus);
-    }
-
-    setFilteredAnimals(result);
-  }, [animals, searchTerm, filterSpecies, filterStatus]);
-
-  const handleSearch = (term: string) => {
-    setSearchTerm(term);
-  };
-
-  const handleFilterChange = (key: string, value: string) => {
-    if (key === 'species') {
-      setFilterSpecies(value);
-    } else if (key === 'status') {
-      setFilterStatus(value);
-    }
-  };
-
-  const handleResetFilters = () => {
-    setSearchTerm('');
-    setFilterSpecies('');
-    setFilterStatus('');
-  };
-
-  if (loading) return <div className="loading">Yükleniyor...</div>;
-  if (error) return <div className="error">{error}</div>;
+  if (error) {
+    return <div className="error">Hata: {error}</div>;
+  }
 
   return (
     <div className="animals-page">
-      <div className="animals-header">
-        <h1>Hayvan Listesi</h1>
-        <Link to="/animals/new" className="add-animal-button">
-          Yeni Hayvan Ekle
-        </Link>
+      <h1>Hayvanlar</h1>
+      
+      <div className="animals-filters">
+        <input type="text" placeholder="Hayvan ara..." />
+        <select>
+          <option value="all">Tüm Durumlar</option>
+          <option value="active">Aktif</option>
+          <option value="warning">Uyarı</option>
+          <option value="inactive">İnaktif</option>
+        </select>
       </div>
-
-      <AnimalFilters 
-        searchTerm={searchTerm}
-        filterSpecies={filterSpecies}
-        filterStatus={filterStatus}
-        onSearch={handleSearch}
-        onFilterChange={handleFilterChange}
-        onResetFilters={handleResetFilters}
-      />
-
-      <AnimalCardGrid animals={filteredAnimals} />
+      
+      <div className="animals-list">
+        {animals.length === 0 ? (
+          <p>Hayvan bulunamadı.</p>
+        ) : (
+          animals.map(animal => (
+            <div 
+              key={animal.id} 
+              className={`animal-card ${animal.status}`}
+            >
+              <div className="animal-header">
+                <h3>{animal.name} - #{animal.id}</h3>
+                <span className={`status-indicator ${animal.status}`}></span>
+              </div>
+              <div className="animal-info">
+                <p><strong>Tür:</strong> {animal.species}</p>
+                <p><strong>Yaş:</strong> {animal.age}</p>
+                <p><strong>Konum:</strong> {animal.location}</p>
+                <p><strong>Son Görülme:</strong> {formatDateTime(animal.lastSeen)}</p>
+                <p><strong>Pil:</strong> {animal.batteryLevel}%</p>
+              </div>
+              <div className="animal-actions">
+                <Link to={`/animals/${animal.id}`} className="details-button">
+                  Detaylar
+                </Link>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 };

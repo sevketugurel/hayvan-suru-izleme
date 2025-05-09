@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useAnimalStore, useAlertStore } from '../../store';
 
 const DashboardPage: React.FC = () => {
@@ -19,7 +20,7 @@ const DashboardPage: React.FC = () => {
   return (
     <div className="dashboard-page">
       <h1>Dashboard</h1>
-      
+
       <div className="stats-container">
         <div className="stat-card">
           <h3>Aktif Hayvanlar</h3>
@@ -46,7 +47,9 @@ const DashboardPage: React.FC = () => {
             <li key={animal.id} className="activity-item">
               <span className="activity-time">{new Date(animal.lastSeen).toLocaleTimeString()}</span>
               <span className="activity-text">
-                <strong>{animal.name}</strong> - {animal.location} bölgesinde görüldü
+                <Link to={`/animals/${animal.id}`} className="animal-link">
+                  <strong>{animal.name}</strong>
+                </Link> - {animal.location} bölgesinde görüldü
               </span>
             </li>
           ))}
@@ -54,14 +57,32 @@ const DashboardPage: React.FC = () => {
             <li key={alert.id} className="activity-item alert">
               <span className="activity-time">{new Date(alert.timestamp).toLocaleTimeString()}</span>
               <span className="activity-text">
-                <strong>{alert.animalName}</strong> - {alert.message}
+                <Link to={`/animals/${alert.animalId}`} className="animal-link">
+                  <strong>{alert.animalName}</strong>
+                </Link> - {alert.message}
               </span>
             </li>
           ))}
         </ul>
       </div>
+
+      <div className="recent-animals">
+        <h2>Son Eklenen Hayvanlar</h2>
+        <div className="animal-cards">
+          {animals.slice(0, 4).map(animal => (
+            <div key={animal.id} className="animal-card">
+              <h3>{animal.name}</h3>
+              <p>ID: {animal.id}</p>
+              <p>Durum: {animal.status === 'active' ? 'Aktif' : animal.status === 'warning' ? 'Uyarı' : 'İnaktif'}</p>
+              <Link to={`/animals/${animal.id}`} className="view-details-btn">
+                Detayları Gör
+              </Link>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
 
-export default DashboardPage; 
+export default DashboardPage;

@@ -1,0 +1,173 @@
+.animal-table-container {
+  overflow-x: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+.animal-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.animal-table th,
+.animal-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.animal-table th {
+  background-color: #f5f5f5;
+  color: #555;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.animal-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.animal-row {
+  transition: background-color 0.2s;
+}
+
+.animal-row.inactive {
+  background-color: #f8f8f8;
+  color: #888;
+}
+
+.animal-row.warning {
+  background-color: #fff8e1;
+}
+
+.status-indicator {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.status-indicator.active {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-indicator.warning {
+  background-color: #fff8e1;
+  color: #f57f17;
+}
+
+.status-indicator.inactive {
+  background-color: #f5f5f5;
+  color: #757575;
+}
+
+.heart-rate, .stress-level, .temperature, .herd-distance {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.heart-rate.normal, .stress-level.normal, .temperature.normal, .herd-distance.normal {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.heart-rate.high, .stress-level.high, .temperature.high, .herd-distance.high {
+  background-color: #fbe9e7;
+  color: #c62828;
+}
+
+.heart-rate.low, .temperature.low {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
+
+.stress-level.medium, .herd-distance.medium {
+  background-color: #fff8e1;
+  color: #f57f17;
+}
+
+.stress-level {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.indicator-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.stress-level.normal .indicator-dot {
+  background-color: #2e7d32;
+}
+
+.stress-level.medium .indicator-dot {
+  background-color: #f57f17;
+}
+
+.stress-level.high .indicator-dot {
+  background-color: #c62828;
+}
+
+.heat-cycle-cell {
+  text-align: center;
+}
+
+.heat-cycle-icon {
+  font-size: 20px;
+  cursor: help;
+}
+
+.heat-cycle-icon.inactive {
+  color: #bdbdbd;
+}
+
+.heat-cycle-icon.active {
+  color: #ff9800;
+}
+
+.heat-cycle-icon.peak {
+  color: #f44336;
+}
+
+.view-details-btn {
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: #e0e0e0;
+  color: #424242;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 12px;
+  transition: background-color 0.3s;
+}
+
+.view-details-btn:hover {
+  background-color: #bdbdbd;
+}
+
+.no-animals {
+  padding: 30px;
+  text-align: center;
+  color: #757575;
+  font-size: 16px;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+}
+
+@media (max-width: 768px) {
+  .animal-table th,
+  .animal-table td {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+} 

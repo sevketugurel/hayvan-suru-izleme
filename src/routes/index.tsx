@@ -3,7 +3,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
 import DashboardPage from "../pages/dashboard/DashboardPage";
 import AnimalsPage from "../pages/animals/AnimalsPage";
-import NewAnimalPage from "../pages/animals/NewAnimalPage";
 import AnimalDetailPage from "../pages/animalDetail/AnimalDetailPage";
 import AlertsPage from "../pages/alerts/AlertsPage";
 import ReportsPage from "../pages/reports/ReportsPage";
@@ -21,10 +20,6 @@ const router = createBrowserRouter([
       {
         path: "animals",
         element: <AnimalsPage />
-      },
-      {
-        path: "animals/new",
-        element: <NewAnimalPage />
       },
       {
         path: "animals/:id",

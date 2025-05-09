@@ -824,3 +824,17 @@
         grid-template-columns: 1fr;
     }
 }
+
+.section-intro,
+.analysis-section,
+.result-card,
+.history-table-container,
+.social-info,
+.detailed-interactions,
+.behavior-patterns,
+.birth-info-card,
+.observations-container {
+    background: linear-gradient(135deg, #e0f7fa 0%, #f0f4f9 100%);
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(33, 150, 243, 0.10);
+}

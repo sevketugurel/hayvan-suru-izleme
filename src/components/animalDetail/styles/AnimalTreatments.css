@@ -5,11 +5,20 @@
     padding: 1rem;
 }
 
-.treatment-section {
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 1.25rem;
+.treatment-section,
+.active-treatment-card,
+.disease-card,
+.medication-card {
+    background: linear-gradient(135deg, #e0f7fa 0%, #f0f4f9 100%);
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(33, 150, 243, 0.10);
+}
+
+.active-treatment-card:hover,
+.disease-card:hover,
+.medication-card:hover {
+    box-shadow: 0 8px 32px rgba(33, 150, 243, 0.13);
+    background: linear-gradient(135deg, #f0f4f9 0%, #e0f7fa 100%);
 }
 
 .section-header {

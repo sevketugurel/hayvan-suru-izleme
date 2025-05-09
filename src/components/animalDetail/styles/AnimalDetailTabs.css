@@ -4,13 +4,16 @@
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    width: 110%;
+    width: 115%;
 }
 
 .animal-header {
     padding: 1.5rem 2rem;
-    background: linear-gradient(135deg, #4a8c6f 0%, #315e48 100%);
+    background: linear-gradient(135deg, #4caf50 0%, #2196f3 100%);
     color: white;
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 4px 16px rgba(33, 150, 243, 0.10);
+    margin-bottom: 1rem;
 }
 
 .animal-name {
@@ -27,12 +30,12 @@
 .tabs-container {
     display: flex;
     overflow-x: auto;
-    background-color: white;
-    border-bottom: 1px solid #e5e7eb;
+    background: transparent;
+    border-bottom: none;
     scrollbar-width: none;
     justify-content: center;
     align-items: center;
-    /* Firefox */
+    gap: 8px;
 }
 
 .tabs-container::-webkit-scrollbar {
@@ -48,18 +51,27 @@
     color: #6b7280;
     font-weight: 500;
     white-space: nowrap;
-    border-bottom: 2px 1px solid;
-    transition: all 0.2s ease;
-    border-radius: 12px;
+    border: none;
+    background: transparent;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 16px;
+    box-shadow: none;
+    position: relative;
 }
 
 .tab-button:hover {
-    color: #4a8c6f;
-    background-color: #f9fafb;
+    color: #fff;
+    background: linear-gradient(90deg, #4caf50 0%, #2196f3 100%);
+    transform: scale(1.07);
+    box-shadow: 0 4px 16px rgba(76, 175, 80, 0.10);
 }
 
 .tab-button.active {
-    color: #4a8c6f;
+    color: #fff;
+    background: linear-gradient(90deg, #4caf50 0%, #2196f3 100%);
+    box-shadow: 0 6px 24px rgba(33, 150, 243, 0.13);
+    font-weight: 700;
+    transform: scale(1.10);
 }
 
 .tab-icon {
@@ -69,8 +81,12 @@
 }
 
 .tab-content {
-    padding: 1.5rem;
-    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    border-radius: 0 0 16px 16px;
+    background: linear-gradient(135deg, #e0f7fa 0%, #f0f4f9 100%);
+    box-shadow: 0 6px 24px rgba(33, 150, 243, 0.10);
+    margin-bottom: 2rem;
+    min-height: 300px;
 }
 
 /* Responsive design */

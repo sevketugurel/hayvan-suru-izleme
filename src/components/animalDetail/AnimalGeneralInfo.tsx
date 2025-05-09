@@ -52,12 +52,12 @@ const AnimalGeneralInfo: React.FC<AnimalGeneralInfoProps> = ({
 
                 <div className="info-item">
                     <p className="info-label">Cinsiyet</p>
-                    <p className="info-value">{gender}</p>
+                    <p className="info-value">{gender} <span className="info-badge">{gender === 'Dişi' ? '♀' : '♂'}</span></p>
                 </div>
 
                 <div className="info-item">
                     <p className="info-label">Ağırlık</p>
-                    <p className="info-value">{weight} kg</p>
+                    <p className="info-value">{weight} kg <span className="info-badge">{weight >= 500 ? 'Sağlıklı' : 'Dikkat'}</span></p>
                 </div>
 
                 <div className="info-item">

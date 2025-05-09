@@ -8,9 +8,9 @@
 
 .location-section,
 .social-section {
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #e0f7fa 0%, #f0f4f9 100%);
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(33, 150, 243, 0.10);
     padding: 1.25rem;
 }
 
@@ -230,6 +230,11 @@
     border-radius: 8px;
     padding: 1rem;
     background-color: #f9fafb;
+}
+
+.friend-card:hover {
+    box-shadow: 0 8px 32px rgba(33, 150, 243, 0.13);
+    background: linear-gradient(135deg, #f0f4f9 0%, #e0f7fa 100%);
 }
 
 .friend-info {

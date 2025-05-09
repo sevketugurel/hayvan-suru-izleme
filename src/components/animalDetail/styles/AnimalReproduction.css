@@ -5,11 +5,16 @@
     gap: 1.5rem;
 }
 
+.reproduction-section,
+.birth-info-card,
+.maternal-metric {
+    background: linear-gradient(135deg, #e0f7fa 0%, #f0f4f9 100%);
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(33, 150, 243, 0.10);
+}
+
 .reproduction-section {
-    background-color: white;
-    border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .reproduction-header {
@@ -128,10 +133,12 @@
 }
 
 .birth-info-card {
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
     padding: 1rem;
-    background-color: #f9fafb;
+}
+
+.birth-info-card:hover {
+    box-shadow: 0 8px 32px rgba(33, 150, 243, 0.13);
+    background: linear-gradient(135deg, #f0f4f9 0%, #e0f7fa 100%);
 }
 
 .birth-info-label {
@@ -202,11 +209,12 @@
 }
 
 .maternal-metric {
-    display: inline-block;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
     padding: 1rem;
-    margin-bottom: 1rem;
+}
+
+.maternal-metric:hover {
+    box-shadow: 0 8px 32px rgba(33, 150, 243, 0.13);
+    background: linear-gradient(135deg, #f0f4f9 0%, #e0f7fa 100%);
 }
 
 .maternal-notes {

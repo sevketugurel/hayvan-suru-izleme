@@ -236,8 +236,10 @@ const DashboardPage: React.FC = () => {
         </div>
       </div>
       
-      {/* Seçilen sekmenin içeriği */}
-      {renderTabContent()}
+      {/* Sekme İçeriği */}
+      <div className="dashboard-content">
+        {renderTabContent()}
+      </div>
     </div>
   );
 };

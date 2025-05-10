@@ -1,0 +1,562 @@
+/* AnimalLocationSocial.css */
+.location-social-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1rem;
+}
+
+.location-section,
+.social-section {
+    background: linear-gradient(135deg, #e0f7fa 0%, #f0f4f9 100%);
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(33, 150, 243, 0.10);
+    padding: 1.25rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 0.5rem;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.section-title svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.5rem;
+}
+
+.location-title,
+.location-title svg {
+    color: #047857;
+}
+
+.social-title,
+.social-title svg {
+    color: #4f46e5;
+}
+
+/* Harita konteyneri için geliştirilmiş stiller */
+.map-container {
+    width: 100%;
+    height: 450px;
+    /* Haritayı biraz daha yüksek yaptık */
+    background-color: #f3f4f6;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 2px solid rgba(4, 120, 87, 0.2);
+}
+
+/* Harita üzerindeki bilgi alanı */
+.map-info {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+/* Harita talimatları alanı */
+.map-instructions {
+    background-color: #effdf5;
+    border: 1px solid #d1fae5;
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.default-instructions {
+    color: #4b5563;
+    margin: 0;
+}
+
+/* Harita üzerindeki koordinat bilgilerini daha iyi görünecek şekilde iyileştiriyoruz */
+.coords-display {
+    background-color: #fff;
+    padding: 0.75rem 1rem;
+    font-family: monospace;
+    font-size: 0.875rem;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid rgba(4, 120, 87, 0.2);
+    border-radius: 8px;
+}
+
+.current-location-info {
+    width: 100%;
+}
+
+.current-location-info p {
+    margin: 0.25rem 0;
+    font-size: 0.875rem;
+    color: #1f2937;
+    font-weight: 500;
+}
+
+.current-location-info strong {
+    color: #047857;
+}
+
+.path-history-title {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #4b5563;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.path-history-title svg {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+    color: #047857;
+}
+
+/* GPS kayıt listesi için scrollbar stillerini iyileştiriyoruz */
+.path-history-container {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: #f9fafb;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Kaydırma çubuğu stilleri */
+.path-history-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.path-history-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 8px;
+}
+
+.path-history-container::-webkit-scrollbar-thumb {
+    background: #d1e7dd;
+    border-radius: 8px;
+}
+
+.path-history-container::-webkit-scrollbar-thumb:hover {
+    background: #047857;
+}
+
+/* Her bir GPS konumu için zenginleştirilmiş stiller */
+.path-history-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    transition: background-color 0.2s;
+}
+
+.path-history-item:hover {
+    background-color: #ecfdf5;
+}
+
+.path-history-item:last-child {
+    border-bottom: none;
+}
+
+.path-time {
+    font-weight: 500;
+    color: #4b5563;
+}
+
+.path-coords {
+    font-family: monospace;
+    color: #047857;
+    font-weight: 600;
+}
+
+/* Popuplar için gelişmiş stiller */
+.custom-popup .leaflet-popup-content-wrapper {
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    padding: 0;
+}
+
+.custom-popup .leaflet-popup-content {
+    margin: 0;
+    padding: 0;
+    width: 250px !important;
+}
+
+.movement-popup,
+.current-position-popup {
+    padding: 15px;
+}
+
+.movement-popup h4,
+.current-position-popup h4 {
+    margin: 0 0 10px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e5e7eb;
+    color: #1f2937;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.movement-popup {
+    background-color: #fff1f0;
+    border-left: 4px solid #ff6b6b;
+}
+
+.current-position-popup {
+    background-color: #ecfdf5;
+    border-left: 4px solid #10b981;
+}
+
+.movement-popup p,
+.current-position-popup p {
+    margin: 5px 0;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* Hayvan yol çizgisi için stil */
+.leaflet-interactive {
+    transition: stroke-opacity 0.3s ease;
+}
+
+/* Güvenli bölge için hover efekti */
+.safe-zone-circle {
+    transition: all 0.3s ease;
+}
+
+.safe-zone-circle:hover {
+    fill-opacity: 0.3 !important;
+    stroke-width: 3px !important;
+}
+
+/* Harita kontrol butonları için stil iyileştirmeleri */
+.leaflet-bar a {
+    background-color: white;
+    border: 1px solid #d1d5db;
+    color: #4b5563;
+}
+
+.leaflet-bar a:hover {
+    background-color: #ecfdf5;
+    color: #047857;
+}
+
+.deviation-status {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: #f9fafb;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.status-icon {
+    display: inline-flex;
+    margin-right: 0.5rem;
+}
+
+.status-normal {
+    color: #047857;
+}
+
+.status-warning {
+    color: #b91c1c;
+}
+
+.safe-zones-info {
+    margin-top: 0.75rem;
+}
+
+.safe-zones-info p {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.875rem;
+}
+
+.safe-zones-list {
+    list-style: disc;
+    margin: 0;
+    padding-left: 1.5rem;
+    font-size: 0.875rem;
+    color: #4b5563;
+}
+
+.safe-zones-list li {
+    margin-bottom: 0.25rem;
+}
+
+.alerts-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    margin-top: 1rem;
+}
+
+.alerts-table th {
+    text-align: left;
+    padding: 0.5rem;
+    background-color: #f3f4f6;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.alerts-table td {
+    padding: 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.alert-severity {
+    display: inline-block;
+    padding: 0.125rem 0.375rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.severity-high {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+.severity-medium {
+    background-color: #fef3c7;
+    color: #b45309;
+}
+
+.severity-low {
+    background-color: #d1fae5;
+    color: #047857;
+}
+
+.social-behavior-summary {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: #f9fafb;
+}
+
+.summary-text {
+    font-size: 0.9375rem;
+    color: #1f2937;
+    line-height: 1.5;
+    margin: 0 0 1rem 0;
+}
+
+.social-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.social-metric-card {
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 0.75rem;
+}
+
+.metric-label {
+    font-size: 0.875rem;
+    color: #4b5563;
+    margin: 0 0 0.5rem 0;
+}
+
+.metric-value-container {
+    height: 0.5rem;
+    background-color: #e5e7eb;
+    border-radius: 9999px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.metric-progress-fill {
+    height: 100%;
+    border-radius: 9999px;
+}
+
+.high-score {
+    background-color: #10b981;
+}
+
+.medium-score {
+    background-color: #f59e0b;
+}
+
+.low-score {
+    background-color: #ef4444;
+}
+
+.metric-value {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+}
+
+.rank-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #4f46e5;
+}
+
+.interactions-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    margin-top: 1rem;
+}
+
+.interactions-table th {
+    text-align: left;
+    padding: 0.5rem;
+    background-color: #f3f4f6;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.interactions-table td {
+    padding: 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.abnormal-behaviors {
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid #fee2e2;
+    border-radius: 8px;
+    background-color: #fef2f2;
+}
+
+.abnormal-behaviors-title {
+    color: #b91c1c;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+}
+
+.abnormal-behaviors-list {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.abnormal-behavior-item {
+    color: #7f1d1d;
+    margin-bottom: 0.25rem;
+}
+
+.friends-section {
+    margin-top: 0.5rem;
+}
+
+.friends-summary {
+    font-size: 0.9375rem;
+    color: #4b5563;
+    font-style: italic;
+    margin: 0 0 1rem 0;
+}
+
+.friends-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.friend-card {
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.friend-info {
+    margin-bottom: 0.75rem;
+}
+
+.friend-name {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #1f2937;
+    margin: 0 0 0.25rem 0;
+}
+
+.friend-id {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0 0 0.5rem 0;
+}
+
+.relationship-duration,
+.daily-interaction {
+    font-size: 0.875rem;
+    margin: 0.25rem 0;
+    color: #4b5563;
+}
+
+.proximity-container {
+    margin-top: 0.5rem;
+}
+
+.proximity-bar {
+    height: 0.5rem;
+    background-color: #e5e7eb;
+    border-radius: 9999px;
+    overflow: hidden;
+    margin-bottom: 0.25rem;
+}
+
+.proximity-fill {
+    height: 100%;
+    background-color: #4f46e5;
+    border-radius: 9999px;
+}
+
+.proximity-text {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #4f46e5;
+    margin: 0;
+    text-align: right;
+}
+
+.empty-message {
+    color: #6b7280;
+    font-style: italic;
+    text-align: center;
+    padding: 1rem;
+}
+
+/* Responsive stillemeler */
+@media (max-width: 768px) {
+    .social-metrics {
+        grid-template-columns: 1fr;
+    }
+
+    .friends-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .alerts-table,
+    .interactions-table {
+        display: block;
+        overflow-x: auto;
+    }
+}

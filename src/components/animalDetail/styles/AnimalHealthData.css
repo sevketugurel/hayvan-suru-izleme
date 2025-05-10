@@ -1,0 +1,237 @@
+/* AnimalHealthData.css */
+.health-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.vital-signs-row {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+}
+
+.vital-card,
+.medication-section {
+    background: linear-gradient(135deg, #e0f7fa 0%, #f0f4f9 100%);
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(33, 150, 243, 0.10);
+}
+
+.vital-card:hover {
+    box-shadow: 0 8px 32px rgba(33, 150, 243, 0.13);
+    background: linear-gradient(135deg, #f0f4f9 0%, #e0f7fa 100%);
+}
+
+.vital-header {
+    padding: 1rem;
+    border-bottom: 1px solid #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.vital-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+    display: flex;
+    align-items: center;
+}
+
+.vital-title svg {
+    margin-right: 0.5rem;
+    color: #4a8c6f;
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.vital-body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.vital-value-container {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 1rem;
+}
+
+.vital-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1;
+}
+
+.vital-unit {
+    margin-left: 0.5rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.3rem;
+}
+
+.pulse-value {
+    color: #ef4444;
+}
+
+.temperature-value {
+    color: #f97316;
+}
+
+.stress-value {
+    color: #4f46e5;
+}
+
+.vital-chart {
+    height: 150px;
+    background-color: #f9fafb;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+.chart-placeholder {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+    font-size: 0.875rem;
+}
+
+.medication-header {
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.medication-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #111827;
+    display: flex;
+    align-items: center;
+}
+
+.medication-title svg {
+    margin-right: 0.5rem;
+    color: #4a8c6f;
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.medications-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.medications-table th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    background-color: #f9fafb;
+    color: #6b7280;
+    font-weight: 500;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.medications-table th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.medications-table th:last-child {
+    border-top-right-radius: 8px;
+}
+
+.medications-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 0.875rem;
+    color: #374151;
+}
+
+.medications-table tr:last-child td {
+    border-bottom: none;
+}
+
+.medications-table tr:last-child td:first-child {
+    border-bottom-left-radius: 8px;
+}
+
+.medications-table tr:last-child td:last-child {
+    border-bottom-right-radius: 8px;
+}
+
+.effect-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.effect-positive {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.effect-negative {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+.effect-neutral {
+    background-color: #fef9c3;
+    color: #854d0e;
+}
+
+.no-medications {
+    text-align: center;
+    padding: 2rem;
+    color: #6b7280;
+    font-style: italic;
+}
+
+.history-link {
+    color: #4a8c6f;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.history-link svg {
+    margin-left: 0.25rem;
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Responsive design */
+@media (min-width: 640px) {
+    .vital-signs-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .vital-signs-row {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .vital-body {
+        padding: 1.5rem;
+    }
+
+    .vital-chart {
+        height: 180px;
+    }
+}

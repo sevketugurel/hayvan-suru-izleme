@@ -2,11 +2,11 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import { lazy } from "react";
+import { AnimalDetailPage } from "../pages/animalDetail";
 
 // Lazily load pages
 const Dashboard = lazy(() => import("../pages/dashboard"));
 const AnimalsPage = lazy(() => import("../pages/animals"));
-const AnimalDetailPage = lazy(() => import("../pages/animalDetail"));
 const AlertsPage = lazy(() => import("../pages/alerts"));
 const ReportsPage = lazy(() => import("../pages/reports"));
 const SettingsPage = lazy(() => import("../pages/settings"));

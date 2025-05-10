@@ -1,83 +1,82 @@
-import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useAnimalStore, useAlertStore } from '../../store';
+import React, { useEffect, useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { AnimalDetailTabs } from '../../components/animalDetail';
+import { getMockAnimalData } from '../../mocks/animalData';
+import { animals } from '../../mocks/animals';
 
 const AnimalDetailPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const { selectedAnimal, fetchAnimalById } = useAnimalStore();
-  const { filteredAlerts, fetchAlertsByAnimalId } = useAlertStore();
+    const { animalId } = useParams<{ animalId: string }>();
+    const [loading, setLoading] = useState(true);
+    const [notFound, setNotFound] = useState(false);
+    const [animalBasicInfo, setAnimalBasicInfo] = useState<any>(null);
+    const [animalData, setAnimalData] = useState<any>(null);
 
-  useEffect(() => {
-    if (id) {
-      fetchAnimalById(id);
-      fetchAlertsByAnimalId(id);
-    }
-  }, [id, fetchAnimalById, fetchAlertsByAnimalId]);
+    useEffect(() => {
+        // Simulate loading data
+        setLoading(true);
+        
+        // Find basic animal info from the animal list
+        const basicInfo = animals.find(animal => animal.id === animalId);
+        setAnimalBasicInfo(basicInfo || null);
+        
+        // Get detailed data
+        const detailedData = getMockAnimalData(animalId || '');
+        setAnimalData(detailedData || null);
+        
+        if (!basicInfo || !detailedData) {
+            setNotFound(true);
+        }
+        
+        setLoading(false);
+    }, [animalId]);
 
-  if (!selectedAnimal) {
-    return <div className="loading">Hayvan bilgileri yükleniyor...</div>;
-  }
-
-  return (
-    <div className="animal-detail-page max-w-7xl mx-auto">
-      <div className="animal-header">
-        <h1>{selectedAnimal.name} (#{selectedAnimal.id})</h1>
-        <span className={`status-badge ${selectedAnimal.status}`}>
-          {selectedAnimal.status === 'active' && 'Aktif'}
-          {selectedAnimal.status === 'warning' && 'Uyarı'}
-          {selectedAnimal.status === 'inactive' && 'İnaktif'}
-        </span>
-      </div>
-
-      <div className="detail-grid">
-        <div className="detail-card">
-          <h2>Genel Bilgiler</h2>
-          <div className="detail-item">
-            <span className="label">Tür:</span>
-            <span className="value">{selectedAnimal.species}</span>
-          </div>
-          <div className="detail-item">
-            <span className="label">Yaş:</span>
-            <span className="value">{selectedAnimal.age}</span>
-          </div>
-          <div className="detail-item">
-            <span className="label">Son Görülme:</span>
-            <span className="value">{new Date(selectedAnimal.lastSeen).toLocaleString()}</span>
-          </div>
-          <div className="detail-item">
-            <span className="label">Pil Seviyesi:</span>
-            <span className="value">{selectedAnimal.batteryLevel}%</span>
-          </div>
-        </div>
-
-        <div className="detail-card">
-          <h2>Konum Bilgisi</h2>
-          <div className="location-info">
-            <p className="current-location">Şu anda: {selectedAnimal.location}</p>
-            <div className="map-placeholder">
-              <p>Harita burada gösterilecek</p>
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <div className="text-center">
+                    <h1 className="text-2xl font-bold text-gray-800 mb-2">Yükleniyor...</h1>
+                    <p className="text-gray-600">Hayvan verileri getiriliyor.</p>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
+        );
+    }
 
-      <div className="recent-alerts">
-        <h2>Son Uyarılar</h2>
-        {filteredAlerts.length === 0 ? (
-          <p>Bu hayvan için uyarı bulunmamaktadır.</p>
-        ) : (
-          <div className="alert-list">
-            {filteredAlerts.map(alert => (
-              <div key={alert.id} className={`alert-item ${alert.severity}`}>
-                <span className="alert-time">{new Date(alert.timestamp).toLocaleString()}</span>
-                <span className="alert-message">{alert.message}</span>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+    if (notFound || !animalData) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <div className="text-center">
+                    <h1 className="text-2xl font-bold text-gray-800 mb-2">Hayvan Bulunamadı</h1>
+                    <p className="text-gray-600">
+                        ID: {animalId} ile bir hayvan kaydı bulunamadı. Lütfen doğru bir hayvan ID'si girdiğinizden emin olun.
+                    </p>
+                    <Link to="/animals" className="mt-4 inline-block bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+                        Hayvan Listesine Dön
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+
+    // Use basicInfo if available (from animals list) or fallback to animalData values
+    const animalName = animalBasicInfo?.name || animalData.name;
+    const animalSpecies = animalBasicInfo?.species || animalData.species;
+
+    return (
+        <div className="container mx-auto px-4 py-6">
+            <div className="mb-4">
+                <Link to="/animals" className="text-blue-500 hover:underline flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+                    </svg>
+                    Hayvan Listesine Dön
+                </Link>
+            </div>
+            
+            <div className="bg-white rounded-lg shadow-md">
+                <AnimalDetailTabs animalId={animalId || ''} animalData={animalData} />
+            </div>
+        </div>
+    );
 };
 
 export default AnimalDetailPage; 

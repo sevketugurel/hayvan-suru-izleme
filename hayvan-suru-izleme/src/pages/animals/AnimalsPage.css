@@ -1,0 +1,85 @@
+.animals-page {
+  padding: 24px;
+  max-width: 100%;
+  background: linear-gradient(120deg, #f5f7fa 0%, #e0f7fa 100%);
+  min-height: calc(100vh - 80px);
+}
+
+.animals-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.animals-header h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 800;
+  color: #333;
+  text-shadow: 0 2px 8px rgba(67,233,123,0.08);
+  border-bottom: 4px solid #43e97b;
+  display: inline-block;
+  padding-bottom: 4px;
+}
+
+.add-animal-button {
+  background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+  color: white;
+  padding: 12px 28px;
+  border: none;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(67,233,123,0.10);
+  font-size: 18px;
+}
+
+.add-animal-button:hover {
+  background: linear-gradient(90deg, #38f9d7 0%, #43e97b 100%);
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(67,233,123,0.15);
+}
+
+.add-animal-button:active {
+  transform: scale(1.00);
+}
+
+.loading, .error {
+  padding: 40px;
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(56,249,215,0.10);
+  margin-top: 20px;
+}
+
+.loading {
+  color: #2196F3;
+}
+
+.error {
+  color: #d32f2f;
+}
+
+@media (max-width: 768px) {
+  .animals-page {
+    padding: 16px;
+  }
+  
+  .animals-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .animals-header h1 {
+    font-size: 24px;
+  }
+} 

@@ -1,5 +1,5 @@
 import React from 'react';
-import './styles/AnimalReproduction.css';
+import '../styles/AnimalReproduction.css';
 
 interface HeatCycle {
     date: string;

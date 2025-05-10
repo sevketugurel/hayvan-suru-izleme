@@ -1,5 +1,5 @@
 import React from 'react';
-import './styles/AnimalCameraAnalysis.css';
+import '../styles/AnimalCameraAnalysis.css';
 
 interface FeedingDuration {
     status: string;

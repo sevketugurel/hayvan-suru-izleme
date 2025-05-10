@@ -1,10 +1,10 @@
-import AnimalDetailTabs from './AnimalDetailTabs';
-import AnimalGeneralInfo from './AnimalGeneralInfo';
-import AnimalHealthData from './AnimalHealthData';
-import AnimalBehaviors from './AnimalBehaviors';
-import AnimalReproduction from './AnimalReproduction';
-import AnimalLocationSocial from './AnimalLocationSocial';
-import AnimalRiskEnvironment from './AnimalRiskEnvironment';
+import AnimalDetailTabs from './/AnimalDetailTabs';
+import AnimalGeneralInfo from './tabs/AnimalGeneralInfo';
+import AnimalHealthData from './tabs/AnimalHealthData';
+import AnimalBehaviors from './tabs/AnimalBehaviors';
+import AnimalReproduction from './tabs/AnimalReproduction';
+import AnimalLocationSocial from './tabs/AnimalLocationSocial';
+import AnimalRiskEnvironment from './tabs/AnimalRiskEnvironment';
 
 export {
     AnimalDetailTabs,

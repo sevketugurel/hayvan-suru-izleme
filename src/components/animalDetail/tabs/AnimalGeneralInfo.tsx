@@ -1,5 +1,5 @@
 import React from 'react';
-import './styles/AnimalGeneralInfo.css';
+import '../styles/AnimalGeneralInfo.css';
 
 interface AnimalGeneralInfoProps {
     id: string;

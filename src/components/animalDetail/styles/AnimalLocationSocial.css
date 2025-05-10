@@ -47,37 +47,50 @@
     color: #4f46e5;
 }
 
+/* Harita konteyneri için geliştirilmiş stiller */
 .map-container {
     width: 100%;
-    height: 300px;
+    height: 450px;
+    /* Haritayı biraz daha yüksek yaptık */
     background-color: #f3f4f6;
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
+    position: relative;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 2px solid rgba(4, 120, 87, 0.2);
+}
+
+/* Harita üzerindeki bilgi alanı */
+.map-info {
     position: relative;
     margin-bottom: 1rem;
 }
 
-.map-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-style: italic;
-    color: #6b7280;
+/* Harita talimatları alanı */
+.map-instructions {
+    background-color: #effdf5;
+    border: 1px solid #d1fae5;
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
 }
 
+.default-instructions {
+    color: #4b5563;
+    margin: 0;
+}
+
+/* Harita üzerindeki koordinat bilgilerini daha iyi görünecek şekilde iyileştiriyoruz */
 .coords-display {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 0.5rem 1rem;
+    background-color: #fff;
+    padding: 0.75rem 1rem;
     font-family: monospace;
     font-size: 0.875rem;
     display: flex;
     justify-content: space-between;
+    border: 1px solid rgba(4, 120, 87, 0.2);
+    border-radius: 8px;
 }
 
 .current-location-info {
@@ -87,6 +100,12 @@
 .current-location-info p {
     margin: 0.25rem 0;
     font-size: 0.875rem;
+    color: #1f2937;
+    font-weight: 500;
+}
+
+.current-location-info strong {
+    color: #047857;
 }
 
 .path-history-title {
@@ -106,18 +125,46 @@
     color: #047857;
 }
 
+/* GPS kayıt listesi için scrollbar stillerini iyileştiriyoruz */
 .path-history-container {
     border: 1px solid #e5e7eb;
     border-radius: 8px;
     max-height: 200px;
     overflow-y: auto;
+    background-color: #f9fafb;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+/* Kaydırma çubuğu stilleri */
+.path-history-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.path-history-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 8px;
+}
+
+.path-history-container::-webkit-scrollbar-thumb {
+    background: #d1e7dd;
+    border-radius: 8px;
+}
+
+.path-history-container::-webkit-scrollbar-thumb:hover {
+    background: #047857;
+}
+
+/* Her bir GPS konumu için zenginleştirilmiş stiller */
 .path-history-item {
     display: flex;
     justify-content: space-between;
     padding: 0.5rem 1rem;
     border-bottom: 1px solid #e5e7eb;
+    transition: background-color 0.2s;
+}
+
+.path-history-item:hover {
+    background-color: #ecfdf5;
 }
 
 .path-history-item:last-child {
@@ -131,169 +178,83 @@
 
 .path-coords {
     font-family: monospace;
-    color: #6b7280;
+    color: #047857;
+    font-weight: 600;
 }
 
-.refresh-button {
-    display: flex;
-    align-items: center;
-    background-color: #f9fafb;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 0.25rem 0.5rem;
-    font-size: 0.875rem;
-    color: #4b5563;
-    cursor: pointer;
-    transition: all 0.2s;
+/* Popuplar için gelişmiş stiller */
+.custom-popup .leaflet-popup-content-wrapper {
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    padding: 0;
 }
 
-.refresh-button svg {
-    width: 1rem;
-    height: 1rem;
-    margin-right: 0.25rem;
+.custom-popup .leaflet-popup-content {
+    margin: 0;
+    padding: 0;
+    width: 250px !important;
 }
 
-.refresh-button:hover {
-    background-color: #f3f4f6;
+.movement-popup,
+.current-position-popup {
+    padding: 15px;
 }
 
-.alerts-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.875rem;
-    margin-top: 1rem;
-}
-
-.alerts-table th {
-    text-align: left;
-    padding: 0.5rem;
-    background-color: #f3f4f6;
-    border-bottom: 2px solid #e5e7eb;
-}
-
-.alerts-table td {
-    padding: 0.5rem;
+.movement-popup h4,
+.current-position-popup h4 {
+    margin: 0 0 10px 0;
+    padding-bottom: 8px;
     border-bottom: 1px solid #e5e7eb;
+    color: #1f2937;
+    font-size: 16px;
+    font-weight: 600;
 }
 
-.alert-severity {
-    display: inline-block;
-    padding: 0.125rem 0.375rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 500;
+.movement-popup {
+    background-color: #fff1f0;
+    border-left: 4px solid #ff6b6b;
 }
 
-.severity-high {
-    background-color: #fee2e2;
-    color: #b91c1c;
+.current-position-popup {
+    background-color: #ecfdf5;
+    border-left: 4px solid #10b981;
 }
 
-.severity-medium {
-    background-color: #fef3c7;
-    color: #b45309;
+.movement-popup p,
+.current-position-popup p {
+    margin: 5px 0;
+    font-size: 14px;
+    line-height: 1.4;
 }
 
-.severity-low {
-    background-color: #d1fae5;
+/* Hayvan yol çizgisi için stil */
+.leaflet-interactive {
+    transition: stroke-opacity 0.3s ease;
+}
+
+/* Güvenli bölge için hover efekti */
+.safe-zone-circle {
+    transition: all 0.3s ease;
+}
+
+.safe-zone-circle:hover {
+    fill-opacity: 0.3 !important;
+    stroke-width: 3px !important;
+}
+
+/* Harita kontrol butonları için stil iyileştirmeleri */
+.leaflet-bar a {
+    background-color: white;
+    border: 1px solid #d1d5db;
+    color: #4b5563;
+}
+
+.leaflet-bar a:hover {
+    background-color: #ecfdf5;
     color: #047857;
 }
 
-.interactions-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.875rem;
-    margin-top: 1rem;
-}
-
-.interactions-table th {
-    text-align: left;
-    padding: 0.5rem;
-    background-color: #ede9fe;
-    border-bottom: 2px solid #ddd6fe;
-}
-
-.interactions-table td {
-    padding: 0.5rem;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.friends-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.friend-card {
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 1rem;
-    background-color: #f9fafb;
-}
-
-.friend-card:hover {
-    box-shadow: 0 8px 32px rgba(33, 150, 243, 0.13);
-    background: linear-gradient(135deg, #f0f4f9 0%, #e0f7fa 100%);
-}
-
-.friend-info {
-    margin-bottom: 0.75rem;
-}
-
-.friend-name {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #1f2937;
-    margin: 0 0 0.25rem;
-}
-
-.friend-id {
-    font-size: 0.875rem;
-    color: #6b7280;
-    margin: 0 0 0.5rem;
-}
-
-.relationship-duration,
-.daily-interaction {
-    font-size: 0.875rem;
-    color: #4b5563;
-    margin: 0.25rem 0;
-}
-
-.proximity-container {
-    margin-top: 0.5rem;
-}
-
-.proximity-bar {
-    height: 0.5rem;
-    background-color: #e5e7eb;
-    border-radius: 9999px;
-    overflow: hidden;
-    margin-bottom: 0.25rem;
-}
-
-.proximity-fill {
-    height: 100%;
-    background-color: #6366f1;
-    border-radius: 9999px;
-}
-
-.proximity-text {
-    font-size: 0.75rem;
-    color: #4b5563;
-    text-align: right;
-    margin: 0;
-}
-
-.empty-message {
-    color: #6b7280;
-    font-style: italic;
-    text-align: center;
-    padding: 1rem;
-}
-
-/* Yeni eklenen stiller */
 .deviation-status {
     border: 1px solid #e5e7eb;
     border-radius: 8px;
@@ -344,6 +305,48 @@
     margin-bottom: 0.25rem;
 }
 
+.alerts-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    margin-top: 1rem;
+}
+
+.alerts-table th {
+    text-align: left;
+    padding: 0.5rem;
+    background-color: #f3f4f6;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.alerts-table td {
+    padding: 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.alert-severity {
+    display: inline-block;
+    padding: 0.125rem 0.375rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.severity-high {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+.severity-medium {
+    background-color: #fef3c7;
+    color: #b45309;
+}
+
+.severity-low {
+    background-color: #d1fae5;
+    color: #047857;
+}
+
 .social-behavior-summary {
     border: 1px solid #e5e7eb;
     border-radius: 8px;
@@ -379,17 +382,11 @@
 }
 
 .metric-value-container {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.metric-progress {
-    flex-grow: 1;
     height: 0.5rem;
     background-color: #e5e7eb;
     border-radius: 9999px;
     overflow: hidden;
+    margin-bottom: 0.5rem;
 }
 
 .metric-progress-fill {
@@ -414,13 +411,31 @@
     font-weight: 600;
     color: #1f2937;
     margin: 0;
-    min-width: 3rem;
 }
 
 .rank-value {
     font-size: 1.25rem;
     font-weight: 600;
     color: #4f46e5;
+}
+
+.interactions-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    margin-top: 1rem;
+}
+
+.interactions-table th {
+    text-align: left;
+    padding: 0.5rem;
+    background-color: #f3f4f6;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.interactions-table td {
+    padding: 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .abnormal-behaviors {
@@ -457,6 +472,76 @@
     color: #4b5563;
     font-style: italic;
     margin: 0 0 1rem 0;
+}
+
+.friends-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.friend-card {
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.friend-info {
+    margin-bottom: 0.75rem;
+}
+
+.friend-name {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #1f2937;
+    margin: 0 0 0.25rem 0;
+}
+
+.friend-id {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0 0 0.5rem 0;
+}
+
+.relationship-duration,
+.daily-interaction {
+    font-size: 0.875rem;
+    margin: 0.25rem 0;
+    color: #4b5563;
+}
+
+.proximity-container {
+    margin-top: 0.5rem;
+}
+
+.proximity-bar {
+    height: 0.5rem;
+    background-color: #e5e7eb;
+    border-radius: 9999px;
+    overflow: hidden;
+    margin-bottom: 0.25rem;
+}
+
+.proximity-fill {
+    height: 100%;
+    background-color: #4f46e5;
+    border-radius: 9999px;
+}
+
+.proximity-text {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #4f46e5;
+    margin: 0;
+    text-align: right;
+}
+
+.empty-message {
+    color: #6b7280;
+    font-style: italic;
+    text-align: center;
+    padding: 1rem;
 }
 
 /* Responsive stillemeler */

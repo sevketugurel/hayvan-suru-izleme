@@ -233,34 +233,62 @@ export const getMockAnimalData = (id: string) => {
                     periods: 5,
                     qualityScore: 7,
                     history: [
+                        { date: '24.09.2024', value: 8 },
+                        { date: '25.09.2024', value: 7.5 },
+                        { date: '26.09.2024', value: 7 },
+                        { date: '27.09.2024', value: 7.2 },
+                        { date: '28.09.2024', value: 7.8 },
+                        { date: '29.09.2024', value: 8.1 },
+                        { date: '30.09.2024', value: 8 },
                         { date: '01.10.2024', value: 8 },
-                        { date: '02.10.2024', value: 7 },
-                        { date: '03.10.2024', value: 7 },
+                        { date: '02.10.2024', value: 7.3 },
+                        { date: '03.10.2024', value: 7 }
                     ]
                 },
                 restingStandingRatio: {
                     resting: 14,
                     standing: 10,
                     history: [
-                        { date: '01.10.2024', value: 60 }, // Dinlenme yüzdesi
-                        { date: '02.10.2024', value: 55 },
-                        { date: '03.10.2024', value: 58 },
+                        { date: '24.09.2024', value: 65 },
+                        { date: '25.09.2024', value: 67 },
+                        { date: '26.09.2024', value: 66 },
+                        { date: '27.09.2024', value: 64 },
+                        { date: '28.09.2024', value: 63 },
+                        { date: '29.09.2024', value: 62 },
+                        { date: '30.09.2024', value: 61 },
+                        { date: '01.10.2024', value: 60 },
+                        { date: '02.10.2024', value: 62 },
+                        { date: '03.10.2024', value: 63 }
                     ]
                 },
                 ruminationCount: {
                     daily: 420,
                     hourly: [
-                        { date: '03.10.2024 08:00', value: 25 },
-                        { date: '03.10.2024 09:00', value: 22 },
-                        { date: '03.10.2024 10:00', value: 18 },
+                        { date: '24.09.2024 09:00', value: 22 },
+                        { date: '25.09.2024 09:00', value: 24 },
+                        { date: '26.09.2024 09:00', value: 23 },
+                        { date: '27.09.2024 09:00', value: 25 },
+                        { date: '28.09.2024 09:00', value: 21 },
+                        { date: '29.09.2024 09:00', value: 20 },
+                        { date: '30.09.2024 09:00', value: 19 },
+                        { date: '01.10.2024 09:00', value: 18 },
+                        { date: '02.10.2024 09:00', value: 20 },
+                        { date: '03.10.2024 09:00', value: 21 }
                     ]
                 },
                 stepCount: {
                     daily: 2500,
                     history: [
-                        { date: '01.10.2024', value: 2300 },
-                        { date: '02.10.2024', value: 2450 },
-                        { date: '03.10.2024', value: 2500 },
+                        { date: '24.09.2024', value: 2100 },
+                        { date: '25.09.2024', value: 2200 },
+                        { date: '26.09.2024', value: 2150 },
+                        { date: '27.09.2024', value: 2250 },
+                        { date: '28.09.2024', value: 2300 },
+                        { date: '29.09.2024', value: 2400 },
+                        { date: '30.09.2024', value: 2450 },
+                        { date: '01.10.2024', value: 2500 },
+                        { date: '02.10.2024', value: 2550 },
+                        { date: '03.10.2024', value: 2600 }
                     ]
                 },
                 feedingDuration: {
@@ -296,49 +324,219 @@ export const getMockAnimalData = (id: string) => {
             },
 
             locationSocial: {
-                locationData: {
-                    currentLocation: {
-                        lat: 40.123456,
-                        lng: 29.654321
+                gpsTracking: {
+                    currentPosition: {
+                        latitude: 40.125456,
+                        longitude: 29.657321,
+                        timestamp: '2024-10-04T15:00:00Z',
+                        accuracy: 3.5
                     },
-                    historicalPath: [
-                        { time: '03.10.2024 08:00', lat: 40.123450, lng: 29.654325 },
-                        { time: '03.10.2024 10:00', lat: 40.123470, lng: 29.654310 },
-                        { time: '03.10.2024 12:00', lat: 40.123456, lng: 29.654321 },
-                    ],
-                    abnormalLocationAlerts: [
+                    dailyMovement: [
                         {
-                            date: '01.10.2024 14:20',
-                            description: 'Çayır alanından uzaklaşma',
-                            severity: 'low' as const
+                            timestamp: '2024-10-04T07:00:00Z',
+                            latitude: 40.121350,
+                            longitude: 29.651200
+                        },
+                        {
+                            timestamp: '2024-10-04T08:00:00Z',
+                            latitude: 40.122380,
+                            longitude: 29.652250
+                        },
+                        {
+                            timestamp: '2024-10-04T09:00:00Z',
+                            latitude: 40.123450,
+                            longitude: 29.653325
+                        },
+                        {
+                            timestamp: '2024-10-04T09:45:00Z',
+                            latitude: 40.124440,
+                            longitude: 29.654340
+                        },
+                        {
+                            timestamp: '2024-10-04T10:15:00Z',
+                            latitude: 40.123960,
+                            longitude: 29.655315
+                        },
+                        {
+                            timestamp: '2024-10-04T10:40:00Z',
+                            latitude: 40.124465,
+                            longitude: 29.656310
+                        },
+                        {
+                            timestamp: '2024-10-04T11:00:00Z',
+                            latitude: 40.124970,
+                            longitude: 29.656810
+                        },
+                        {
+                            timestamp: '2024-10-04T11:45:00Z',
+                            latitude: 40.125490,
+                            longitude: 29.656990
+                        },
+                        {
+                            timestamp: '2024-10-04T12:30:00Z',
+                            latitude: 40.125780,
+                            longitude: 29.657305
+                        },
+                        {
+                            timestamp: '2024-10-04T13:00:00Z',
+                            latitude: 40.125660,
+                            longitude: 29.657518
+                        },
+                        {
+                            timestamp: '2024-10-04T13:45:00Z',
+                            latitude: 40.125555,
+                            longitude: 29.657420
+                        },
+                        {
+                            timestamp: '2024-10-04T14:30:00Z',
+                            latitude: 40.125457,
+                            longitude: 29.657322
+                        },
+                        {
+                            timestamp: '2024-10-04T15:00:00Z',
+                            latitude: 40.125456,
+                            longitude: 29.657321
+                        }
+                    ],
+                    pastLocations: [
+                        {
+                            date: '2024-10-03',
+                            positions: [
+                                {
+                                    timestamp: '2024-10-03T08:00:00Z',
+                                    latitude: 40.120450,
+                                    longitude: 29.650325
+                                },
+                                {
+                                    timestamp: '2024-10-03T10:00:00Z',
+                                    latitude: 40.121470,
+                                    longitude: 29.653310
+                                },
+                                {
+                                    timestamp: '2024-10-03T12:00:00Z',
+                                    latitude: 40.123456,
+                                    longitude: 29.655321
+                                }
+                            ]
+                        },
+                        {
+                            date: '2024-10-02',
+                            positions: [
+                                {
+                                    timestamp: '2024-10-02T08:30:00Z',
+                                    latitude: 40.120445,
+                                    longitude: 29.650330
+                                },
+                                {
+                                    timestamp: '2024-10-02T11:15:00Z',
+                                    latitude: 40.121465,
+                                    longitude: 29.653315
+                                },
+                                {
+                                    timestamp: '2024-10-02T14:45:00Z',
+                                    latitude: 40.123452,
+                                    longitude: 29.655325
+                                }
+                            ]
                         }
                     ]
                 },
-                socialData: {
-                    herdInteractions: [
+                herdDeviation: {
+                    isDeviated: false,
+                    deviationHistory: [
                         {
-                            interaction: 'Yan yana otlama',
-                            frequency: 12,
-                            animalIds: ['TR123456788', 'TR123456787']
+                            date: '2024-09-30',
+                            time: '14:20',
+                            description: 'Çayır alanından uzaklaşma',
+                            severity: 'low',
+                            duration: 25, // dakika
+                            distance: 150, // metre
+                            action: 'SMS bildirimi gönderildi'
                         },
                         {
-                            interaction: 'Sosyal tımar',
-                            frequency: 5,
-                            animalIds: ['TR123456788']
+                            date: '2024-09-25',
+                            time: '11:05',
+                            description: 'Sürüden ayrılma',
+                            severity: 'medium',
+                            duration: 45, // dakika
+                            distance: 250, // metre
+                            action: 'Çoban bilgilendirildi'
                         }
                     ],
-                    closeFriends: [
+                    safeZones: [
+                        {
+                            name: 'Ana Otlak',
+                            center: {
+                                latitude: 40.124480,
+                                longitude: 29.655305
+                            },
+                            radius: 1000 // metre
+                        },
+                        {
+                            name: 'Su Kaynağı',
+                            center: {
+                                latitude: 40.123450,
+                                longitude: 29.653325
+                            },
+                            radius: 500 // metre
+                        }
+                    ],
+                    alertSettings: {
+                        maxDistance: 2000, // metre
+                        alertThreshold: 15 // dakika
+                    }
+                },
+                socialBehavior: {
+                    summary: 'Sarıkız, sürü içinde uyumlu ve sosyal bir davranış gösteriyor. Diğer hayvanlarla iyi geçiniyor, özellikle Benekli ile yakın bir ilişkisi var. Sürü hiyerarşisinde orta sıralarda yer alıyor.',
+                    socialScore: 78,
+                    dominanceRank: 5,
+                    interactions: [
+                        {
+                            type: 'Sosyal tımar',
+                            frequency: 8,
+                            partners: ['Benekli', 'Karabaş', 'Sarıkuyruk'],
+                            duration: 25
+                        },
+                        {
+                            type: 'Yan yana otlama',
+                            frequency: 12,
+                            partners: ['Benekli', 'Karabaş'],
+                            duration: 120
+                        },
+                        {
+                            type: 'Dinlenme grubu',
+                            frequency: 6,
+                            partners: ['Benekli', 'Karabaş', 'Sarıkuyruk', 'Alaca'],
+                            duration: 60
+                        }
+                    ],
+                    abnormalBehaviors: []
+                },
+                closeFriends: {
+                    bestFriends: [
                         {
                             animalId: 'TR123456788',
                             animalName: 'Benekli',
-                            proximityScore: 85
+                            proximityScore: 85,
+                            dailyInteractionTime: 120,
+                            relationshipDuration: 8
                         },
                         {
                             animalId: 'TR123456787',
                             animalName: 'Karabaş',
-                            proximityScore: 65
+                            proximityScore: 65,
+                            dailyInteractionTime: 75,
+                            relationshipDuration: 5
+                        },
+                        {
+                            animalId: 'TR123456790',
+                            animalName: 'Sarıkuyruk',
+                            proximityScore: 55,
+                            dailyInteractionTime: 45,
+                            relationshipDuration: 3
                         }
-                    ]
+                    ],
+                    recentChanges: 'Son 2 haftada Benekli ile geçirdiği zaman %15 artış gösterdi.'
                 }
             },
 

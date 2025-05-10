@@ -6,8 +6,6 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     width: 110%;
     margin-left: -40px;
-
-  
 }
 
 .animal-header {
@@ -17,20 +15,85 @@
     border-radius: 16px 16px 0 0;
     box-shadow: 0 4px 16px rgba(33, 150, 243, 0.10);
     margin-bottom: 1rem;
-    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.animal-header-left {
+    flex: 2;
+}
+
+.header-title-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.animal-header-right {
+    flex: 1;
+    text-align: right;
+}
+
+.animal-header-battery {
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+}
+
+.battery-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 4px 10px;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.battery-icon {
+    width: 24px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    position: relative;
+    padding: 2px;
+}
+
+.battery-icon:after {
+    content: '';
+    position: absolute;
+    right: -3px;
+    top: 3px;
+    height: 6px;
+    width: 3px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 0 2px 2px 0;
+}
+
+.battery-level {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.battery-percentage {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: white;
 }
 
 .animal-name {
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 0.25rem;
-    
 }
 
 .animal-subtitle {
     font-size: 1rem;
     opacity: 0.9;
-    
 }
 
 .tabs-container {
@@ -63,7 +126,6 @@
     border-radius: 16px;
     box-shadow: none;
     position: relative;
-    
 }
 
 .tab-button:hover {
@@ -94,13 +156,32 @@
     box-shadow: 0 6px 24px rgba(33, 150, 243, 0.10);
     margin-bottom: 2rem;
     min-height: 300px;
-    
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
     .animal-header {
         padding: 1rem 1.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-title-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .animal-header-right {
+        text-align: left;
+        margin-top: 0.5rem;
+    }
+
+    .animal-header-battery {
+        position: relative;
+        top: auto;
+        right: auto;
+        margin-top: 0.75rem;
     }
 
     .animal-name {

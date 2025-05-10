@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import './styles/AnimalTreatments.css';
+import '../styles/AnimalTreatments.css';
 
 // Geçmiş tedaviler için arayüz
 interface PastTreatment {

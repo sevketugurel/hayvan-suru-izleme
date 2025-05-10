@@ -1,5 +1,5 @@
 import React from 'react';
-import './styles/AnimalRiskEnvironment.css';
+import '../styles/AnimalRiskEnvironment.css';
 
 interface DrownRiskData {
     currentRisk: 'low' | 'medium' | 'high';
@@ -309,7 +309,7 @@ const AnimalRiskEnvironment: React.FC<AnimalRiskEnvironmentProps> = ({
                         <div className="reading-small">
                             <span className="reading-label">Hava Kalitesi:</span>
                             <span className={`reading-small-value ${gasLevels.facilityLevels.airQualityIndex > 75 ? 'good-quality' :
-                                    gasLevels.facilityLevels.airQualityIndex > 50 ? 'medium-quality' : 'poor-quality'
+                                gasLevels.facilityLevels.airQualityIndex > 50 ? 'medium-quality' : 'poor-quality'
                                 }`}>
                                 {gasLevels.facilityLevels.airQualityIndex}/100
                             </span>
@@ -319,44 +319,143 @@ const AnimalRiskEnvironment: React.FC<AnimalRiskEnvironmentProps> = ({
 
                 <div className="historical-gas-data">
                     <h4 className="subsection-title">Son 5 Gün Verileri</h4>
-                    <table className="historical-data-table">
-                        <thead>
-                            <tr>
-                                <th>Tarih</th>
-                                <th>Amonyak</th>
-                                <th>Metan</th>
-                                <th>Karbondioksit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {gasLevels.historicalData.map((data, index) => (
-                                <tr key={index}>
-                                    <td>{data.date}</td>
-                                    <td className={getGasLevelColor(
-                                        data.ammonia,
-                                        gasLevels.facilityLevels.safetyThresholds.ammonia.warning,
-                                        gasLevels.facilityLevels.safetyThresholds.ammonia.danger
-                                    )}>
-                                        {data.ammonia} ppm
+                    <div className="historical-data-container">
+                        <table className="historical-data-table">
+                            <thead>
+                                <tr>
+                                    <th>Tarih</th>
+                                    <th>Amonyak</th>
+                                    <th>Metan</th>
+                                    <th>Karbondioksit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {gasLevels.historicalData.map((data, index) => (
+                                    <tr key={index}>
+                                        <td>{data.date}</td>
+                                        <td className={getGasLevelColor(
+                                            data.ammonia,
+                                            gasLevels.facilityLevels.safetyThresholds.ammonia.warning,
+                                            gasLevels.facilityLevels.safetyThresholds.ammonia.danger
+                                        )}>
+                                            {data.ammonia} ppm
+                                        </td>
+                                        <td className={getGasLevelColor(
+                                            data.methane,
+                                            gasLevels.facilityLevels.safetyThresholds.methane.warning,
+                                            gasLevels.facilityLevels.safetyThresholds.methane.danger
+                                        )}>
+                                            {data.methane} ppm
+                                        </td>
+                                        <td className={getGasLevelColor(
+                                            data.carbonDioxide,
+                                            gasLevels.facilityLevels.safetyThresholds.carbonDioxide.warning,
+                                            gasLevels.facilityLevels.safetyThresholds.carbonDioxide.danger
+                                        )}>
+                                            {data.carbonDioxide} ppm
+                                        </td>
+                                    </tr>
+                                ))}
+                                {/* Ek veri satırları */}
+                                <tr>
+                                    <td>17.05.2023</td>
+                                    <td className={getGasLevelColor(14, gasLevels.facilityLevels.safetyThresholds.ammonia.warning, gasLevels.facilityLevels.safetyThresholds.ammonia.danger)}>
+                                        14 ppm
                                     </td>
-                                    <td className={getGasLevelColor(
-                                        data.methane,
-                                        gasLevels.facilityLevels.safetyThresholds.methane.warning,
-                                        gasLevels.facilityLevels.safetyThresholds.methane.danger
-                                    )}>
-                                        {data.methane} ppm
+                                    <td className={getGasLevelColor(450, gasLevels.facilityLevels.safetyThresholds.methane.warning, gasLevels.facilityLevels.safetyThresholds.methane.danger)}>
+                                        450 ppm
                                     </td>
-                                    <td className={getGasLevelColor(
-                                        data.carbonDioxide,
-                                        gasLevels.facilityLevels.safetyThresholds.carbonDioxide.warning,
-                                        gasLevels.facilityLevels.safetyThresholds.carbonDioxide.danger
-                                    )}>
-                                        {data.carbonDioxide} ppm
+                                    <td className={getGasLevelColor(1800, gasLevels.facilityLevels.safetyThresholds.carbonDioxide.warning, gasLevels.facilityLevels.safetyThresholds.carbonDioxide.danger)}>
+                                        1800 ppm
                                     </td>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                                <tr>
+                                    <td>16.05.2023</td>
+                                    <td className={getGasLevelColor(17, gasLevels.facilityLevels.safetyThresholds.ammonia.warning, gasLevels.facilityLevels.safetyThresholds.ammonia.danger)}>
+                                        17 ppm
+                                    </td>
+                                    <td className={getGasLevelColor(470, gasLevels.facilityLevels.safetyThresholds.methane.warning, gasLevels.facilityLevels.safetyThresholds.methane.danger)}>
+                                        470 ppm
+                                    </td>
+                                    <td className={getGasLevelColor(1750, gasLevels.facilityLevels.safetyThresholds.carbonDioxide.warning, gasLevels.facilityLevels.safetyThresholds.carbonDioxide.danger)}>
+                                        1750 ppm
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>15.05.2023</td>
+                                    <td className={getGasLevelColor(19, gasLevels.facilityLevels.safetyThresholds.ammonia.warning, gasLevels.facilityLevels.safetyThresholds.ammonia.danger)}>
+                                        19 ppm
+                                    </td>
+                                    <td className={getGasLevelColor(500, gasLevels.facilityLevels.safetyThresholds.methane.warning, gasLevels.facilityLevels.safetyThresholds.methane.danger)}>
+                                        500 ppm
+                                    </td>
+                                    <td className={getGasLevelColor(1900, gasLevels.facilityLevels.safetyThresholds.carbonDioxide.warning, gasLevels.facilityLevels.safetyThresholds.carbonDioxide.danger)}>
+                                        1900 ppm
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>14.05.2023</td>
+                                    <td className={getGasLevelColor(21, gasLevels.facilityLevels.safetyThresholds.ammonia.warning, gasLevels.facilityLevels.safetyThresholds.ammonia.danger)}>
+                                        21 ppm
+                                    </td>
+                                    <td className={getGasLevelColor(520, gasLevels.facilityLevels.safetyThresholds.methane.warning, gasLevels.facilityLevels.safetyThresholds.methane.danger)}>
+                                        520 ppm
+                                    </td>
+                                    <td className={getGasLevelColor(2000, gasLevels.facilityLevels.safetyThresholds.carbonDioxide.warning, gasLevels.facilityLevels.safetyThresholds.carbonDioxide.danger)}>
+                                        2000 ppm
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>13.05.2023</td>
+                                    <td className={getGasLevelColor(16, gasLevels.facilityLevels.safetyThresholds.ammonia.warning, gasLevels.facilityLevels.safetyThresholds.ammonia.danger)}>
+                                        16 ppm
+                                    </td>
+                                    <td className={getGasLevelColor(480, gasLevels.facilityLevels.safetyThresholds.methane.warning, gasLevels.facilityLevels.safetyThresholds.methane.danger)}>
+                                        480 ppm
+                                    </td>
+                                    <td className={getGasLevelColor(1920, gasLevels.facilityLevels.safetyThresholds.carbonDioxide.warning, gasLevels.facilityLevels.safetyThresholds.carbonDioxide.danger)}>
+                                        1920 ppm
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>12.05.2023</td>
+                                    <td className={getGasLevelColor(15, gasLevels.facilityLevels.safetyThresholds.ammonia.warning, gasLevels.facilityLevels.safetyThresholds.ammonia.danger)}>
+                                        15 ppm
+                                    </td>
+                                    <td className={getGasLevelColor(460, gasLevels.facilityLevels.safetyThresholds.methane.warning, gasLevels.facilityLevels.safetyThresholds.methane.danger)}>
+                                        460 ppm
+                                    </td>
+                                    <td className={getGasLevelColor(1850, gasLevels.facilityLevels.safetyThresholds.carbonDioxide.warning, gasLevels.facilityLevels.safetyThresholds.carbonDioxide.danger)}>
+                                        1850 ppm
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>11.05.2023</td>
+                                    <td className={getGasLevelColor(18, gasLevels.facilityLevels.safetyThresholds.ammonia.warning, gasLevels.facilityLevels.safetyThresholds.ammonia.danger)}>
+                                        18 ppm
+                                    </td>
+                                    <td className={getGasLevelColor(490, gasLevels.facilityLevels.safetyThresholds.methane.warning, gasLevels.facilityLevels.safetyThresholds.methane.danger)}>
+                                        490 ppm
+                                    </td>
+                                    <td className={getGasLevelColor(1880, gasLevels.facilityLevels.safetyThresholds.carbonDioxide.warning, gasLevels.facilityLevels.safetyThresholds.carbonDioxide.danger)}>
+                                        1880 ppm
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>10.05.2023</td>
+                                    <td className={getGasLevelColor(20, gasLevels.facilityLevels.safetyThresholds.ammonia.warning, gasLevels.facilityLevels.safetyThresholds.ammonia.danger)}>
+                                        20 ppm
+                                    </td>
+                                    <td className={getGasLevelColor(510, gasLevels.facilityLevels.safetyThresholds.methane.warning, gasLevels.facilityLevels.safetyThresholds.methane.danger)}>
+                                        510 ppm
+                                    </td>
+                                    <td className={getGasLevelColor(1950, gasLevels.facilityLevels.safetyThresholds.carbonDioxide.warning, gasLevels.facilityLevels.safetyThresholds.carbonDioxide.danger)}>
+                                        1950 ppm
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 

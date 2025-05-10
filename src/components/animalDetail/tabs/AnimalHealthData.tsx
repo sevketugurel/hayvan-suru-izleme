@@ -1,5 +1,5 @@
 import React from 'react';
-import './styles/AnimalHealthData.css';
+import '../styles/AnimalHealthData.css';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface HealthMetric {

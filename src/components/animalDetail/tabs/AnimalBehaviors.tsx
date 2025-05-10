@@ -1,5 +1,6 @@
 import React from 'react';
-import './styles/AnimalBehaviors.css';
+import '../styles/AnimalBehaviors.css';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
 interface BehaviorMetric {
     date: string;
@@ -34,12 +35,55 @@ interface AnimalBehaviorsProps {
 }
 
 const AnimalBehaviors: React.FC<AnimalBehaviorsProps> = ({
-    sleepQuality,
+    sleepQuality = {
+        duration: 8,
+        periods: 5,
+        qualityScore: 7,
+        history: [
+            { date: '24.09.2024', value: 8 },
+            { date: '25.09.2024', value: 7.5 },
+            { date: '26.09.2024', value: 7 },
+            { date: '27.09.2024', value: 7.2 },
+            { date: '28.09.2024', value: 7.8 },
+            { date: '29.09.2024', value: 8.1 },
+            { date: '30.09.2024', value: 8 },
+            { date: '01.10.2024', value: 8 },
+            { date: '02.10.2024', value: 7.3 },
+            { date: '03.10.2024', value: 7 }
+        ]
+    },
     restingStandingRatio,
     ruminationCount,
     stepCount,
     feedingDuration
 }) => {
+    // Son 10 günlük uyku kalitesi verisi
+    const sleepHistory10 = sleepQuality.history.length > 10
+        ? sleepQuality.history.slice(-10)
+        : sleepQuality.history;
+
+    // Son 10 günlük dinlenme/ayakta kalma verisi
+    const restingStandingHistory10 = restingStandingRatio.history.length > 10
+        ? restingStandingRatio.history.slice(-10)
+        : restingStandingRatio.history;
+
+    // Dinlenme ve ayakta kalma oranı için veri hazırlama
+    const restingStandingChartData = restingStandingHistory10.map(item => ({
+        date: item.date,
+        resting: item.value,
+        standing: 100 - item.value
+    }));
+
+    // Son 10 günlük saatlik geviş getirme verisi
+    const ruminationHourly10 = ruminationCount.hourly.length > 10
+        ? ruminationCount.hourly.slice(-10)
+        : ruminationCount.hourly;
+
+    // Son 10 günlük adım sayısı verisi
+    const stepHistory10 = stepCount.history.length > 10
+        ? stepCount.history.slice(-10)
+        : stepCount.history;
+
     return (
         <div className="behaviors-container">
             {/* Uyku ve Dinlenme Kalitesi */}
@@ -67,7 +111,15 @@ const AnimalBehaviors: React.FC<AnimalBehaviorsProps> = ({
                     </div>
                 </div>
                 <div className="behavior-chart">
-                    <div className="chart-placeholder">Uyku kalitesi grafiği burada görüntülenecek</div>
+                    <ResponsiveContainer width="100%" height={220}>
+                        <LineChart data={sleepHistory10} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                            <XAxis dataKey="date" stroke="#6b7280" fontSize={12} />
+                            <YAxis stroke="#6b7280" fontSize={12} domain={[0, 10]} tickCount={6} />
+                            <Tooltip contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }} />
+                            <Line type="monotone" dataKey="value" stroke="#4caf50" strokeWidth={2} dot={{ fill: '#4caf50', strokeWidth: 2 }} activeDot={{ r: 6, fill: '#4caf50' }} />
+                        </LineChart>
+                    </ResponsiveContainer>
                 </div>
             </div>
 
@@ -92,7 +144,17 @@ const AnimalBehaviors: React.FC<AnimalBehaviorsProps> = ({
                     </div>
                 </div>
                 <div className="behavior-chart">
-                    <div className="chart-placeholder">Dinlenme/Ayakta kalma oranı grafiği burada görüntülenecek</div>
+                    <ResponsiveContainer width="100%" height={220}>
+                        <LineChart data={restingStandingChartData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                            <XAxis dataKey="date" stroke="#6b7280" fontSize={12} />
+                            <YAxis stroke="#6b7280" fontSize={12} domain={[0, 100]} tickCount={6} />
+                            <Tooltip contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }} />
+                            <Legend verticalAlign="top" height={36} />
+                            <Line type="monotone" dataKey="resting" name="Dinlenme (%)" stroke="#4caf50" strokeWidth={2} dot={{ fill: '#4caf50', strokeWidth: 2 }} activeDot={{ r: 6, fill: '#4caf50' }} />
+                            <Line type="monotone" dataKey="standing" name="Ayakta Kalma (%)" stroke="#2196f3" strokeWidth={2} dot={{ fill: '#2196f3', strokeWidth: 2 }} activeDot={{ r: 6, fill: '#2196f3' }} />
+                        </LineChart>
+                    </ResponsiveContainer>
                 </div>
             </div>
 
@@ -113,7 +175,15 @@ const AnimalBehaviors: React.FC<AnimalBehaviorsProps> = ({
                     </div>
                 </div>
                 <div className="behavior-chart">
-                    <div className="chart-placeholder">Saatlik geviş getirme grafiği burada görüntülenecek</div>
+                    <ResponsiveContainer width="100%" height={220}>
+                        <LineChart data={ruminationHourly10} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                            <XAxis dataKey="date" stroke="#6b7280" fontSize={12} />
+                            <YAxis stroke="#6b7280" fontSize={12} />
+                            <Tooltip contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }} />
+                            <Line type="monotone" dataKey="value" name="Saatlik Geviş Getirme" stroke="#4caf50" strokeWidth={2} dot={{ fill: '#4caf50', strokeWidth: 2 }} activeDot={{ r: 6, fill: '#4caf50' }} />
+                        </LineChart>
+                    </ResponsiveContainer>
                 </div>
             </div>
 
@@ -134,7 +204,15 @@ const AnimalBehaviors: React.FC<AnimalBehaviorsProps> = ({
                     </div>
                 </div>
                 <div className="behavior-chart">
-                    <div className="chart-placeholder">Günlük aktivite grafiği burada görüntülenecek</div>
+                    <ResponsiveContainer width="100%" height={220}>
+                        <LineChart data={stepHistory10} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                            <XAxis dataKey="date" stroke="#6b7280" fontSize={12} />
+                            <YAxis stroke="#6b7280" fontSize={12} />
+                            <Tooltip contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }} />
+                            <Line type="monotone" dataKey="value" name="Günlük Adım" stroke="#2196f3" strokeWidth={2} dot={{ fill: '#2196f3', strokeWidth: 2 }} activeDot={{ r: 6, fill: '#2196f3' }} />
+                        </LineChart>
+                    </ResponsiveContainer>
                 </div>
             </div>
 

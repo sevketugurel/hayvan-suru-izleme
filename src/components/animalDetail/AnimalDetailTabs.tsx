@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import AnimalGeneralInfo from './AnimalGeneralInfo';
-import AnimalHealthData from './AnimalHealthData';
-import AnimalBehaviors from './AnimalBehaviors';
-import AnimalReproduction from './AnimalReproduction';
-import AnimalLocationSocial from './AnimalLocationSocial';
-import AnimalRiskEnvironment from './AnimalRiskEnvironment';
-import AnimalTreatments from './AnimalTreatments';
-import AnimalCameraAnalysis from './AnimalCameraAnalysis';
+import AnimalGeneralInfo from './tabs/AnimalGeneralInfo';
+import AnimalHealthData from './tabs/AnimalHealthData';
+import AnimalBehaviors from './tabs/AnimalBehaviors';
+import AnimalReproduction from './tabs/AnimalReproduction';
+import AnimalLocationSocial from './tabs/AnimalLocationSocial';
+import AnimalRiskEnvironment from './tabs/AnimalRiskEnvironment';
+import AnimalTreatments from './tabs/AnimalTreatments';
+import AnimalCameraAnalysis from './tabs/AnimalCameraAnalysis';
 import animalDetailMocks from '../../mocks/animalDetailMocks';
 import './styles/AnimalDetailTabs.css';
 import type {
@@ -39,8 +39,35 @@ interface AnimalDetailTabsProps {
     animalData: any; // mock veriler için genel bir tip kullanıyoruz
 }
 
+// Pil durumu ve yüzdesini gösteren komponent
+const BatteryIndicator: React.FC<{ batteryLevel: number }> = ({ batteryLevel }) => {
+    const getBatteryColor = () => {
+        if (batteryLevel <= 20) return "#ef4444"; // Kırmızı
+        if (batteryLevel <= 50) return "#f59e0b"; // Turuncu
+        return "#10b981"; // Yeşil
+    };
+
+    return (
+        <div className="battery-indicator">
+            <div className="battery-icon">
+                <div
+                    className="battery-level"
+                    style={{
+                        width: `${batteryLevel}%`,
+                        backgroundColor: getBatteryColor()
+                    }}
+                ></div>
+            </div>
+            <span className="battery-percentage">{batteryLevel}%</span>
+        </div>
+    );
+};
+
 const AnimalDetailTabs: React.FC<AnimalDetailTabsProps> = ({ animalId, animalData }) => {
     const [activeTab, setActiveTab] = useState('general');
+
+    // Hayvan sensör pil seviyesi (örnek veri)
+    const batteryLevel = 78;
 
     // animalDetailMocks ile mevcut animalData nesnelerini birleştir
     const mockData = animalDetailMocks || {};
@@ -109,7 +136,10 @@ const AnimalDetailTabs: React.FC<AnimalDetailTabsProps> = ({ animalId, animalDat
         <div className="animal-detail-container">
             <div className="animal-header">
                 <div className="animal-header-left">
-                    <h1 className="animal-name">Sarıkız (TR123456789)</h1>
+                    <div className="header-title-row">
+                        <h1 className="animal-name">Sarıkız (TR123456789)</h1>
+                        <BatteryIndicator batteryLevel={batteryLevel} />
+                    </div>
                 </div>
                 <div className="animal-header-right">
                     İnek • Holstein<br />

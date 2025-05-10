@@ -1,5 +1,8 @@
-import React from 'react';
-import './styles/AnimalLocationSocial.css';
+import React, { useEffect, useState } from 'react';
+import '../styles/AnimalLocationSocial.css';
+import { MapContainer, TileLayer, Marker, Popup, Polyline, Circle } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
 interface LocationData {
     currentPosition: {
@@ -86,6 +89,83 @@ const AnimalLocationSocial: React.FC<AnimalLocationSocialProps> = ({
     socialBehavior,
     closeFriends
 }) => {
+    // Örnek hayvan konumları - canlı veri simülasyonu
+    const [animalPositions, setAnimalPositions] = useState<{ latitude: number, longitude: number, timestamp: string }[]>([]);
+
+    // Custom marker ikon oluşturma
+    const animalMarkerIcon = new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+    const currentPositionIcon = new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+    useEffect(() => {
+        // Leaflet'in varsayılan ikon URL'lerini düzeltme
+        // @ts-ignore - _getIconUrl metodu Icon.Default prototipinde var ama ts tanımlarında yok
+        delete L.Icon.Default.prototype._getIconUrl;
+        L.Icon.Default.mergeOptions({
+            iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+            iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+        });
+
+        // Örnek hayvan hareketi konumları oluştur
+        generateAnimalPositions();
+    }, []);
+
+    // Örnek hayvan konumları oluşturan fonksiyon
+    const generateAnimalPositions = () => {
+        // Güvenli bölge merkezini ve yarıçapını alıyoruz (ilk güvenli bölgeyi kullanıyoruz)
+        const safeZone = herdDeviation.safeZones[0];
+        const centerLat = safeZone.center.latitude;
+        const centerLng = safeZone.center.longitude;
+        const radius = safeZone.radius;
+
+        // Güvenli bölgenin içinde kalacak şekilde noktalar oluşturacağız
+        const positions = [];
+
+        // Daha az nokta için 12 saatte bir konum oluştur (toplam 12 konum)
+        for (let hour = 12; hour >= 0; hour--) {
+            // Zaman bazlı açı ve mesafe
+            const angle = hour * 30 * (Math.PI / 180); // Her saat için 30 derece
+            // Yarıçapın en fazla %80'i kadar mesafede olsun
+            const distance = (radius * 0.6) * Math.random();
+
+            // Polar koordinatları kartezyen koordinatlara dönüştür
+            // Bu şekilde güvenli bölgenin içinde spiral benzeri bir hareket oluşur
+            const latOffset = (distance / 111000) * Math.cos(angle); // 1 derece yaklaşık 111km
+            const lngOffset = (distance / (111000 * Math.cos(centerLat * (Math.PI / 180)))) * Math.sin(angle);
+
+            // Biraz rastgelelik ekle (gerçek GPS sinyalindeki küçük dalgalanmaları simüle eder)
+            const randomLat = (Math.random() - 0.5) * 0.0001;
+            const randomLng = (Math.random() - 0.5) * 0.0001;
+
+            // Zaman oluştur
+            const timestamp = new Date();
+            timestamp.setHours(timestamp.getHours() - hour);
+
+            positions.push({
+                latitude: centerLat + latOffset + randomLat,
+                longitude: centerLng + lngOffset + randomLng,
+                timestamp: timestamp.toISOString()
+            });
+        }
+
+        setAnimalPositions(positions);
+    };
+
     // Tarihi formatlamak için yardımcı fonksiyon
     const formatDateTime = (isoDateString: string) => {
         const date = new Date(isoDateString);
@@ -105,29 +185,93 @@ const AnimalLocationSocial: React.FC<AnimalLocationSocialProps> = ({
                     </h3>
                 </div>
                 <div className="map-container">
-                    <div className="map-placeholder">
-                        Harita yükleniyor...
-                    </div>
-                    <div className="coords-display">
-                        <div className="current-location-info">
-                            <p><strong>Mevcut Konum:</strong> {gpsTracking.currentPosition.latitude.toFixed(6)}, {gpsTracking.currentPosition.longitude.toFixed(6)}</p>
-                            <p><strong>Son Güncelleme:</strong> {formatDateTime(gpsTracking.currentPosition.timestamp)}</p>
-                            <p><strong>Doğruluk:</strong> {gpsTracking.currentPosition.accuracy} metre</p>
+                    <MapContainer
+                        center={[40.123456, 29.654321]}
+                        zoom={14}
+                        style={{ height: '100%', width: '100%' }}
+                    >
+                        <TileLayer
+                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+
+                        {/* Hayvan konumları */}
+                        {animalPositions.map((position, index) => (
+                            <Marker
+                                key={`animal-pos-${index}`}
+                                position={[position.latitude, position.longitude]}
+                                icon={index === animalPositions.length - 1 ? currentPositionIcon : animalMarkerIcon}
+                            >
+                                <Popup className="custom-popup">
+                                    <div className={index === animalPositions.length - 1 ? "current-position-popup" : "movement-popup"}>
+                                        <h4>{index === animalPositions.length - 1 ? "Mevcut Konum" : "Geçmiş Konum"}</h4>
+                                        <p><strong>Koordinat:</strong> {position.latitude.toFixed(6)}, {position.longitude.toFixed(6)}</p>
+                                        <p><strong>Zaman:</strong> {formatDateTime(position.timestamp)}</p>
+                                    </div>
+                                </Popup>
+                            </Marker>
+                        ))}
+
+                        {/* Hayvan hareket rotası */}
+                        {animalPositions.length > 1 && (
+                            <Polyline
+                                positions={animalPositions.map(pos => [pos.latitude, pos.longitude])}
+                                pathOptions={{
+                                    color: '#ef4444',
+                                    weight: 3,
+                                    opacity: 0.7
+                                }}
+                            />
+                        )}
+
+                        {/* Demo için güvenli bölgeler */}
+                        {herdDeviation.safeZones.map((zone, index) => (
+                            <Circle
+                                key={`zone-${index}`}
+                                center={[zone.center.latitude, zone.center.longitude]}
+                                radius={zone.radius}
+                                pathOptions={{
+                                    color: '#3b82f6',
+                                    fillColor: '#93c5fd',
+                                    fillOpacity: 0.2,
+                                    weight: 2
+                                }}
+                                className="safe-zone-circle"
+                            >
+                                <Popup>
+                                    <strong>{zone.name}</strong><br />
+                                    Güvenli bölge sınırı (Yarıçap: {zone.radius}m)
+                                </Popup>
+                            </Circle>
+                        ))}
+                    </MapContainer>
+                    <div className="map-info">
+                        <div className="map-instructions">
+                            <p className="default-instructions">Haritada hayvanın son 24 saatteki hareketleri gösterilmektedir. Yeşil işaretçi mevcut konumu, kırmızı işaretçiler geçmiş konumları gösterir.</p>
+                        </div>
+                        <div className="coords-display">
+                            <div className="current-location-info">
+                                {animalPositions.length > 0 && (
+                                    <p><strong>Son Konum:</strong> {animalPositions[animalPositions.length - 1].latitude.toFixed(6)}, {animalPositions[animalPositions.length - 1].longitude.toFixed(6)}</p>
+                                )}
+                                <p><strong>Konum Sayısı:</strong> {animalPositions.length}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
+
                 <div>
                     <h4 className="path-history-title">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3.293 1.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L7.586 10 5.293 7.707a1 1 0 010-1.414zM11 12a1 1 0 100-2h-1a1 1 0 100 2h1z" clipRule="evenodd" />
                         </svg>
-                        Bugünkü Hareket
+                        Konum Geçmişi
                     </h4>
                     <div className="path-history-container">
-                        {gpsTracking.dailyMovement.map((point, index) => (
-                            <div key={index} className="path-history-item">
-                                <span className="path-time">{formatDateTime(point.timestamp)}</span>
-                                <span className="path-coords">{point.latitude.toFixed(6)}, {point.longitude.toFixed(6)}</span>
+                        {animalPositions.map((position, index) => (
+                            <div key={`history-${index}`} className="path-history-item">
+                                <span className="path-time">{formatDateTime(position.timestamp)}</span>
+                                <span className="path-coords">{position.latitude.toFixed(6)}, {position.longitude.toFixed(6)}</span>
                             </div>
                         ))}
                     </div>
@@ -143,12 +287,6 @@ const AnimalLocationSocial: React.FC<AnimalLocationSocialProps> = ({
                         </svg>
                         Sürüden Uzaklaşma / Anormal Lokasyon Davranışı
                     </h3>
-                    <button className="refresh-button">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
-                        </svg>
-                        Yenile
-                    </button>
                 </div>
 
                 <div className="deviation-status">
@@ -233,16 +371,13 @@ const AnimalLocationSocial: React.FC<AnimalLocationSocialProps> = ({
                         <div className="social-metric-card">
                             <p className="metric-label">Sosyal Skor</p>
                             <div className="metric-value-container">
-                                <div className="metric-progress">
-                                    <div
-                                        className={`metric-progress-fill ${socialBehavior.socialScore > 75 ? 'high-score' :
-                                            socialBehavior.socialScore > 50 ? 'medium-score' : 'low-score'
-                                            }`}
-                                        style={{ width: `${socialBehavior.socialScore}%` }}>
-                                    </div>
+                                <div className={`metric-progress-fill ${socialBehavior.socialScore > 75 ? 'high-score' :
+                                    socialBehavior.socialScore > 50 ? 'medium-score' : 'low-score'
+                                    }`}
+                                    style={{ width: `${socialBehavior.socialScore}%` }}>
                                 </div>
-                                <p className="metric-value">{socialBehavior.socialScore}/100</p>
                             </div>
+                            <p className="metric-value">{socialBehavior.socialScore}/100</p>
                         </div>
 
                         <div className="social-metric-card">
@@ -335,4 +470,4 @@ const AnimalLocationSocial: React.FC<AnimalLocationSocialProps> = ({
     );
 };
 
-export default AnimalLocationSocial; 
+export default AnimalLocationSocial;

@@ -1,5 +1,6 @@
 import React from 'react';
 import './styles/AnimalHealthData.css';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface HealthMetric {
     date: string;
@@ -35,6 +36,14 @@ const AnimalHealthData: React.FC<AnimalHealthDataProps> = ({
     bodyTemperature,
     medications
 }) => {
+    // Grafik verilerini hazırlama
+    const formatChartData = (data: HealthMetric[]) => {
+        return data.map(item => ({
+            date: new Date(item.date).toLocaleDateString('tr-TR'),
+            value: item.value
+        }));
+    };
+
     return (
         <div className="health-container">
             <div className="vital-signs-row">
@@ -60,7 +69,29 @@ const AnimalHealthData: React.FC<AnimalHealthDataProps> = ({
                             <span className="vital-unit">atım/dk</span>
                         </div>
                         <div className="vital-chart">
-                            <div className="chart-placeholder">Nabız grafiği burada görüntülenecek</div>
+                            <ResponsiveContainer width="100%" height="100%">
+                                <LineChart data={formatChartData(pulseRate.history)}>
+                                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                                    <XAxis dataKey="date" stroke="#6b7280" fontSize={12} />
+                                    <YAxis stroke="#6b7280" fontSize={12} />
+                                    <Tooltip
+                                        contentStyle={{
+                                            backgroundColor: '#fff',
+                                            border: '1px solid #e5e7eb',
+                                            borderRadius: '8px',
+                                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                                        }}
+                                    />
+                                    <Line
+                                        type="monotone"
+                                        dataKey="value"
+                                        stroke="#ef4444"
+                                        strokeWidth={2}
+                                        dot={{ fill: '#ef4444', strokeWidth: 2 }}
+                                        activeDot={{ r: 6, fill: '#ef4444' }}
+                                    />
+                                </LineChart>
+                            </ResponsiveContainer>
                         </div>
                     </div>
                 </div>
@@ -87,7 +118,29 @@ const AnimalHealthData: React.FC<AnimalHealthDataProps> = ({
                             <span className="vital-unit">/ 10</span>
                         </div>
                         <div className="vital-chart">
-                            <div className="chart-placeholder">Stres seviyesi grafiği burada görüntülenecek</div>
+                            <ResponsiveContainer width="100%" height="100%">
+                                <LineChart data={formatChartData(stressLevel.history)}>
+                                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                                    <XAxis dataKey="date" stroke="#6b7280" fontSize={12} />
+                                    <YAxis stroke="#6b7280" fontSize={12} />
+                                    <Tooltip
+                                        contentStyle={{
+                                            backgroundColor: '#fff',
+                                            border: '1px solid #e5e7eb',
+                                            borderRadius: '8px',
+                                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                                        }}
+                                    />
+                                    <Line
+                                        type="monotone"
+                                        dataKey="value"
+                                        stroke="#4f46e5"
+                                        strokeWidth={2}
+                                        dot={{ fill: '#4f46e5', strokeWidth: 2 }}
+                                        activeDot={{ r: 6, fill: '#4f46e5' }}
+                                    />
+                                </LineChart>
+                            </ResponsiveContainer>
                         </div>
                     </div>
                 </div>
@@ -114,7 +167,38 @@ const AnimalHealthData: React.FC<AnimalHealthDataProps> = ({
                             <span className="vital-unit">°C</span>
                         </div>
                         <div className="vital-chart">
-                            <div className="chart-placeholder">Sıcaklık grafiği burada görüntülenecek</div>
+                            <ResponsiveContainer width="100%" height="100%">
+                                <LineChart data={formatChartData(bodyTemperature.history)}>
+                                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                                    <XAxis dataKey="date" stroke="#6b7280" fontSize={12} />
+                                    <YAxis
+                                        stroke="#6b7280"
+                                        fontSize={12}
+                                        domain={[
+                                            (dataMin: number) => Math.floor(dataMin - 0.5),
+                                            (dataMax: number) => Math.ceil(dataMax + 0.5)
+                                        ]}
+                                        tickFormatter={(value) => value.toFixed(1)}
+                                    />
+                                    <Tooltip
+                                        contentStyle={{
+                                            backgroundColor: '#fff',
+                                            border: '1px solid #e5e7eb',
+                                            borderRadius: '8px',
+                                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                                        }}
+                                        formatter={(value: number) => [`${value.toFixed(1)}°C`, 'Sıcaklık']}
+                                    />
+                                    <Line
+                                        type="monotone"
+                                        dataKey="value"
+                                        stroke="#f97316"
+                                        strokeWidth={2}
+                                        dot={{ fill: '#f97316', strokeWidth: 2 }}
+                                        activeDot={{ r: 6, fill: '#f97316' }}
+                                    />
+                                </LineChart>
+                            </ResponsiveContainer>
                         </div>
                     </div>
                 </div>

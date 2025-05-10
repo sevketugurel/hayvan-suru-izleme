@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import './styles/AnimalTreatments.css';
 
 // Geçmiş tedaviler için arayüz
@@ -86,6 +86,135 @@ const AnimalTreatments: React.FC<AnimalTreatmentsProps> = ({
     diseaseHistory,
     medicationUsage
 }) => {
+    // Hastalık geçmişi için slider ref'i
+    const diseaseSliderRef = useRef<HTMLDivElement>(null);
+
+    // Sağ oka tıklayınca kaydır
+    const handleNextDisease = () => {
+        if (diseaseSliderRef.current) {
+            diseaseSliderRef.current.scrollBy({ left: 340, behavior: 'smooth' });
+        }
+    };
+
+    // Sola kaydırmak için fonksiyon
+    const handlePrevDisease = () => {
+        if (diseaseSliderRef.current) {
+            diseaseSliderRef.current.scrollBy({ left: -340, behavior: 'smooth' });
+        }
+    };
+
+    // İlaç kullanım raporu için slider ref'i ve scroll pozisyonu
+    const medicationSliderRef = useRef<HTMLDivElement>(null);
+
+
+    // Sağ oka tıklayınca kaydır
+    const handleNextMedication = () => {
+        if (medicationSliderRef.current) {
+            medicationSliderRef.current.scrollBy({ left: 340, behavior: 'smooth' });
+        }
+    };
+    // Sola kaydırmak için fonksiyon
+    const handlePrevMedication = () => {
+        if (medicationSliderRef.current) {
+            medicationSliderRef.current.scrollBy({ left: -340, behavior: 'smooth' });
+        }
+    };
+
+    // Örnek olarak bir hastalık daha ekliyoruz (statik)
+    const extendedDiseaseHistory = [
+        ...diseaseHistory,
+        {
+            id: 'd4',
+            diseaseName: 'Solunum Yolu Enfeksiyonu',
+            diagnosisDate: '2024-02-10',
+            recoveryDate: '2024-02-18',
+            duration: 8,
+            severity: 'medium',
+            treatment: 'Antibiyotik ve destekleyici bakım',
+            recurrenceRisk: 20,
+            notes: 'Öksürük ve burun akıntısı gözlendi.'
+        }
+    ];
+
+    // Örnek olarak geçmiş tedavilere birkaç tedavi daha ekliyoruz (statik)
+    const extendedPastTreatments = [
+        ...pastTreatments,
+        {
+            id: 't4',
+            date: '2024-01-15',
+            diagnosis: 'Solunum Yolu Enfeksiyonu',
+            treatment: 'Antibiyotik ve destekleyici bakım',
+            medications: [
+                { name: 'Enrofloxacin', dosage: '5ml/100kg', method: 'IM enjeksiyon' },
+                { name: 'Vitamin C', dosage: '10ml', method: 'Oral' }
+            ],
+            veterinarian: 'Dr. Zeynep Kaya',
+            result: 'İyileşti, izleniyor',
+            notes: 'Hafif ateş ve öksürük vardı.'
+        },
+        {
+            id: 't5',
+            date: '2023-12-10',
+            diagnosis: 'İshallik',
+            treatment: 'Sıvı desteği ve probiyotik',
+            medications: [
+                { name: 'Probiyotik', dosage: '1 paket', method: 'Oral' }
+            ],
+            veterinarian: 'Dr. Ali Can',
+            result: 'Tamamen İyileşti',
+            notes: 'Beslenme düzeni değiştirildi.'
+        },
+        {
+            id: 't6',
+            date: '2023-11-05',
+            diagnosis: 'Kuduz Aşısı',
+            treatment: 'Aşı uygulaması',
+            medications: [
+                { name: 'Kuduz Aşısı', dosage: '1 doz', method: 'IM enjeksiyon' }
+            ],
+            veterinarian: 'Dr. Ayşe Demir',
+            result: 'Tamamen İyileşti',
+            notes: 'Aşı sonrası hafif halsizlik gözlendi.'
+        }
+    ];
+
+    // İlaç kullanım raporuna 4 yeni örnek ekle
+    const extendedMedicationUsage = [
+        ...medicationUsage,
+        {
+            medicationName: 'Mineral Takviyeleri',
+            totalUsage: 3,
+            unit: 'kg',
+            administrationMethods: ['Yem katkısı'],
+            lastUsed: '2024-09-10',
+            effectivenessScore: 80
+        },
+        {
+            medicationName: 'Ağrı Kesiciler',
+            totalUsage: 60,
+            unit: 'ml',
+            administrationMethods: ['IM enjeksiyon'],
+            lastUsed: '2024-10-03',
+            effectivenessScore: 75
+        },
+        {
+            medicationName: 'Elektrolit Çözeltileri',
+            totalUsage: 2,
+            unit: 'L',
+            administrationMethods: ['Oral'],
+            lastUsed: '2024-09-28',
+            effectivenessScore: 65
+        },
+        {
+            medicationName: 'Probiyotikler',
+            totalUsage: 5,
+            unit: 'paket',
+            administrationMethods: ['Oral'],
+            lastUsed: '2024-09-15',
+            effectivenessScore: 60
+        }
+    ];
+
     return (
         <div className="treatments-container">
             {/* Aktif Tedaviler */}
@@ -219,55 +348,66 @@ const AnimalTreatments: React.FC<AnimalTreatmentsProps> = ({
                         </svg>
                         Hastalık Geçmişi
                     </h3>
+
                 </div>
 
-                {diseaseHistory.length > 0 ? (
-                    <div className="disease-history-list">
-                        {diseaseHistory.map((disease) => (
-                            <div key={disease.id} className="disease-card">
-                                <div className="disease-header">
-                                    <h4 className="disease-name">{disease.diseaseName}</h4>
-                                    <span className={`severity-badge severity-${disease.severity}`}>
-                                        {disease.severity === 'high' ? 'Yüksek Şiddet' :
-                                            disease.severity === 'medium' ? 'Orta Şiddet' :
-                                                'Düşük Şiddet'}
-                                    </span>
-                                </div>
+                {extendedDiseaseHistory.length > 0 ? (
+                    <div className="disease-history-slider-wrapper">
+                        <div className="disease-slider-buttons">
+                            <button className="disease-slider-prev" onClick={handlePrevDisease} title="Önceki">
+                                <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" stroke="#2196f3" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                            </button>
+                            <button className="disease-slider-next" onClick={handleNextDisease} title="Sonraki">
+                                <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke="#2196f3" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                            </button>
+                        </div>
+                        <div className="disease-history-slider" ref={diseaseSliderRef}>
+                            {extendedDiseaseHistory.map((disease) => (
+                                <div key={disease.id} className="disease-card">
+                                    <div className="disease-header">
+                                        <h4 className="disease-name">{disease.diseaseName}</h4>
+                                        <span className={`severity-badge severity-${disease.severity}`}>
+                                            {disease.severity === 'high' ? 'Yüksek Şiddet' :
+                                                disease.severity === 'medium' ? 'Orta Şiddet' :
+                                                    'Düşük Şiddet'}
+                                        </span>
+                                    </div>
 
-                                <div className="disease-dates">
-                                    <span className="diagnosis-date">Teşhis: {disease.diagnosisDate}</span>
-                                    {disease.recoveryDate && (
-                                        <span className="recovery-date">İyileşme: {disease.recoveryDate}</span>
-                                    )}
-                                    <span className="duration">Süre: {disease.duration} gün</span>
-                                </div>
+                                    <div className="disease-dates">
+                                        <span className="diagnosis-date">Teşhis: {disease.diagnosisDate}</span>
+                                        {disease.recoveryDate && (
+                                            <span className="recovery-date">İyileşme: {disease.recoveryDate}</span>
+                                        )}
+                                        <span className="duration">Süre: {disease.duration} gün</span>
+                                    </div>
 
-                                <div className="disease-details">
-                                    <p className="treatment-info"><strong>Uygulanan Tedavi:</strong> {disease.treatment}</p>
+                                    <div className="disease-details">
+                                        <p className="treatment-info"><strong>Uygulanan Tedavi:</strong> {disease.treatment}</p>
 
-                                    <div className="recurrence-risk">
-                                        <p className="risk-label">Tekrarlama Riski:</p>
-                                        <div className="risk-bar">
-                                            <div
-                                                className={`risk-fill ${disease.recurrenceRisk > 70 ? 'high-risk' :
-                                                    disease.recurrenceRisk > 30 ? 'medium-risk' :
-                                                        'low-risk'
-                                                    }`}
-                                                style={{ width: `${disease.recurrenceRisk}%` }}>
+                                        <div className="recurrence-risk">
+                                            <p className="risk-label">Tekrarlama Riski:</p>
+                                            <div className="risk-bar">
+                                                <div
+                                                    className={`risk-fill ${disease.recurrenceRisk > 70 ? 'high-risk' :
+                                                        disease.recurrenceRisk > 30 ? 'medium-risk' :
+                                                            'low-risk'
+                                                        }`}
+                                                    style={{ width: `${disease.recurrenceRisk}%` }}>
+                                                </div>
                                             </div>
+                                            <span className="risk-value">%{disease.recurrenceRisk}</span>
                                         </div>
-                                        <span className="risk-value">%{disease.recurrenceRisk}</span>
                                     </div>
-                                </div>
 
-                                {disease.notes && (
-                                    <div className="disease-notes">
-                                        <p className="notes-label">Notlar:</p>
-                                        <p className="notes-content">{disease.notes}</p>
-                                    </div>
-                                )}
-                            </div>
-                        ))}
+                                    {disease.notes && (
+                                        <div className="disease-notes">
+                                            <p className="notes-label">Notlar:</p>
+                                            <p className="notes-content">{disease.notes}</p>
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 ) : (
                     <p className="empty-message">Hastalık geçmişi bulunmamaktadır.</p>
@@ -285,42 +425,44 @@ const AnimalTreatments: React.FC<AnimalTreatmentsProps> = ({
                     </h3>
                 </div>
 
-                {pastTreatments.length > 0 ? (
-                    <table className="past-treatments-table">
-                        <thead>
-                            <tr>
-                                <th>Tarih</th>
-                                <th>Teşhis</th>
-                                <th>Tedavi</th>
-                                <th>İlaçlar</th>
-                                <th>Veteriner</th>
-                                <th>Sonuç</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {pastTreatments.map((treatment) => (
-                                <tr key={treatment.id}>
-                                    <td>{treatment.date}</td>
-                                    <td>{treatment.diagnosis}</td>
-                                    <td>{treatment.treatment}</td>
-                                    <td>
-                                        <ul className="medications-list">
-                                            {treatment.medications.map((med, idx) => (
-                                                <li key={idx}>{med.name} ({med.dosage}, {med.method})</li>
-                                            ))}
-                                        </ul>
-                                    </td>
-                                    <td>{treatment.veterinarian}</td>
-                                    <td className={`treatment-result ${treatment.result.includes('İyileşti') ? 'result-success' :
-                                        treatment.result.includes('Başarısız') ? 'result-failure' :
-                                            'result-neutral'
-                                        }`}>
-                                        {treatment.result}
-                                    </td>
+                {extendedPastTreatments.length > 0 ? (
+                    <div className="past-treatments-table-wrapper">
+                        <table className="past-treatments-table">
+                            <thead>
+                                <tr>
+                                    <th>Tarih</th>
+                                    <th>Teşhis</th>
+                                    <th>Tedavi</th>
+                                    <th>İlaçlar</th>
+                                    <th>Veteriner</th>
+                                    <th>Sonuç</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {extendedPastTreatments.map((treatment) => (
+                                    <tr key={treatment.id}>
+                                        <td>{treatment.date}</td>
+                                        <td>{treatment.diagnosis}</td>
+                                        <td>{treatment.treatment}</td>
+                                        <td>
+                                            <ul className="medications-list">
+                                                {treatment.medications.map((med, idx) => (
+                                                    <li key={idx}>{med.name} ({med.dosage}, {med.method})</li>
+                                                ))}
+                                            </ul>
+                                        </td>
+                                        <td>{treatment.veterinarian}</td>
+                                        <td className={`treatment-result ${treatment.result.includes('İyileşti') ? 'result-success' :
+                                            treatment.result.includes('Başarısız') ? 'result-failure' :
+                                                'result-neutral'
+                                            }`}>
+                                            {treatment.result}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 ) : (
                     <p className="empty-message">Geçmiş tedavi bulunmamaktadır.</p>
                 )}
@@ -337,45 +479,54 @@ const AnimalTreatments: React.FC<AnimalTreatmentsProps> = ({
                     </h3>
                 </div>
 
-                {medicationUsage.length > 0 ? (
-                    <div className="medication-usage-list">
-                        {medicationUsage.map((medication, index) => (
-                            <div key={index} className="medication-card">
-                                <h4 className="medication-name">{medication.medicationName}</h4>
-
-                                <div className="medication-details">
-                                    <div className="usage-info">
-                                        <p className="total-usage"><strong>Toplam Kullanım:</strong> {medication.totalUsage} {medication.unit}</p>
-                                        <p className="last-used"><strong>Son Kullanım:</strong> {medication.lastUsed}</p>
-                                    </div>
-
-                                    <div className="administration-methods">
-                                        <p className="methods-label"><strong>Uygulama Yöntemleri:</strong></p>
-                                        <ul className="methods-list">
-                                            {medication.administrationMethods.map((method, idx) => (
-                                                <li key={idx}>{method}</li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                {medication.effectivenessScore !== undefined && (
-                                    <div className="effectiveness-container">
-                                        <p className="effectiveness-label">Etkinlik:</p>
-                                        <div className="effectiveness-bar">
-                                            <div
-                                                className={`effectiveness-fill ${medication.effectivenessScore > 75 ? 'high-effectiveness' :
-                                                    medication.effectivenessScore > 50 ? 'medium-effectiveness' :
-                                                        'low-effectiveness'
-                                                    }`}
-                                                style={{ width: `${medication.effectivenessScore}%` }}>
+                {extendedMedicationUsage.length > 0 ? (
+                    <div className="medication-usage-slider-section">
+                        <div className="medication-slider-buttons">
+                            <button className="medication-slider-prev" onClick={handlePrevMedication} title="Önceki"  >
+                                <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" stroke="#2196f3" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                            </button>
+                            <button className="medication-slider-next" onClick={handleNextMedication} title="Sonraki"  >
+                                <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke="#2196f3" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                            </button>
+                        </div>
+                        <div className="medication-usage-slider-wrapper">
+                            <div className="medication-usage-slider" ref={medicationSliderRef}>
+                                {extendedMedicationUsage.map((medication, index) => (
+                                    <div key={index} className="medication-card">
+                                        <h4 className="medication-name">{medication.medicationName}</h4>
+                                        <div className="medication-details">
+                                            <div className="usage-info">
+                                                <p className="total-usage"><strong>Toplam Kullanım:</strong> {medication.totalUsage} {medication.unit}</p>
+                                                <p className="last-used"><strong>Son Kullanım:</strong> {medication.lastUsed}</p>
+                                            </div>
+                                            <div className="administration-methods">
+                                                <p className="methods-label"><strong>Uygulama Yöntemleri:</strong></p>
+                                                <ul className="methods-list">
+                                                    {medication.administrationMethods.map((method, idx) => (
+                                                        <li key={idx}>{method}</li>
+                                                    ))}
+                                                </ul>
                                             </div>
                                         </div>
-                                        <span className="effectiveness-value">%{medication.effectivenessScore}</span>
+                                        {medication.effectivenessScore !== undefined && (
+                                            <div className="effectiveness-container">
+                                                <p className="effectiveness-label">Etkinlik:</p>
+                                                <div className="effectiveness-bar">
+                                                    <div
+                                                        className={`effectiveness-fill ${medication.effectivenessScore > 75 ? 'high-effectiveness' :
+                                                            medication.effectivenessScore > 50 ? 'medium-effectiveness' :
+                                                                'low-effectiveness'
+                                                            }`}
+                                                        style={{ width: `${medication.effectivenessScore}%` }}>
+                                                    </div>
+                                                </div>
+                                                <span className="effectiveness-value">%{medication.effectivenessScore}</span>
+                                            </div>
+                                        )}
                                     </div>
-                                )}
+                                ))}
                             </div>
-                        ))}
+                        </div>
                     </div>
                 ) : (
                     <p className="empty-message">İlaç kullanım kaydı bulunmamaktadır.</p>

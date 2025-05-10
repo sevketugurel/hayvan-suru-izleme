@@ -323,9 +323,32 @@
 }
 
 /* Geçmiş Tedaviler Stili */
+.past-treatments-table-wrapper {
+    max-height: 320px;
+    overflow-y: auto;
+    overflow-x: auto;
+    background: #f8fafc;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.04);
+    margin-bottom: 1rem;
+}
+
 .past-treatments-table {
-    width: 100%;
-    border-collapse: collapse;
+    min-width: 900px;
+}
+
+.past-treatments-table-wrapper::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+
+.past-treatments-table-wrapper::-webkit-scrollbar-thumb {
+    background: #e0e7ef;
+    border-radius: 8px;
+}
+
+.past-treatments-table-wrapper::-webkit-scrollbar-track {
+    background: #f8fafc;
 }
 
 .past-treatments-table th {
@@ -475,4 +498,163 @@
         display: block;
         overflow-x: auto;
     }
+}
+
+.disease-history-slider-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.disease-history-slider {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 0.5rem;
+}
+
+.disease-history-slider::-webkit-scrollbar {
+    display: none;
+}
+
+.disease-slider-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 0.5rem;
+}
+
+.disease-slider-prev {
+    background: #e0f2fe;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.08);
+}
+
+.disease-slider-prev:hover {
+    background: #bae6fd;
+}
+
+.disease-slider-next {
+    background: #e0f2fe;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-left: 8px;
+    transition: background 0.2s;
+    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.08);
+}
+
+.disease-slider-next:hover {
+    background: #bae6fd;
+}
+
+.disease-card {
+    min-width: 320px;
+    max-width: 340px;
+    flex: 0 0 320px;
+}
+
+@media (max-width: 768px) {
+    .disease-card {
+        min-width: 260px;
+        max-width: 280px;
+        flex: 0 0 260px;
+    }
+}
+
+.medication-usage-slider-wrapper {
+    width: 100%;
+    overflow-x: hidden;
+    padding-bottom: 0.5rem;
+}
+
+.medication-usage-slider {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 0.5rem;
+}
+
+.medication-usage-slider::-webkit-scrollbar {
+    display: none;
+}
+
+.medication-card {
+    min-width: 320px;
+    max-width: 340px;
+    flex: 0 0 320px;
+    pointer-events: auto;
+}
+
+.medication-usage-slider-wrapper::-webkit-scrollbar {
+    height: 8px;
+}
+
+.medication-usage-slider-wrapper::-webkit-scrollbar-thumb {
+    background: #e0e7ef;
+    border-radius: 8px;
+}
+
+.medication-usage-slider-wrapper::-webkit-scrollbar-track {
+    background: #f8fafc;
+}
+
+@media (max-width: 768px) {
+    .medication-card {
+        min-width: 260px;
+        max-width: 280px;
+        flex: 0 0 260px;
+    }
+}
+
+.medication-usage-slider-section {
+    position: relative;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.medication-slider-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 0.5rem;
+}
+
+.medication-slider-prev,
+.medication-slider-next {
+    background: #e0f2fe;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.08);
+}
+
+.medication-slider-prev:hover,
+.medication-slider-next:hover {
+    background: #bae6fd;
 }

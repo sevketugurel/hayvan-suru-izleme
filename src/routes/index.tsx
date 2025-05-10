@@ -1,13 +1,24 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import MainLayout from "../components/layout/MainLayout";
-import DashboardPage from "../pages/dashboard/DashboardPage";
-import AnimalsPage from "../pages/animals/AnimalsPage";
-import AnimalDetailPage from "../pages/animalDetail/AnimalDetailPage";
-import AlertsPage from "../pages/alerts/AlertsPage";
-import ReportsPage from "../pages/reports/ReportsPage";
-import SettingsPage from "../pages/settings/SettingsPage";
+import MainLayout from "../layouts/MainLayout";
+import { lazy } from "react";
 
+// Lazily load pages
+const Dashboard = lazy(() => import("../pages/dashboard"));
+const AnimalsPage = lazy(() => import("../pages/animals"));
+const AnimalDetailPage = lazy(() => import("../pages/animalDetail"));
+const AlertsPage = lazy(() => import("../pages/alerts"));
+const ReportsPage = lazy(() => import("../pages/reports"));
+const SettingsPage = lazy(() => import("../pages/settings"));
+
+// Loading component
+const Loading = () => (
+  <div className="flex justify-center items-center h-full">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+  </div>
+);
+
+// Routes configuration
 const router = createBrowserRouter([
   {
     path: "/",
@@ -15,28 +26,61 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <DashboardPage />
+        element: (
+          <React.Suspense fallback={<Loading />}>
+            <Dashboard />
+          </React.Suspense>
+        ),
       },
       {
         path: "animals",
-        element: <AnimalsPage />
+        element: (
+          <React.Suspense fallback={<Loading />}>
+            <AnimalsPage />
+          </React.Suspense>
+        ),
       },
       {
-        path: "animals/:id",
-        element: <AnimalDetailPage />
+        path: "animals/:animalId",
+        element: (
+          <React.Suspense fallback={<Loading />}>
+            <AnimalDetailPage />
+          </React.Suspense>
+        ),
       },
       {
         path: "alerts",
-        element: <AlertsPage />
+        element: (
+          <React.Suspense fallback={<Loading />}>
+            <AlertsPage />
+          </React.Suspense>
+        ),
       },
+      // Reports routes
       {
         path: "reports",
-        element: <ReportsPage />
+        element: (
+          <React.Suspense fallback={<Loading />}>
+            <ReportsPage />
+          </React.Suspense>
+        ),
+      },
+      {
+        path: "reports/:reportType",
+        element: (
+          <React.Suspense fallback={<Loading />}>
+            <ReportsPage />
+          </React.Suspense>
+        ),
       },
       {
         path: "settings",
-        element: <SettingsPage />
-      }
+        element: (
+          <React.Suspense fallback={<Loading />}>
+            <SettingsPage />
+          </React.Suspense>
+        ),
+      },
     ]
   }
 ]);

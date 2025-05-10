@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import type { Report, ReportDetail, ReportType } from '../types';
+import type { Report, ReportDetail, ReportType } from '../types/report';
 
 interface FilterOptions {
   type?: ReportType;

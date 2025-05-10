@@ -55,12 +55,7 @@ const Sidebar: React.FC = () => {
       to: '/reports', 
       icon: 'report', 
       label: 'Raporlar',
-      keywords: ['rapor', 'analiz', 'istatistik'],
-      submenu: [
-        { to: '/reports/health', label: 'Sağlık Raporları' },
-        { to: '/reports/activity', label: 'Aktivite Raporları' },
-        { to: '/reports/reproduction', label: 'Üreme Raporları' },
-      ]
+      keywords: ['rapor', 'analiz', 'istatistik']
     },
     { to: '/settings', icon: 'settings', label: 'Ayarlar', keywords: ['ayar', 'tercih', 'yapılandırma'] },
   ];

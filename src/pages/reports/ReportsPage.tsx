@@ -1,27 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import useDashboardReports from '../../hooks/useDashboardReports';
-import type { ReportType } from '../../types';
-
-// Rapor türleri
-const REPORT_TYPES = [
-  { id: 'health', name: 'Sağlık Raporu' },
-  { id: 'reproduction', name: 'Üreme Performansı Raporu' },
-  { id: 'activity', name: 'Aktivite ve Davranış Raporu' },
-  { id: 'herd', name: 'Sürü Dinamikleri Raporu' }
-];
-
-// Örnek hayvan listesi (gerçek uygulamada API'den gelecek)
-const ANIMALS = [
-  { id: 'A001', name: 'Pamuk', tag: '#A001' },
-  { id: 'B023', name: 'Duman', tag: '#B023' },
-  { id: 'C045', name: 'Benekli', tag: '#C045' },
-  { id: 'D007', name: 'Sarı', tag: '#D007' },
-  { id: 'E018', name: 'Kara', tag: '#E018' }
-];
+import type { ReportType, Report } from '../../types/report';
+import HealthReport from '../../components/reports/HealthReport';
+import ActivityReport from '../../components/reports/ActivityReport';
+import ReproductionReport from '../../components/reports/ReproductionReport';
+import DashboardSummary from '../../components/reports/DashboardSummary';
+import SearchAndFilters from '../../components/reports/SearchAndFilters';
+import ReportGenerator from '../../components/reports/ReportGenerator';
+import ReportList from '../../components/reports/ReportList';
+import ReportDetail from '../../components/reports/ReportDetail';
+import { REPORT_TYPES, ANIMALS } from '../../constants/reportConstants';
+import './ReportsPage.css';
 
 const ReportsPage: React.FC = () => {
-  const { reportId } = useParams();
+  const { reportId, reportType } = useParams<{ reportId?: string; reportType?: string }>();
+  const location = useLocation();
   const navigate = useNavigate();
   const {
     recentReports,
@@ -47,13 +41,109 @@ const ReportsPage: React.FC = () => {
   const [selectedAnimal, setSelectedAnimal] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [reportGenerated, setReportGenerated] = useState(false);
-  
-  // Belirli bir rapor detayını göstermek için
+  const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
+  const [showDetailModal, setShowDetailModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [enhancedReports, setEnhancedReports] = useState<Report[]>([]);
+  const [viewMode, setViewMode] = useState<'generate' | 'saved'>('saved');
+
+  // Ek rapor verisi oluşturmak için kullanılan fonksiyon
+  const generateAdditionalReports = useCallback(() => {
+    // Raporlar için başlık şablonları
+    const titleTemplates: Record<ReportType, string[]> = {
+      health: [
+        'Aylık Sağlık Taraması Raporu',
+        'Aşı Takip Raporu',
+        'Sürü Sağlığı Durumu',
+        'Veteriner Kontrol Raporu',
+        'Hastalık Analiz Raporu'
+      ],
+      reproduction: [
+        'Doğum Performansı Raporu',
+        'Üreme Verimliliği Analizi',
+        'Kızgınlık Döngüsü Takibi',
+        'Gebelik Durumu Raporu',
+        'Yavru Gelişim Takibi'
+      ],
+      activity: [
+        'Günlük Adım Analizi',
+        'Sürü Hareketlilik Raporu',
+        'Beslenme Davranışı Takibi',
+        'Dinlenme Süresi Analizi',
+        'Otlak Kullanım Raporu'
+      ],
+      herd: [
+        'Sürü Demografik Raporu',
+        'Grup Dinamikleri Analizi',
+        'Sürü Yönetimi Ölçümleri',
+        'Sürü Sosyal Yapı Değerlendirmesi',
+        'Mera Kullanım Optimizasyonu'
+      ]
+    };
+    
+    const generateRandomDate = (start: Date, end: Date) => {
+      return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+    };
+    
+    const formatDate = (date: Date) => {
+      return `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth()+1).toString().padStart(2, '0')}.${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+    };
+    
+    // Son 3 ay içinde tarihler oluştur
+    const endDate = new Date();
+    const startDate = new Date();
+    startDate.setMonth(startDate.getMonth() - 3);
+    
+    // Her rapor tipi için 5'er tane olmak üzere 20 rapor oluştur
+    const reportTypes: ReportType[] = ['health', 'reproduction', 'activity', 'herd'];
+    const newReports: Report[] = [];
+    
+    for (let i = 0; i < 20; i++) {
+      const type = reportTypes[i % 4];
+      const titles = titleTemplates[type];
+      const title = titles[Math.floor(Math.random() * titles.length)];
+      const date = generateRandomDate(startDate, endDate);
+      const status = Math.random() > 0.7 ? 'new' : 'viewed' as const;
+      
+      newReports.push({
+        id: `custom-${i + 1}`,
+        title,
+        type,
+        dateGenerated: formatDate(date),
+        status
+      });
+    }
+    
+    return newReports;
+  }, []);
+
+  // Raporları zenginleştir
+  useEffect(() => {
+    if (recentReports && recentReports.length > 0) {
+      const additionalReports = generateAdditionalReports();
+      setEnhancedReports([...recentReports, ...additionalReports]);
+    }
+  }, [recentReports, generateAdditionalReports]);
+
+  // URL'den rapor tipini belirle
+  useEffect(() => {
+    if (reportType) {
+      if (['health', 'activity', 'reproduction', 'herd'].includes(reportType)) {
+        setSelectedReportType(reportType as ReportType);
+      } else {
+        navigate('/reports/health', { replace: true });
+      }
+    } else {
+      navigate('/reports/health', { replace: true });
+    }
+  }, [reportType, navigate]);
+
+  // Rapor detayını göster
   useEffect(() => {
     if (reportId) {
       fetchReportDetail(reportId)
         .then(report => {
-          // Rapor durumunu "görüntülendi" olarak güncelle
           if (report.status === 'new') {
             updateReportStatus(reportId, 'viewed');
           }
@@ -75,14 +165,9 @@ const ReportsPage: React.FC = () => {
     });
   }, [selectedReportType, updateFilters, filterOptions.status]);
 
-  // Kaydedilmiş raporlar ve filtreli rapor görünümü
-  const [viewMode, setViewMode] = useState<'generate' | 'saved'>('saved');
-  
   const handleGenerateReport = async () => {
     setIsGenerating(true);
-    
     try {
-      // Rapor oluşturma parametreleri
       const parameters = {
         dateRange: {
           from: dateRange.startDate,
@@ -90,33 +175,21 @@ const ReportsPage: React.FC = () => {
         },
         animalId: selectedAnimal || undefined
       };
-      
       await createReport(selectedReportType, parameters);
       setIsGenerating(false);
       setReportGenerated(true);
+      setLastUpdate(new Date());
     } catch (error) {
       console.error('Rapor oluşturma hatası:', error);
       setIsGenerating(false);
     }
   };
 
-  // Tablo başlıklarını rapor tipine göre oluştur
-  const getTableHeaders = () => {
-    switch (selectedReportType) {
-      case 'health':
-        return ['Hayvan ID', 'İsim', 'Vücut Sıcaklığı', 'Nabız', 'Stres Seviyesi', 'Son Muayene'];
-      case 'reproduction':
-        return ['Hayvan ID', 'İsim', 'Kızgınlık Durumu', 'Son Kızgınlık', 'Gebelik Durumu', 'Doğum Sayısı'];
-      case 'activity':
-        return ['Hayvan ID', 'İsim', 'Günlük Adım', 'Dinlenme Süresi', 'Yem Tüketimi', 'Aktivite Skoru'];
-      case 'herd':
-        return ['Hayvan ID', 'İsim', 'Grup', 'Sosyal Skor', 'Liderlik', 'Konum'];
-      default:
-        return ['Hayvan ID', 'İsim', 'Veri 1', 'Veri 2', 'Veri 3', 'Veri 4'];
-    }
+  const handleRefreshData = () => {
+    fetchReports();
+    setLastUpdate(new Date());
   };
 
-  // Sıralama işlevleri
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     if (value === 'date-desc') {
@@ -130,41 +203,139 @@ const ReportsPage: React.FC = () => {
     }
   };
 
-  // Filtre işlevleri
-  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-    if (value === 'all' || value === 'new' || value === 'viewed') {
-      updateFilters({ status: value });
-    } else if (value === 'health' || value === 'reproduction' || value === 'activity' || value === 'herd') {
-      setSelectedReportType(value as ReportType);
+  const renderReportComponent = () => {
+    const formattedDateRange = {
+      from: dateRange.startDate,
+      to: dateRange.endDate
+    };
+
+    switch (selectedReportType) {
+      case 'health':
+        return <HealthReport dateRange={formattedDateRange} animalId={selectedAnimal} />;
+      case 'activity':
+        return <ActivityReport dateRange={formattedDateRange} animalId={selectedAnimal} />;
+      case 'reproduction':
+        return <ReproductionReport dateRange={formattedDateRange} animalId={selectedAnimal} />;
+      case 'herd':
+        return <div className="text-center py-8">Sürü Dinamikleri raporu henüz uygulanmadı.</div>;
+      default:
+        return <HealthReport dateRange={formattedDateRange} animalId={selectedAnimal} />;
+    }
+  };
+
+  // Filtrelenmiş ve aranmış raporlar
+  const filteredReports = useMemo(() => {
+    if (!enhancedReports || enhancedReports.length === 0) {
+      return [];
+    }
+
+    return enhancedReports.filter(report => {
+      // Arama kriterine göre filtreleme
+      const matchesSearch = searchTerm === '' || 
+        report.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        report.dateGenerated.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      // Filtre kriterlerine göre filtreleme
+      // Hiçbir filtre seçilmemişse bütün raporları göster
+      if (activeFilters.length === 0) {
+        return matchesSearch;
+      }
+      
+      // Rapor tipine göre filtreleme
+      const typeFilters = ['health', 'reproduction', 'activity', 'herd'];
+      const hasTypeFilter = activeFilters.some(filter => typeFilters.includes(filter));
+      const matchesTypeFilter = hasTypeFilter ? 
+        activeFilters.includes(report.type) : true;
+      
+      // Durum filtresine göre filtreleme
+      const statusFilters = ['new', 'viewed'];
+      const hasStatusFilter = activeFilters.some(filter => statusFilters.includes(filter));
+      const matchesStatusFilter = hasStatusFilter ? 
+        (activeFilters.includes('new') && report.status === 'new') || 
+        (activeFilters.includes('viewed') && report.status === 'viewed') : true;
+      
+      return matchesSearch && matchesTypeFilter && matchesStatusFilter;
+    });
+  }, [enhancedReports, searchTerm, activeFilters]);
+
+  const toggleFilter = (filter: string): void => {
+    const newFilters = activeFilters.includes(filter)
+      ? activeFilters.filter(f => f !== filter)
+      : [...activeFilters, filter];
+    setActiveFilters(newFilters);
+  };
+
+  const generateCustomReportDetail = (report: any) => {
+    return {
+      ...report,
+      content: `<h2>${report.title}</h2><p>Rapor detayları yükleniyor...</p>`,
+      dateRange: {
+        from: new Date().toLocaleDateString('tr-TR'),
+        to: new Date().toLocaleDateString('tr-TR')
+      },
+      relatedAnimals: []
+    };
+  };
+
+  const handleShowReportDetail = (id: string) => {
+    if (id.startsWith('custom-')) {
+      const report = enhancedReports.find(r => r.id === id);
+      if (report) {
+        const customDetail = generateCustomReportDetail(report);
+        setTimeout(() => {
+          updateReportStatus(id, 'viewed');
+          fetchReportDetail(id).catch(() => {});
+          setShowDetailModal(true);
+        }, 500);
+        return;
+      }
+    }
+
+    fetchReportDetail(id)
+      .then(report => {
+        if (report.status === 'new') {
+          updateReportStatus(id, 'viewed');
+        }
+        setShowDetailModal(true);
+      })
+      .catch(error => {
+        console.error('Rapor detayı yüklenemedi:', error);
+      });
+  };
+
+  const handleShareReport = (e: React.MouseEvent, reportId: string) => {
+    e.stopPropagation();
+    if (navigator.share) {
+      navigator.share({
+        title: 'Rapor Paylaş',
+        text: 'Bu raporu kontrol et',
+        url: `${window.location.origin}/reports/${reportId}`
+      }).catch(err => console.error('Paylaşım hatası:', err));
+    } else {
+      navigator.clipboard.writeText(`${window.location.origin}/reports/${reportId}`)
+        .then(() => {
+          alert('Rapor bağlantısı panoya kopyalandı!');
+        })
+        .catch(err => {
+          console.error('Bağlantı kopyalama hatası:', err);
+        });
     }
   };
 
   if (loading && !isGenerating) {
     return (
-      <div className="reports-container max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Raporlar</h1>
-          <p className="text-gray-600">Yükleniyor...</p>
-        </div>
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-        </div>
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="reports-container max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Raporlar</h1>
-          <p className="text-red-600">Bir hata oluştu: {error.message}</p>
-        </div>
-        <button 
-          onClick={() => fetchReports()}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-        >
+      <div className="error-container">
+        <h2>Bir hata oluştu</h2>
+        <p>{error.message}</p>
+        <button onClick={fetchReports} className="retry-button">
           Tekrar Dene
         </button>
       </div>
@@ -172,334 +343,195 @@ const ReportsPage: React.FC = () => {
   }
 
   return (
-    <div className="reports-container max-w-7xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">Raporlar</h1>
-        <p className="text-gray-600">SürüGözü çiftlik verilerinizi analiz edin ve özel raporlar oluşturun</p>
+    <div className="dashboard-container">
+      <DashboardSummary 
+        reports={enhancedReports}
+        onRefresh={handleRefreshData}
+        lastUpdate={lastUpdate}
+      />
+
+      <div className="panels-grid">
+        <div className={viewMode === 'saved' ? "full-width-panel" : ""}>
+          <SearchAndFilters
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            activeFilters={activeFilters}
+            onFilterToggle={toggleFilter}
+            onClearFilters={() => setActiveFilters([])}
+            viewMode={viewMode}
+            onViewModeChange={setViewMode}
+            sortValue={sortOptions.field === 'dateGenerated' 
+              ? (sortOptions.order === 'desc' ? 'date-desc' : 'date-asc')
+              : (sortOptions.order === 'desc' ? 'title-desc' : 'title-asc')}
+            onSortChange={handleSortChange}
+          />
+        </div>
       </div>
-      
-      {/* Tab Navigation */}
-      <div className="flex border-b border-gray-200 mb-6">
-        <button
-          className={`py-3 px-6 font-medium text-sm ${
-            viewMode === 'saved' 
-              ? 'text-blue-600 border-b-2 border-blue-600' 
-              : 'text-gray-500 hover:text-gray-700'
-          }`}
-          onClick={() => setViewMode('saved')}
-        >
-          Kaydedilmiş Raporlar ({recentReports.length})
-        </button>
-        <button
-          className={`py-3 px-6 font-medium text-sm ${
-            viewMode === 'generate' 
-              ? 'text-blue-600 border-b-2 border-blue-600' 
-              : 'text-gray-500 hover:text-gray-700'
-          }`}
-          onClick={() => setViewMode('generate')}
-        >
-          Yeni Rapor Oluştur
-        </button>
-      </div>
-      
-      {viewMode === 'generate' ? (
-        /* Report Generator Card */
-        <div className="bg-white rounded-xl shadow mb-8 overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
-            <div className="flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              <h2 className="text-lg font-semibold text-white">Rapor Oluşturucu</h2>
-            </div>
-          </div>
-          
-          <div className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-              {/* Report Type Selection */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Rapor Türü</label>
-                <div className="relative">
-                  <select
-                    className="w-full appearance-none border-gray-300 rounded-lg shadow-sm py-2 pl-3 pr-10 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    value={selectedReportType}
-                    onChange={(e) => setSelectedReportType(e.target.value as ReportType)}
-                  >
-                    {REPORT_TYPES.map(type => (
-                      <option key={type.id} value={type.id}>{type.name}</option>
-                    ))}
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Date Range Selection */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Tarih Aralığı</label>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <svg className="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <input
-                      type="date"
-                      className="border-gray-300 rounded-lg shadow-sm pl-10 py-2 focus:ring-blue-500 focus:border-blue-500 block w-full"
-                      value={dateRange.startDate}
-                      onChange={(e) => setDateRange(prev => ({ ...prev, startDate: e.target.value }))}
-                    />
-                  </div>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <svg className="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <input
-                      type="date"
-                      className="border-gray-300 rounded-lg shadow-sm pl-10 py-2 focus:ring-blue-500 focus:border-blue-500 block w-full"
-                      value={dateRange.endDate}
-                      onChange={(e) => setDateRange(prev => ({ ...prev, endDate: e.target.value }))}
-                    />
-                  </div>
-                </div>
-              </div>
-              
-              {/* Animal Selection */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Hayvan</label>
-                <div className="relative">
-                  <select
-                    className="w-full appearance-none border-gray-300 rounded-lg shadow-sm py-2 pl-3 pr-10 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    value={selectedAnimal}
-                    onChange={(e) => setSelectedAnimal(e.target.value)}
-                  >
-                    <option value="">Tüm Hayvanlar</option>
-                    {ANIMALS.map(animal => (
-                      <option key={animal.id} value={animal.id}>{animal.name} {animal.tag}</option>
-                    ))}
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex justify-end mt-8">
-              <button
-                className={`px-6 py-3 rounded-lg font-medium text-white flex items-center ${
-                  isGenerating ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
-                }`}
-                onClick={handleGenerateReport}
-                disabled={isGenerating}
-              >
-                {isGenerating ? (
-                  <>
-                    <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Rapor Oluşturuluyor...
-                  </>
-                ) : (
-                  <>
-                    <svg className="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+
+      <div className="panels-grid">
+        {viewMode === 'saved' ? (
+          <div className="full-width-panel">
+            <div className="panel">
+              <div className="panel-header blue-panel-header">
+                <div className="panel-header-content">
+                  <div className="panel-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
-                    Raporu Oluştur
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : (
-        /* Saved Reports List */
-        <div className="bg-white rounded-xl shadow mb-8 overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                <h2 className="text-lg font-semibold text-white">Kaydedilmiş Raporlar</h2>
-              </div>
-              <div className="flex space-x-4">
-                <select
-                  className="bg-white text-blue-700 text-sm rounded-md border-0 py-1 px-3"
-                  onChange={handleFilterChange}
-                >
-                  <option value="all">Tüm Durumlar</option>
-                  <option value="new">Yeni</option>
-                  <option value="viewed">Görüntülendi</option>
-                </select>
-                <select
-                  className="bg-white text-blue-700 text-sm rounded-md border-0 py-1 px-3"
-                  onChange={handleFilterChange}
-                >
-                  <option value="all">Tüm Tipler</option>
-                  {REPORT_TYPES.map(type => (
-                    <option key={type.id} value={type.id}>{type.name}</option>
-                  ))}
-                </select>
-                <select
-                  className="bg-white text-blue-700 text-sm rounded-md border-0 py-1 px-3"
-                  onChange={handleSortChange}
-                >
-                  <option value="date-desc">Tarih (Yeni-Eski)</option>
-                  <option value="date-asc">Tarih (Eski-Yeni)</option>
-                  <option value="title-asc">Başlık (A-Z)</option>
-                  <option value="title-desc">Başlık (Z-A)</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          
-          <div className="p-4">
-            {recentReports.length === 0 ? (
-              <div className="text-center py-12">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                </svg>
-                <p className="text-gray-500 mb-2">Henüz kaydedilmiş rapor bulunmuyor.</p>
-                <button
-                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
-                  onClick={() => setViewMode('generate')}
-                >
-                  Yeni Rapor Oluştur
-                </button>
-              </div>
-            ) : (
-              <div className="grid gap-4">
-                {recentReports.map(report => (
-                  <div 
-                    key={report.id}
-                    className={`border rounded-lg p-4 hover:bg-gray-50 cursor-pointer transition-colors flex items-center justify-between ${
-                      report.status === 'new' ? 'border-blue-300 bg-blue-50 hover:bg-blue-100' : 'border-gray-200'
-                    }`}
-                    onClick={() => navigate(`/reports/${report.id}`)}
+                  </div>
+                  <h3 className="panel-title">Raporlar</h3>
+                </div>
+                
+                <div className="panel-header-actions">
+                  <button 
+                    className="panel-header-button"
+                    onClick={handleRefreshData}
+                    title="Rapor listesini yenile"
                   >
-                    <div className="flex items-center">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-4 ${
-                        report.type === 'health' ? 'bg-green-100 text-green-700' :
-                        report.type === 'reproduction' ? 'bg-purple-100 text-purple-700' :
-                        report.type === 'activity' ? 'bg-yellow-100 text-yellow-700' :
-                        'bg-blue-100 text-blue-700'
-                      }`}>
-                        {report.type === 'health' ? '🩺' :
-                         report.type === 'reproduction' ? '🐄' :
-                         report.type === 'activity' ? '📊' : '🌾'}
-                      </div>
-                      <div>
-                        <h3 className="font-medium text-gray-800">{report.title}</h3>
-                        <div className="flex items-center text-sm text-gray-500">
-                          <span>{report.dateGenerated}</span>
-                          {report.status === 'new' && (
-                            <span className="ml-2 px-2 py-0.5 bg-blue-600 text-white text-xs rounded-full">Yeni</span>
-                          )}
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    <span>Yenile</span>
+                  </button>
+                  
+                  <button 
+                    className="panel-header-button"
+                    onClick={() => setViewMode('generate')}
+                    title="Yeni rapor oluştur"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    <span>Yeni Rapor</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div className="panel-body">
+                {activeFilters.length > 0 && (
+                  <div className="active-filters-summary">
+                    <div className="active-filters-content">
+                      <div className="filter-summary">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="filter-icon" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clipRule="evenodd" />
+                        </svg>
+                        <span className="filter-count">
+                          {activeFilters.length} filtre:
+                        </span>
+                        
+                        <div className="filter-tags">
+                          {activeFilters.map(filter => (
+                            <span 
+                              key={filter}
+                              className="filter-tag"
+                            >
+                              {filter === 'health' && 'Sağlık'}
+                              {filter === 'reproduction' && 'Üreme'}
+                              {filter === 'activity' && 'Aktivite'}
+                              {filter === 'herd' && 'Sürü'}
+                              {filter === 'new' && 'Yeni'}
+                              {filter === 'viewed' && 'Görüntülenmiş'}
+                              <button 
+                                className="filter-tag-remove"
+                                onClick={() => toggleFilter(filter)}
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                                </svg>
+                              </button>
+                            </span>
+                          ))}
                         </div>
                       </div>
+                      <button 
+                        className="clear-all-filters"
+                        onClick={() => setActiveFilters([])}
+                      >
+                        Temizle
+                      </button>
                     </div>
-                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </div>
+                )}
+                
+                {filteredReports.length === 0 && searchTerm ? (
+                  <div className="no-results">
+                    <div className="no-results-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                    </div>
+                    <h3 className="no-results-title">Sonuç Bulunamadı</h3>
+                    <p className="no-results-message">"{searchTerm}" için arama sonucu bulunamadı. Lütfen filtrelerinizi değiştirin veya başka anahtar kelimelerle arayın.</p>
+                    <button 
+                      className="clear-all-button"
+                      onClick={() => {setSearchTerm(''); setActiveFilters([]);}}
+                    >
+                      Tüm filtreleri temizle
+                    </button>
+                  </div>
+                ) : (
+                  <ReportList
+                    reports={filteredReports}
+                    onReportClick={handleShowReportDetail}
+                    onShareReport={handleShareReport}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <>
+            <ReportGenerator
+              selectedReportType={selectedReportType}
+              onReportTypeSelect={setSelectedReportType}
+              dateRange={dateRange}
+              onDateRangeChange={setDateRange}
+              selectedAnimal={selectedAnimal}
+              onAnimalSelect={setSelectedAnimal}
+              isGenerating={isGenerating}
+              onGenerateReport={handleGenerateReport}
+            />
+
+            <div className="panel animate-panel">
+              <div className="panel-header blue-panel-header">
+                <div className="panel-header-content">
+                  <div className="panel-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-      
-      {/* Report Results */}
-      {reportGenerated && selectedReport && (
-        <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8">
-          <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4 flex justify-between items-center">
-            <div className="flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
-              <h2 className="text-lg font-semibold text-white">
-                {selectedReport.title}
-              </h2>
-            </div>
-            <div className="flex space-x-2">
-              <button className="px-3 py-1 bg-white text-green-700 rounded-md hover:bg-green-50 flex items-center shadow-sm transition-colors">
-                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-                PDF
-              </button>
-              <button className="px-3 py-1 bg-white text-green-700 rounded-md hover:bg-green-50 flex items-center shadow-sm transition-colors">
-                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-                Excel
-              </button>
-              <button className="px-3 py-1 bg-white text-green-700 rounded-md hover:bg-green-50 flex items-center shadow-sm transition-colors">
-                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                </svg>
-                Yazdır
-              </button>
-            </div>
-          </div>
-          
-          <div className="p-6">
-            {/* Report summary section */}
-            <div className="mb-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
-              <h3 className="font-medium text-gray-700 mb-2">Rapor Özeti</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div>
-                  <p className="text-xs text-gray-500">Rapor Türü</p>
-                  <p className="font-medium">
-                    {selectedReport.type === 'health' ? 'Sağlık Raporu' :
-                     selectedReport.type === 'reproduction' ? 'Üreme Performansı Raporu' :
-                     selectedReport.type === 'activity' ? 'Aktivite ve Davranış Raporu' :
-                     'Sürü Dinamikleri Raporu'}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500">Tarih Aralığı</p>
-                  <p className="font-medium">
-                    {selectedReport.dateRange ? 
-                      `${selectedReport.dateRange.from} - ${selectedReport.dateRange.to}` : 
-                      '(Belirtilmedi)'}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500">İlgili Hayvanlar</p>
-                  <p className="font-medium">
-                    {selectedReport.relatedAnimals ? 
-                      selectedReport.relatedAnimals.length : 
-                      'Tüm Hayvanlar'}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500">Oluşturma Tarihi</p>
-                  <p className="font-medium">{selectedReport.dateGenerated}</p>
+                  <h3 className="panel-title">Rapor Önizleme</h3>
                 </div>
               </div>
+              <div className="panel-body">
+                {dateRange.startDate && dateRange.endDate ? (
+                  <div className="animate-fade-in">
+                    {renderReportComponent()}
+                  </div>
+                ) : (
+                  <div className="preview-placeholder">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="placeholder-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p>Rapor oluşturmak için tarih aralığı seçin</p>
+                    <p className="placeholder-hint">Formu doldurduktan sonra "Rapor Oluştur" düğmesine tıklayın</p>
+                  </div>
+                )}
+              </div>
             </div>
-            
-            {/* Report content */}
-            <div 
-              className="bg-white border border-gray-200 rounded-xl mb-6 overflow-hidden shadow-sm p-4"
-              dangerouslySetInnerHTML={{ __html: selectedReport.content }}
-            />
-          </div>
-        </div>
+          </>
+        )}
+      </div>
+
+      {selectedReport && showDetailModal && (
+        <ReportDetail
+          report={selectedReport}
+          onClose={() => setShowDetailModal(false)}
+          onShare={handleShareReport}
+        />
       )}
     </div>
   );
 };
 
-export default ReportsPage; 
+export default ReportsPage;

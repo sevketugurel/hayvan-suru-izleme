@@ -78,9 +78,11 @@ const AlertCard: React.FC<AlertCardProps> = ({ alert, onMarkAsRead }) => {
           >
             {alert.isRead ? 'Okundu' : 'Okundu İşaretle'}
           </button>
-          <Link to={`/animals/${alert.animalId}`} className="details-btn">
-            Detaylar
-          </Link>
+          <div className="details-hover-area">
+            <Link to={`/animals/${alert.animalId}`} className="details-btn">
+              Detaylar
+            </Link>
+          </div>
         </div>
       </div>
     </div>

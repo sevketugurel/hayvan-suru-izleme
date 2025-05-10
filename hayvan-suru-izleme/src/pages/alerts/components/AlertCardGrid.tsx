@@ -14,9 +14,9 @@ const AlertCardGrid: React.FC<AlertCardGridProps> = ({ alerts, onMarkAsRead }) =
   }
 
   return (
-    <div className="alert-card-grid">
+    <div className="alert-list-view">
       {alerts.map(alert => (
-        <div key={alert.id} className="alert-card-grid-item">
+        <div key={alert.id} className="alert-list-item">
           <AlertCard alert={alert} onMarkAsRead={onMarkAsRead} />
         </div>
       ))}

@@ -1,7 +1,7 @@
 .animals-page {
   padding: 24px;
   max-width: 100%;
-  background-color: #f5f7fa;
+  background: linear-gradient(120deg, #f5f7fa 0%, #e0f7fa 100%);
   min-height: calc(100vh - 80px);
 }
 
@@ -14,44 +14,49 @@
 
 .animals-header h1 {
   margin: 0;
-  font-size: 28px;
-  font-weight: 700;
+  font-size: 32px;
+  font-weight: 800;
   color: #333;
+  text-shadow: 0 2px 8px rgba(67,233,123,0.08);
+  border-bottom: 4px solid #43e97b;
+  display: inline-block;
+  padding-bottom: 4px;
 }
 
 .add-animal-button {
-  background-color: #4CAF50;
+  background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
   color: white;
-  padding: 10px 20px;
+  padding: 12px 28px;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: background 0.2s, transform 0.2s;
   display: flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(67,233,123,0.10);
+  font-size: 18px;
 }
 
 .add-animal-button:hover {
-  background-color: #3e9142;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(90deg, #38f9d7 0%, #43e97b 100%);
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(67,233,123,0.15);
 }
 
 .add-animal-button:active {
-  transform: translateY(0);
+  transform: scale(1.00);
 }
 
 .loading, .error {
   padding: 40px;
   text-align: center;
   font-size: 18px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(56,249,215,0.10);
   margin-top: 20px;
 }
 

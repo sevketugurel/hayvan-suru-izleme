@@ -35,4 +35,20 @@ export const updateAnimalLocation = (id: string, location: string): Promise<Anim
       }
     }, 300);
   });
+};
+
+export const addAnimal = (animalData: Omit<Animal, 'id'>): Promise<Animal> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const newId = `A${String(animals.length + 1).padStart(3, '0')}`;
+      const newAnimal: Animal = {
+        id: newId,
+        ...animalData,
+        lastSeen: new Date().toISOString()
+      };
+      
+      animals.push(newAnimal);
+      resolve(newAnimal);
+    }, 300);
+  });
 }; 

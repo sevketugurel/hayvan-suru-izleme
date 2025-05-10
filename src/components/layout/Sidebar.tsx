@@ -43,12 +43,7 @@ const Sidebar: React.FC = () => {
       to: '/animals', 
       icon: 'animal', 
       label: 'Hayvanlar',
-      keywords: ['hayvan', 'sürü', 'takip', 'izleme'],
-      submenu: [
-        { to: '/animals/active', label: 'Aktif Hayvanlar' },
-        { to: '/animals/archived', label: 'Arşivlenen Hayvanlar' },
-        { to: '/animals/groups', label: 'Gruplar' },
-      ]
+      keywords: ['hayvan', 'sürü', 'takip', 'izleme']
     },
     { to: '/alerts', icon: 'alert', label: 'Uyarılar', badge: 3, keywords: ['alarm', 'bildirim', 'uyarı'] },
     { 

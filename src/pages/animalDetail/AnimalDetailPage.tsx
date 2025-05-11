@@ -4,29 +4,44 @@ import { AnimalDetailTabs } from '../../components/animalDetail';
 import { getMockAnimalData } from '../../mocks/animalData';
 import { animals } from '../../mocks/animals';
 
+// Tipleri tanımla
+interface AnimalBasicInfo {
+    id: string;
+    name: string;
+    species: string;
+    [key: string]: any; // Diğer özellikler için
+}
+
+interface AnimalDetailData {
+    id: string;
+    name: string;
+    species: string;
+    [key: string]: any; // Diğer özellikler için
+}
+
 const AnimalDetailPage: React.FC = () => {
     const { animalId } = useParams<{ animalId: string }>();
     const [loading, setLoading] = useState(true);
     const [notFound, setNotFound] = useState(false);
-    const [animalBasicInfo, setAnimalBasicInfo] = useState<any>(null);
-    const [animalData, setAnimalData] = useState<any>(null);
+    const [animalBasicInfo, setAnimalBasicInfo] = useState<AnimalBasicInfo | null>(null);
+    const [animalData, setAnimalData] = useState<AnimalDetailData | null>(null);
 
     useEffect(() => {
         // Simulate loading data
         setLoading(true);
-        
+
         // Find basic animal info from the animal list
         const basicInfo = animals.find(animal => animal.id === animalId);
         setAnimalBasicInfo(basicInfo || null);
-        
+
         // Get detailed data
         const detailedData = getMockAnimalData(animalId || '');
         setAnimalData(detailedData || null);
-        
+
         if (!basicInfo || !detailedData) {
             setNotFound(true);
         }
-        
+
         setLoading(false);
     }, [animalId]);
 
@@ -71,7 +86,7 @@ const AnimalDetailPage: React.FC = () => {
                     Hayvan Listesine Dön
                 </Link>
             </div>
-            
+
             <div className="bg-white rounded-lg shadow-md">
                 <AnimalDetailTabs animalId={animalId || ''} animalData={animalData} />
             </div>

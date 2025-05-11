@@ -7,7 +7,7 @@ import AnimalLocationSocial from './tabs/AnimalLocationSocial';
 import AnimalRiskEnvironment from './tabs/AnimalRiskEnvironment';
 import AnimalTreatments from './tabs/AnimalTreatments';
 import AnimalCameraAnalysis from './tabs/AnimalCameraAnalysis';
-import animalDetailMocks from '../../mocks/animalDetailMocks';
+import { animalDetailMocks } from '../../mocks/animalDetailMocks';
 import './styles/AnimalDetailTabs.css';
 import type {
     AnimalData,
@@ -61,6 +61,207 @@ const BatteryIndicator: React.FC<{ batteryLevel: number }> = ({ batteryLevel }) 
             <span className="battery-percentage">{batteryLevel}%</span>
         </div>
     );
+};
+
+// Default değerler
+const defaultDrowningRisk = {
+    currentRisk: 'low' as const,
+    riskHistory: [],
+    dangerZones: [],
+    preventiveMeasures: []
+};
+
+const defaultGasLevels = {
+    animalSpecific: {
+        lastReading: {
+            timestamp: new Date().toISOString(),
+            location: 'Bilinmiyor',
+            ammonia: 0,
+            methane: 0,
+            carbonDioxide: 0,
+            humidity: 0,
+            temperature: 0
+        },
+        dailyAverage: {
+            date: new Date().toISOString().split('T')[0],
+            ammonia: 0,
+            methane: 0,
+            carbonDioxide: 0
+        },
+        weeklyTrend: {
+            startDate: new Date().toISOString().split('T')[0],
+            endDate: new Date().toISOString().split('T')[0],
+            ammoniaTrend: 'stable' as const,
+            methaneTrend: 'stable' as const,
+            carbonDioxideTrend: 'stable' as const
+        }
+    },
+    facilityLevels: {
+        readings: [],
+        safetyThresholds: {
+            ammonia: { warning: 10, danger: 20 },
+            methane: { warning: 500, danger: 1000 },
+            carbonDioxide: { warning: 1000, danger: 2000 }
+        },
+        ventilationStatus: 'Normal',
+        airQualityIndex: 0
+    },
+    historicalData: []
+};
+
+const defaultOtherRisks = {
+    heatStress: {
+        currentLevel: 'low' as const,
+        temperatureHumidityIndex: 0,
+        recommendedActions: []
+    },
+    predatorRisk: {
+        level: 'low' as const,
+        recentSightings: [],
+        vulnerabilityScore: 0
+    }
+};
+
+const defaultFeedingDuration = {
+    status: 'Veri bekleniyor',
+    estimatedDuration: '0 dk/gün',
+    reliability: 0,
+    lastUpdated: new Date().toISOString(),
+    trend: 'stable' as const,
+    history: [],
+    note: 'Henüz yeterli veri yok'
+};
+
+const defaultMaternalBehavior = {
+    status: 'Veri bekleniyor',
+    careScore: 0,
+    reliability: 0,
+    lastUpdated: new Date().toISOString(),
+    observations: [],
+    note: 'Henüz yeterli veri yok'
+};
+
+const defaultBirthDetection = {
+    status: 'Veri bekleniyor',
+    pregnancyStatus: 'Bilinmiyor',
+    estimatedBirthDate: '',
+    remainingDays: 0,
+    warningLevel: 'low' as const,
+    birthSigns: [],
+    previousBirthData: {
+        date: '',
+        duration: 0,
+        complications: [],
+        outcome: 'Bilinmiyor'
+    },
+    preparationStatus: {
+        nestingBehavior: false,
+        restlessness: false,
+        decreasedAppetite: false,
+        isolationSeeking: false
+    },
+    note: 'Henüz yeterli veri yok'
+};
+
+const defaultSocialAnalysis = {
+    status: 'Veri bekleniyor',
+    reliability: 0,
+    lastUpdated: new Date().toISOString(),
+    hierarchyPosition: 'Bilinmiyor',
+    groupBelonging: 'Bilinmiyor',
+    socialInteractions: {
+        friendly: 0,
+        neutral: 0,
+        aggressive: 0
+    },
+    detailedAnalysis: [],
+    behaviouralPatterns: [],
+    note: 'Henüz yeterli veri yok'
+};
+
+const defaultCameraAvailability = {
+    'Yem Alanı': {
+        status: 'Offline',
+        lastCheck: new Date().toISOString(),
+        resolution: '720p',
+        coverage: 'Kısmi'
+    }
+};
+
+// Tip dönüşümleri için yardımcı fonksiyon
+const ensureValidRiskData = (mockData: any) => {
+    if (!mockData?.riskEnvironment) {
+        return {
+            drowningRisk: defaultDrowningRisk,
+            gasLevels: defaultGasLevels,
+            otherRisks: defaultOtherRisks
+        };
+    }
+
+    // drowningRisk için tip dönüşümü
+    const drowningRisk = mockData.riskEnvironment.drowningRisk ? {
+        ...mockData.riskEnvironment.drowningRisk,
+        currentRisk: mockData.riskEnvironment.drowningRisk.currentRisk as 'low' | 'medium' | 'high',
+        riskHistory: mockData.riskEnvironment.drowningRisk.riskHistory?.map((item: any) => ({
+            ...item,
+            severity: item.severity as 'low' | 'medium' | 'high'
+        })) || []
+    } : null;
+
+    // gasLevels için tip dönüşümü
+    const gasLevels = mockData.riskEnvironment.gasLevels ? {
+        ...mockData.riskEnvironment.gasLevels,
+        animalSpecific: {
+            ...mockData.riskEnvironment.gasLevels.animalSpecific,
+            weeklyTrend: {
+                ...mockData.riskEnvironment.gasLevels.animalSpecific.weeklyTrend,
+                ammoniaTrend: mockData.riskEnvironment.gasLevels.animalSpecific.weeklyTrend.ammoniaTrend as 'increasing' | 'decreasing' | 'stable',
+                methaneTrend: mockData.riskEnvironment.gasLevels.animalSpecific.weeklyTrend.methaneTrend as 'increasing' | 'decreasing' | 'stable',
+                carbonDioxideTrend: mockData.riskEnvironment.gasLevels.animalSpecific.weeklyTrend.carbonDioxideTrend as 'increasing' | 'decreasing' | 'stable'
+            }
+        }
+    } : null;
+
+    // otherRisks için tip dönüşümü
+    const otherRisks = mockData.riskEnvironment.otherRisks ? {
+        ...mockData.riskEnvironment.otherRisks,
+        heatStress: {
+            ...mockData.riskEnvironment.otherRisks.heatStress,
+            currentLevel: mockData.riskEnvironment.otherRisks.heatStress.currentLevel as 'low' | 'medium' | 'high'
+        },
+        predatorRisk: {
+            ...mockData.riskEnvironment.otherRisks.predatorRisk,
+            level: mockData.riskEnvironment.otherRisks.predatorRisk.level as 'low' | 'medium' | 'high'
+        }
+    } : null;
+
+    return { drowningRisk, gasLevels, otherRisks };
+};
+
+const ensureValidCameraData = (mockData: any) => {
+    if (!mockData?.cameraAnalysis) {
+        return {
+            feedingDuration: defaultFeedingDuration,
+            maternalBehavior: defaultMaternalBehavior,
+            birthDetection: defaultBirthDetection,
+            socialAnalysis: defaultSocialAnalysis,
+            cameraAvailability: defaultCameraAvailability
+        };
+    }
+
+    return {
+        feedingDuration: mockData.cameraAnalysis.feedingDuration ? {
+            ...mockData.cameraAnalysis.feedingDuration,
+            trend: mockData.cameraAnalysis.feedingDuration.trend as 'increasing' | 'decreasing' | 'stable'
+        } : null,
+        maternalBehavior: mockData.cameraAnalysis.maternalBehavior || null,
+        birthDetection: mockData.cameraAnalysis.birthDetection ? {
+            ...mockData.cameraAnalysis.birthDetection,
+            warningLevel: mockData.cameraAnalysis.birthDetection.warningLevel as 'low' | 'medium' | 'high'
+        } : null,
+        socialAnalysis: mockData.cameraAnalysis.socialAnalysis || null,
+        cameraAvailability: mockData.cameraAnalysis.cameraAvailability || {}
+    };
 };
 
 const AnimalDetailTabs: React.FC<AnimalDetailTabsProps> = ({ animalId, animalData }) => {
@@ -152,7 +353,7 @@ const AnimalDetailTabs: React.FC<AnimalDetailTabsProps> = ({ animalId, animalDat
                 </div>
                 <div className="animal-header-right">
                     {animalSpecies} {animalBreed ? `• ${animalBreed}` : ''}<br />
-                    {animalGender} • {animalAge} yaş {animalWeight ? `• ${animalWeight} kg` : ''}
+                    {animalGender}  {animalWeight ? `• ${animalWeight} kg` : ''}
                 </div>
             </div>
 
@@ -256,19 +457,13 @@ const AnimalDetailTabs: React.FC<AnimalDetailTabsProps> = ({ animalId, animalDat
 
                 {activeTab === 'risk' && (
                     <AnimalRiskEnvironment
-                        drowningRisk={animalData.environmentRisks?.drowningRisk}
-                        predatorRisk={animalData.environmentRisks?.predatorRisk}
-                        weatherRisk={animalData.environmentRisks?.weatherRisk}
-                        healthRisk={animalData.environmentRisks?.healthRisk}
+                        {...ensureValidRiskData(mockData)}
                     />
                 )}
 
                 {activeTab === 'camera' && (
                     <AnimalCameraAnalysis
-                        bodyConditionHistory={animalData.cameraAnalysis?.bodyConditionHistory}
-                        facialRecognition={animalData.cameraAnalysis?.facialRecognition}
-                        gaitAnalysis={animalData.cameraAnalysis?.gaitAnalysis}
-                        behaviorRecords={animalData.cameraAnalysis?.behaviorRecords}
+                        {...ensureValidCameraData(mockData)}
                     />
                 )}
             </div>

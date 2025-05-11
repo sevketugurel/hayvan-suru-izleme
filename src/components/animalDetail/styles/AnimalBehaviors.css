@@ -29,9 +29,18 @@
 
 .behavior-title svg {
     margin-right: 0.5rem;
+
     color: #4a8c6f;
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+    min-height: 16px !important;
+    max-width: 16px !important;
+    max-height: 16px !important;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .behavior-metrics {
@@ -134,9 +143,16 @@
 }
 
 .camera-message svg {
-    margin-right: 0.5rem;
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+    min-height: 16px !important;
+    max-width: 16px !important;
+    max-height: 16px !important;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .behavior-note {

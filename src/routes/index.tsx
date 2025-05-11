@@ -1,7 +1,7 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
 import { AnimalDetailPage } from "../pages/animalDetail";
 
 // Lazily load pages
@@ -18,6 +18,13 @@ const Loading = () => (
   </div>
 );
 
+// Wrapper component for lazy-loaded components
+const LazyComponent = ({ component: Component }: { component: React.ComponentType }) => (
+  <Suspense fallback={<Loading />}>
+    <Component />
+  </Suspense>
+);
+
 // Routes configuration
 const router = createBrowserRouter([
   {
@@ -26,60 +33,32 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: (
-          <React.Suspense fallback={<Loading />}>
-            <Dashboard />
-          </React.Suspense>
-        ),
+        element: <LazyComponent component={Dashboard} />,
       },
       {
         path: "animals",
-        element: (
-          <React.Suspense fallback={<Loading />}>
-            <AnimalsPage />
-          </React.Suspense>
-        ),
+        element: <LazyComponent component={AnimalsPage} />,
       },
       {
         path: "animals/:animalId",
-        element: (
-          <React.Suspense fallback={<Loading />}>
-            <AnimalDetailPage />
-          </React.Suspense>
-        ),
+        element: <LazyComponent component={AnimalDetailPage} />,
       },
       {
         path: "alerts",
-        element: (
-          <React.Suspense fallback={<Loading />}>
-            <AlertsPage />
-          </React.Suspense>
-        ),
+        element: <LazyComponent component={AlertsPage} />,
       },
       // Reports routes
       {
         path: "reports",
-        element: (
-          <React.Suspense fallback={<Loading />}>
-            <ReportsPage />
-          </React.Suspense>
-        ),
+        element: <LazyComponent component={ReportsPage} />,
       },
       {
         path: "reports/:reportType",
-        element: (
-          <React.Suspense fallback={<Loading />}>
-            <ReportsPage />
-          </React.Suspense>
-        ),
+        element: <LazyComponent component={ReportsPage} />,
       },
       {
         path: "settings",
-        element: (
-          <React.Suspense fallback={<Loading />}>
-            <SettingsPage />
-          </React.Suspense>
-        ),
+        element: <LazyComponent component={SettingsPage} />,
       },
     ]
   }

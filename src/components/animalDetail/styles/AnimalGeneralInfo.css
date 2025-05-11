@@ -79,9 +79,17 @@
 }
 
 .animal-avatar svg {
-    width: 64px;
-    height: 64px;
-    color: #fff;
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    min-height: 20px !important;
+    max-width: 20px !important;
+    max-height: 20px !important;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #4f46e5;
 }
 
 /* Responsive design */

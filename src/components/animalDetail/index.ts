@@ -1,4 +1,4 @@
-import AnimalDetailTabs from './/AnimalDetailTabs';
+import AnimalDetailTabs from './AnimalDetailTabs';
 import AnimalGeneralInfo from './tabs/AnimalGeneralInfo';
 import AnimalHealthData from './tabs/AnimalHealthData';
 import AnimalBehaviors from './tabs/AnimalBehaviors';
@@ -14,4 +14,4 @@ export {
     AnimalReproduction,
     AnimalLocationSocial,
     AnimalRiskEnvironment
-}; 
+};      

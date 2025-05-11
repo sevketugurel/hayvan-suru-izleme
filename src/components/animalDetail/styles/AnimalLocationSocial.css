@@ -26,25 +26,42 @@
 .section-title {
     display: flex;
     align-items: center;
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     font-weight: 600;
     margin: 0;
 }
 
-.section-title svg {
-    width: 1.25rem;
-    height: 1.25rem;
+.section-header h3.section-title svg,
+.section-title svg,
+.location-title svg,
+.social-title svg,
+.path-history-title svg,
+.status-icon svg {
     margin-right: 0.5rem;
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+    min-height: 16px !important;
+    max-width: 16px !important;
+    max-height: 16px !important;
+    margin-right: 0.5rem;
+    flex-shrink: 0;
+    display: block;
 }
 
+/* Title ikonlarının renklerini ayarla */
 .location-title,
 .location-title svg {
     color: #047857;
+    display: flex;
+    align-items: center;
 }
 
 .social-title,
 .social-title svg {
     color: #4f46e5;
+    display: flex;
+    align-items: center;
 }
 
 /* Harita konteyneri için geliştirilmiş stiller */
@@ -116,13 +133,6 @@
     color: #4b5563;
     margin-top: 1.5rem;
     margin-bottom: 1rem;
-}
-
-.path-history-title svg {
-    width: 1rem;
-    height: 1rem;
-    margin-right: 0.5rem;
-    color: #047857;
 }
 
 /* GPS kayıt listesi için scrollbar stillerini iyileştiriyoruz */
@@ -264,16 +274,32 @@
 }
 
 .status-indicator {
-    display: flex;
-    align-items: center;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
     font-weight: 500;
     font-size: 1rem;
     margin-bottom: 0.75rem;
+    flex-wrap: nowrap !important;
+    width: 25% !important;
 }
 
 .status-icon {
-    display: inline-flex;
-    margin-right: 0.5rem;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-right: 0.75rem !important;
+    flex-shrink: 0 !important;
+    width: 10px !important;
+}
+
+.deviation-status-text {
+    display: inline-block !important;
+    text-align: left !important;
+    flex: 1 !important;
+    line-height: 1.5 !important;
+    vertical-align: middle !important;
 }
 
 .status-normal {
@@ -559,4 +585,65 @@
         display: block;
         overflow-x: auto;
     }
+}
+
+/* Başlık SVG ikon boyutları için özel stil */
+.location-social-container h3.section-title svg,
+.location-social-container h4.path-history-title svg,
+.location-social-container .status-icon svg {
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+    min-height: 16px !important;
+    max-width: 16px !important;
+    max-height: 16px !important;
+    margin-right: 0.5rem;
+    flex-shrink: 0;
+    display: block;
+}
+
+/* Eğer başka yerde stil çakışması varsa önceliği yüksek tutmak için */
+.location-social-container svg.h-4,
+.location-social-container svg.w-4 {
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+    min-height: 16px !important;
+}
+
+/* SVG İkonları için Yeni Özel Sınıf */
+.small-svg-icon {
+    margin-right: 0.5rem;
+
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+    min-height: 16px !important;
+    max-width: 16px !important;
+    max-height: 16px !important;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* İkon renkleri için ek sınıflar */
+.location-icon {
+    color: #047857;
+}
+
+.social-icon {
+    color: #4f46e5;
+}
+
+.history-icon {
+    color: #047857;
+}
+
+.warning-icon {
+    color: #b91c1c;
+}
+
+.check-icon {
+    color: #047857;
 }

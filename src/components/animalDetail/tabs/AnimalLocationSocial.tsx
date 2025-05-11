@@ -178,7 +178,7 @@ const AnimalLocationSocial: React.FC<AnimalLocationSocialProps> = ({
             <div className="location-section">
                 <div className="section-header">
                     <h3 className="section-title location-title">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="location-icon small-svg-icon" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                         </svg>
                         GPS ile Konum Takibi
@@ -262,7 +262,7 @@ const AnimalLocationSocial: React.FC<AnimalLocationSocialProps> = ({
 
                 <div>
                     <h4 className="path-history-title">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="history-icon small-svg-icon" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3.293 1.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L7.586 10 5.293 7.707a1 1 0 010-1.414zM11 12a1 1 0 100-2h-1a1 1 0 100 2h1z" clipRule="evenodd" />
                         </svg>
                         Konum Geçmişi
@@ -282,7 +282,7 @@ const AnimalLocationSocial: React.FC<AnimalLocationSocialProps> = ({
             <div className="location-section">
                 <div className="section-header">
                     <h3 className="section-title location-title">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="location-icon small-svg-icon" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                         </svg>
                         Sürüden Uzaklaşma / Anormal Lokasyon Davranışı
@@ -290,22 +290,21 @@ const AnimalLocationSocial: React.FC<AnimalLocationSocialProps> = ({
                 </div>
 
                 <div className="deviation-status">
-                    <p className={`status-indicator ${herdDeviation.isDeviated ? 'status-warning' : 'status-normal'}`}>
-                        <span className="status-icon">
-                            {herdDeviation.isDeviated ?
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                                </svg> :
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                </svg>
-                            }
+                    <div className={`status-indicator ${herdDeviation.isDeviated ? 'status-warning' : 'status-normal'}`}>
+                        {herdDeviation.isDeviated ? (
+                            <svg xmlns="http://www.w3.org/2000/svg" className="warning-icon small-svg-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                            </svg>
+                        ) : (
+                            <svg xmlns="http://www.w3.org/2000/svg" className="check-icon small-svg-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                            </svg>
+                        )}
+                        <span className="deviation-status-text">
+                            {herdDeviation.isDeviated ? 'Hayvan şu anda sürüden uzakta!' : 'Hayvan şu anda sürü ile birlikte'}
                         </span>
-                        {herdDeviation.isDeviated ?
-                            'Hayvan şu anda sürüden uzakta!' :
-                            'Hayvan şu anda sürü ile birlikte'
-                        }
-                    </p>
+                    </div>
+
                     <div className="safe-zones-info">
                         <p><strong>Güvenli Bölgeler:</strong></p>
                         <ul className="safe-zones-list">
@@ -357,7 +356,7 @@ const AnimalLocationSocial: React.FC<AnimalLocationSocialProps> = ({
             <div className="social-section">
                 <div className="section-header">
                     <h3 className="section-title social-title">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="social-icon small-svg-icon" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
                         </svg>
                         Sürünün Sosyal Davranışları
@@ -430,7 +429,7 @@ const AnimalLocationSocial: React.FC<AnimalLocationSocialProps> = ({
             <div className="social-section">
                 <div className="section-header">
                     <h3 className="section-title social-title">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="social-icon small-svg-icon" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
                         </svg>
                         Yakın Arkadaşlar
